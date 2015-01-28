@@ -1,0 +1,193 @@
+Data  
+
+sp.dat
+Attached Files:
+File sp.dat (3.16 MB)
+Speech fragment (3.3mB!)
+
+yacht
+Attached Files:
+File yacht.txt (1.439 KB)
+Sydney to Hobart Yacht Race Winning Times
+The Sydney-Hobart yacht race starts from Sydney Harbour on Boxing day (December 26) and finishes several days later in Hobart. It is a 630 nautical mile ocean race. The data give the winning times from 1945 to 1993, as they appeared in the Sydney Morning Herald on 24 December, 1994, plus the winning times for 1994 to 1997.
+Variable
+
+Description
+
+Yacht
+
+Name of winning yacht
+
+Year
+
+Year
+
+Days
+
+Days unit of winning time
+
+Hours
+
+Hours unit of winning time
+
+Minutes
+
+Minutes unit of winning time
+
+Time
+
+Winning time in minutes (should match time in Days, Hours and Minutes)
+
+
+cherry
+Attached Files:
+File cherry.txt (419 B)
+The data give the volume (cubic feet), height (feet) and diameter (inches) (at 54 inches above ground) for a sample of 31 black cherry trees in the Allegheny National Forest, Pennsylvania. 
+
+The data were collected in order to find an estimate for the volume of a tree (and therefore the timber yield), given its height and diameter.
+
+
+Ret Loss in Flax
+Attached Files:
+File retloss.txt (835 B)
+The data is from a dew-retting experiment in Ballarat 1942-43, in which flax was laid out under various climactic conditions and for various periods. Retting involves softening the flax stems by soaking in water, thus enabling the separation of the linen fibres from the wooden material by a process called scrutching. The flax variety used was "Liral Crown". Two samples were taken from each trial and the ret loss, as a percentage, was calculated. The other three variables are the mean daily rainfall (in points), the retting period (in days) and the mean daily temperature (in degrees Farenheit).
+
+Mass and Physical Measurements for Male Subjects
+Attached Files:
+File mass.txt (975 B)
+For his MS305 data project, Michael Larner measured the weight and various physical measurements for 22 male subjects aged 16 - 30. Subjects were randomly chosen volunteers, all in reasonable good health. Subjects were requested to slightly tense each muscle being measured to ensure measurement consistency. Apart from Mass, all measurements are in cm.
+Variable
+
+Description
+
+Mass
+
+Weight in kg
+
+Fore
+
+Maximum circumference of forearm
+
+Bicep
+
+Maximum circumference of bicep
+
+Chest
+
+Distance around chest directly under the armpits
+
+Neck
+
+Distance around neck, approximately halfway up
+
+Waist
+
+Distance around waist, approximately trouser line
+
+Thigh
+
+Circumference of thigh, measured halfway between the knee and the top of the leg
+
+Calf
+
+Maximum circumference of calf
+
+Height
+
+Height from top to toe
+
+Shoulders
+
+Distance around shoulders, measured around the peak of the shoulder blades
+
+
+Effect of Punishment Regimes on Crime Rates
+Attached Files:
+File uscrime.txt (3.623 KB)
+ 
+Criminologists are interested in the effect of punishment regimes on crime rates. This has been studied using aggregate data on 47 states of the USA for 1960. The data set contains the following columns:
+
+ 
+
+Variable
+
+ 
+
+Description
+
+M
+
+percentage of males aged 14–24 in total state population
+
+So
+
+indicator variable for a southern state
+
+Ed
+
+mean years of schooling of the population aged 25 years or over
+
+Po1
+
+per capita expenditure on police protection in 1960
+
+Po2
+
+per capita expenditure on police protection in 1959
+
+LF
+
+labour force participation rate of civilian urban males in the age-group 14-24
+
+M.F
+
+number of males per 100 females
+
+Pop
+
+state population in 1960 in hundred thousands
+
+NW
+
+percentage of nonwhites in the population
+
+U1
+
+unemployment rate of urban males 14–24
+
+U2
+
+unemployment rate of urban males 35–39
+
+Wealth
+
+wealth: median value of transferable assets or family income
+
+Ineq
+
+income inequality: percentage of families earning below half the median income
+
+Prob
+
+probability of imprisonment: ratio of number of commitments to number of offenses
+
+Time
+
+average time in months served by offenders in state prisons before their first release
+
+Crime
+
+crime rate: number of offenses per 100,000 population in 1960
+
+
+Clock Auction
+Attached Files:
+File auction.txt (378 B)
+
+bulb.txt
+Attached Files:
+File bulb.txt (602 B)
+
+weather.txt
+Attached Files:
+File weather.txt (867 B)

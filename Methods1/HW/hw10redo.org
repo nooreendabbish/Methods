@@ -1,0 +1,155 @@
+#+TITLE: Homework 10 Redo
+#+AUTHOR: Nooreen Dabish
+#+STARTUP: hideblocks
+#+PROPERTY: header-args :cache yes :tangle yes
+#+OPTIONS: toc:nil 
+#+LATEX_HEADER: \usepackage{amsmath}
+* Problem 1: US Crime Data
+
+** Plot the scatterplot matrix between the variables.
+
+**** Read in data and make scatterplot.
+#+name: scatter
+#+begin_src R :tangle yes :session *hw10* :exports results :results graphics :file scatter.png
+  crime <- read.table('/home/nooreen/Documents/Methods/Methods1/Data/uscrime.txt', header=T)
+  plot(crime)
+#+end_src
+
+#+RESULTS: scatter
+[[file:scatter.png]]
+
+**** Second scatterplot, showing only subset of variables.
+
+#+name: timeprobcrime
+#+begin_src R :tangle yes :session *hw10* :exports results :results graphics :file tpc.pdf
+  plot(crime[,c("Prob","Time","Crime")])
+#+end_src
+
+#+CAPTION: Here is another scatterplot
+#+RESULTS: timeprobcrime
+[[file:tpc.pdf]]
+
+
+
+The correlation coefficient between Crime and Time is
+SRC_R[:session *hw10* :exports results :results raw]{cor(crime[,c("Time","Crime")])}
+
+
+** Construct a linear model to study the relationship between Crime(Y) and Prob, adjusting for the effect of the 13 char. variables.
+
+*** Description of the model:
+
+The adjusted effect model is:
+$$\mathbf{Y} = \beta_0 + \mathbf{X_1}\beta_1+\ldots+\mathbf{X_{p-1}}\beta_{p-1}+\mathbf{X_p}\beta_p+\epsilon$$
+
+where:
+
+\begin{equation*}
+   \mathbf{Y} = 
+   \begin{pmatrix}
+    Y_1\\
+    Y_2\\
+    \vdots\\
+     Y_n
+  \end{pmatrix}\, ; \,
+  \mathbf{X} =
+  \begin{pmatrix}
+    1      & X_{1,1} & \cdots & X_{1,p-1}\\
+    1      & X_{2,1} & \cdots & X_{2,p-1}\\
+    \vdots & \vdots  & \ddots  & \vdots \\
+    1      & X_{n,1} & \cdots & X_{n,p-1}
+  \end{pmatrix} \, ; \,
+   \mathbf{\beta} = 
+   \begin{pmatrix}
+    \beta_0\\
+    \beta_1\\
+    \vdots\\
+     \beta_{p-1}
+  \end{pmatrix}\, ; \,
+   \mathbf{\epsilon} = 
+   \begin{pmatrix}
+    \epsilon_1\\
+    \epsilon_2\\
+    \vdots\\
+    \epsilon_n
+  \end{pmatrix}
+  \end{equation*}
+
+ There are SRC_R[:session *hw10*]{ncol(crime)-1} covariates in the
+ data set, so $p = 15$. There are $ n =
+ SRC_R[:session *hw10*]{nrow(crime)}$ observations in the data set.  
+Our model assumes that:
+ + $E(\mathbf{\epsilon}) = 0$
+ + $\mathrm{Var}(\mathbf{\epsilon}) = \sigma^2\mathbf{I}$
+ 
+ *** E
+
+*** Estimating the paramaters in the model:
+ $$\hat{\mathbf{\beta}}_{LSE} =
+ (\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}\mathbf{X}^{\mathrm{T}}\mathbf{Y}$$
+
+ and
+
+ $$\hat{\sigma}^2_{LSE} =
+\frac{\mathbf{Y}^{\mathrm{T}}\mathbf{Y} -
+ \mathbf{Y}^{\mathrm{T}} \mathbf{P_X}\mathbf{Y}}{n - p}$$
+
+and
+
+$$\hat{\mathrm{Var}}(\hat{\mathbf{\beta}}_{LSE}) =
+\hat{\sigma}^2(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}$$
+
+where
+
+The projection matrix $\mathbf{P_X}$ is $\mathbf{X}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}\mathbf{X}^{\mathrm{T}}$.
+
+*** Test for the effect of Prob, the probability of imprisonment on Crime, adjusting for the other variables.
+ Prob is determined as the ratio of the number of commitments to the
+ number of offenses.
+
+**** Hypotheses:
+ - *Null* $H_0:\, \beta SRC_R[:results raw :session *hw10*]{which( colnames(crime)=="Prob")}
+ = 0$ 
+ - *Alternate* $H_A:\, \beta SRC_R[:results raw :session *hw10*]{which( colnames(crime)=="Prob")} \neq 0$
+
+\begin{align*} 
+   \hat{\mathbf{\beta}}_{LSE} &\sim N(\mathbf{\beta}, \sigma^2(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}) \\
+   q^\mathrm{T}\hat{\mathbf{\beta}}_{LSE} &\sim N(q^\mathrm{T}\mathbf{\beta},\sigma^2q^\mathrm{T}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q)   \\
+\frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE} - q^{\mathrm{T}}\mathbf{\beta}}{ \hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}} &\sim T_{n-p}
+\text{Under $H_0$:}\\
+\frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE}}{ \hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}} &\sim T_{n-p}
+\end{align*}
+ 
+**** Rejection criterion
+$$\left\lvert \frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE}}{
+\hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}}
+\right\rvert > t_{n-p}^{-1} (1 - \alpha/2)$$ 
+
+#+name: prob2b_t
+#+BEGIN_SRC R :tangle yes :session *hw10* :exports results 
+    attach(crime)
+    Y <- matrix(Crime, nrow(crime),1)
+    X <- as.matrix(cbind(rep(nrow(crime),1),crime[, !(names(crime) %in% c("Crime","Time"))]))
+    betahat <- solve(t(X)%*%X)%*%t(X)%*%Y
+    PX <- X%*%solve(t(X)%*%X)%*%t(X)
+    sigmasq <- as.numeric((t(Y)%*%Y - t(Y)%*%PX%*%Y)/(nrow(crime) - ncol(X)))
+    sigmasq
+  
+    varbetahat <- sigmasq*solve(t(X)%*%X)
+    varbetahat
+    ncol(X)
+    makeq <- function(X, namein){
+        q <- matrix(c(rep(0,ncol(X)), ncol(X), 1)
+        for (n in 1:ncol(X)){
+        if (name(X[,n]) == namein){q[n] = 1}
+        }
+        return q
+    }
+#+END_SRC
+
+
+**** The $(1-\alpha)$ Confidence Interval of $q^{\mathrm{T}}\beta$
+$$q^{\mathrm{T}}\hat{\mathbf{\beta}} \pm
+t^{-1}_{n-p}(1-\alpha/2)s\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}$$
+
+

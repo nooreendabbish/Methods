@@ -1,0 +1,111 @@
+% Created 2015-01-07 Wed 19:04
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Homework 8 Redo}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+
+\section{Example of Org-Babel for R Literate Programming}
+\label{sec-1}
+\subsection{R text output}
+\label{sec-1-1}
+
+A simple summary. 
+
+
+
+
+\begin{verbatim}
+plot(matrix(rnorm(100), ncol=2), type="l")
+\end{verbatim}
+
+
+
+
+\begin{verbatim}
+x <- 1:10
+library(ascii)
+options(asciiType="org")
+ascii(summary(table(1:4, 1:4)))
+\end{verbatim}
+
+\begin{verbatim}
+ - Number of cases in table: 4 
+ - Number of factors: 2 
+ - Test for independence of all factors:
+   - Chisq = 12, df = 9, p-value = 0.2133
+   - Chi-squared approximation may be incorrect
+\end{verbatim}
+\subsection{R graphics output}
+\label{sec-1-2}
+
+Note we use the object \texttt{x} generated in previous code block, thanks to
+the header option \texttt{:session *R*}.  The output graphics file is
+\texttt{a.png}. 
+
+
+
+
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.8\textwidth,]{a.pdf}
+\caption{\label{fig:one}Scatter Plot with Regression Line}
+\end{figure}
+
+Same plot with larger dimension:
+
+
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=0.8\textwidth,]{b.pdf}
+\caption{\label{fig:one}Scatter Plot with Regression Line}
+\end{figure}
+\section{Problem 1}
+\label{sec-2}
+
+$\mu_{0} = 3.35$ percent butterfat\\
+$\sigma = 0.15$
+\subsection{Find the rejection region at the significance level $\alpha$ = 0.05}
+\label{sec-2-1}
+
+\begin{align*}
+H_{0}&:\, \mu = \mu_{0} = 3.35\\
+H_{A}&:\, \mu \neq \mu_{0}\\
+\alpha &= \mathrm{P}(\mathrm{Accept } H_{0} \mid H_{0} \mathrm{ true})\\
+       &= \mathrm{P}(z_{\frac{\alpha}{2}} < Z < z_{1 - \frac{\alpha}{2}} \mid \mu=\mu_{0}})\\
+       &(=SRC_R[:exports results raw]{round(qnorm(.025),2)}=< Z < =1.96=)
+\end{align*}  
+y
+(-1.96< Z < 1.96)
+
+\end{document}

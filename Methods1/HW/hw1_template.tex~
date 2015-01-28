@@ -1,0 +1,197 @@
+
+\documentclass[12pt]{article}
+
+\usepackage{amscd}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{amsmath,mathtools,amssymb,amsfonts, amsthm}
+\usepackage{caption}
+\usepackage{graphicx,graphics,subcaption,caption}
+\usepackage{setspace,parskip}
+\usepackage{latexsym}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{framed,color}
+%\usepackage{xcolor}
+\usepackage{listings,bera,pstricks-add,caption,etoolbox}
+
+\definecolor{shadecolor}{rgb}{1,0.8,0.3}
+
+%\usepackage{showkeys}
+\newcommand{\blind}{0}
+\newcommand{\ignore}[1]i{}
+\newcommand{\blank}{\vspace{3ex}}
+%\usepackage{amsrefs}
+%\doublespacing
+%\fontsize{12pt}{\baselineskip}
+%\parskip=\baselineskip %\advance\parskip by 0pt plus 2pt
+\setlength\parskip{10pt}
+
+\lstset{  %
+    breaklines=true,%default : false 
+    breakindent=10pt,%default: 20pt 
+    linewidth=\linewidth,%default : \linewidth,
+    basicstyle=\ttfamily,% cannot take arguments
+    %keywordstyle=\color{Blue}\sffamily\bfseries,                                
+    %identifierstyle=\color{Black},                                      
+    %commentstyle=\color{OliveGreen}\itshape,                                    
+    stringstyle=\rmfamily,                                                      
+    showspaces=false,%default false
+    showstringspaces=false,%default: true
+    backgroundcolor=\color{shadecolor},
+    frame=single,%default frame=none 
+    rulecolor=\color{black},  
+    % the following must be defined to make hacking work.
+    framerule=0.4pt,%expand outward 
+    framesep=3pt,%expand outward
+    xleftmargin=3.4pt,%to make the frame fits in the text area. 
+    xrightmargin=3.4pt,%to make the frame fits in the text area. 
+    tabsize=2,%default :8 only influence the lstlisting and lstinline.
+    aboveskip=7pt plus 2pt, 
+    belowskip=-8pt plus 2pt
+} 
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\propref}[1]{Proposition~\ref{#1}}
+%\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\secref}[1]{\S\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newcommand{\etc}{\textit{etc}.}
+\newcommand{\etal}{\textit{et al}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\st}{\textit{s.t.}}
+\newcommand{\vs}{\textit{vs.}}
+\newcommand{\iid}{\textit{i.i.d.}}
+
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Rank}{\mathrm{Rank}}
+\newcommand{\trans}{\mathrm{T}}
+\newcommand{\ud}{\,\mathrm{d}}
+\newcommand{\uH}{\,\mathrm{H}}
+
+\newcommand{\EE}{\,\mathbb{E}\,}
+\newcommand{\PP}{\,\mathbb{P}\,}
+\newcommand{\VV}{\,\mathbb{V}\,}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\Or}{\mathcal{O}}
+\newcommand{\Ir}{\mathcal{I}}
+\newcommand{\Br}{\mathcal{B}}
+\newcommand{\Cr}{\mathcal{C}}
+\newcommand{\Dr}{\mathcal{D}}
+\newcommand{\Sr}{\mathcal{S}}
+\newcommand{\Ur}{\mathcal{U}}
+\newcommand{\Vr}{\mathcal{V}}
+\newcommand{\Cf}{\mathfrak{C}}
+\newcommand{\Sf}{\mathfrak{S}}
+
+\newcommand{\va}{\mathbf{a}}
+\newcommand{\vA}{\mathbf{A}}
+\newcommand{\vb}{\mathbf{b}}
+\newcommand{\vB}{\mathbf{B}}
+\newcommand{\vC}{\mathbf{C}}
+\newcommand{\vd}{\mathbf{d}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\vh}{\mathbf{h}}
+\newcommand{\vi}{\mathbf{i}}
+\newcommand{\vI}{\mathbf{I}} % this is capital ai
+\newcommand{\vJ}{\mathbf{J}}
+\newcommand{\vK}{\mathbf{K}}
+\newcommand{\vk}{\mathbf{k}}
+\newcommand{\vl}{\mathbf{l}} % this is small el
+\newcommand{\vL}{\mathbf{L}}
+\newcommand{\vm}{\mathbf{m}} 
+\newcommand{\vn}{\mathbf{n}}
+\newcommand{\vp}{\mathbf{p}}
+\newcommand{\vP}{\mathbf{P}}
+\newcommand{\vq}{\mathbf{q}}
+\newcommand{\vr}{\mathbf{r}}
+\newcommand{\vu}{\mathbf{u}}
+\newcommand{\vR}{\mathbf{R}}
+\newcommand{\vS}{\mathbf{S}}
+\newcommand{\vT}{\mathbf{T}}
+\newcommand{\vt}{\mathbf{t}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vX}{\mathbf{X}}
+\newcommand{\vy}{\mathbf{y}}
+\newcommand{\vY}{\mathbf{Y}}
+\newcommand{\vone}{\boldsymbol{1}}
+\newcommand{\vzero}{\boldsymbol{0}}
+\newcommand{\balp}{\boldsymbol\alpha}
+\newcommand{\bbeta}{\boldsymbol\beta}
+\newcommand{\beps}{\boldsymbol\epsilon}
+\newcommand{\beeta}{\boldsymbol\eta}
+\newcommand{\bdel}{\boldsymbol\delta}
+\newcommand{\bmu}{\boldsymbol\mu}
+\newcommand{\bth}{\boldsymbol\theta}
+\newcommand{\bvth}{\boldsymbol\vartheta}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bLam}{\boldsymbol\Lambda}
+\newcommand{\bSigma}{\boldsymbol\Sigma}
+\newcommand{\bOmega}{\boldsymbol\Omega}
+\newcommand{\bpi}{\boldsymbol\pi}
+
+\begin{document}
+
+\title{\textsc{STAT 8004, Homework 1}}
+\author{Group \# ... (Replace this)\\
+            Members: ... (Replace this)}
+\date{Sep. 5, 2013}
+
+\maketitle
+
+This homework is due Thu., 2013/09/13, 12:00p.
+
+\textbf{Instructions:} Use this LaTeX file as a template for your
+homework solution. Generate a PDF file from it and submit the PDF file
+to blackboard. Please name your file as
+\centerline{\textbf{hw01-groupnumber.pdf}}
+For example, if you are in group 1, name your file as hw01-1.pdf.
+
+You can discuss the homework with each other in general terms, but
+you need to be able to write the solutions by yourself. You can also
+search online for solutions.
+
+\textbf{Problem 1.} (30 points, 10 for each sub-problem)
+
+Please use \LaTeX\ to input the following math equations.
+
+a). 
+(replace here)
+
+b). 
+(replace here)
+
+c). 
+(replace here)
+
+\vspace{3ex}
+
+\textbf{Problem 2.} (10 points) Let $X = 0,\ 0.01,\ \ldots,\ 2$, and let $Y =
+sin(X)$. Plot $Y$ \vs\ $X$ in R. The $x$-axis should correspond to
+the variable $X$ and the $y$-axis should correspond to the variable
+$Y$. Please put the figure here, and caption it as ``A figure to show
+relationship between $X$ and $Y$''. 
+
+(put the figure here)
+
+\end{document}
+
+

@@ -1,0 +1,167 @@
+% Created 2015-01-12 Mon 14:50
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{amsmath}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Homework 10 Redo}
+\author{Nooreen Dabish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1: US Crime Data}
+\label{sec-1}
+\subsection{Plot the scatterplot matrix between the variables.}
+\label{sec-1-1}
+\subsection{Construct a linear model to study the relationship between Crime(Y) and Prob, adjusting for the effect of the 13 char. variables.}
+\label{sec-1-2}
+\subsubsection{Description of the model:}
+\label{sec-1-2-1}
+
+
+The adjusted effect model is:
+$$\mathbf{Y} = \beta_0 + \mathbf{X_1}\beta_1+\ldots+\mathbf{X_{p-1}}\beta_{p-1}+\mathbf{X_p}\beta_p+\epsilon$$
+
+where:
+
+\begin{equation*}
+   \mathbf{Y} = 
+   \begin{pmatrix}
+    Y_1\\
+    Y_2\\
+    \vdots\\
+     Y_n
+  \end{pmatrix}\, ; \,
+  \mathbf{X} =
+  \begin{pmatrix}
+    1      & X_{1,1} & \cdots & X_{1,p-1}\\
+    1      & X_{2,1} & \cdots & X_{2,p-1}\\
+    \vdots & \vdots  & \ddots  & \vdots \\
+    1      & X_{n,1} & \cdots & X_{n,p-1}
+  \end{pmatrix} \, ; \,
+   \mathbf{\beta} = 
+   \begin{pmatrix}
+    \beta_0\\
+    \beta_1\\
+    \vdots\\
+     \beta_{p-1}
+  \end{pmatrix}\, ; \,
+   \mathbf{\epsilon} = 
+   \begin{pmatrix}
+    \epsilon_1\\
+    \epsilon_2\\
+    \vdots\\
+    \epsilon_n
+  \end{pmatrix}
+  \end{equation*}
+
+ There are \texttt{15} covariates in the
+ data set, so $p = 15$. There are \$ n =
+ =47=\$ observations in the data set.  
+Our model assumes that:
+\begin{itemize}
+\item $E(\mathbf{\epsilon}) = 0$
+\item $\mathrm{Var}(\mathbf{\epsilon}) = \sigma^2\mathbf{I}$
+\end{itemize}
+ 
+ *** E
+\subsubsection{Estimating the paramaters in the model:}
+\label{sec-1-2-2}
+
+ $$\hat{\mathbf{\beta}}_{LSE} =
+ (\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}\mathbf{X}^{\mathrm{T}}\mathbf{Y}$$
+
+ and
+
+ $$\hat{\sigma}^2_{LSE} =
+\frac{\mathbf{Y}^{\mathrm{T}}\mathbf{Y} -
+ \mathbf{Y}^{\mathrm{T}} \mathbf{P_X}\mathbf{Y}}{n - p}$$
+
+and
+
+$$\hat{\mathrm{Var}}(\hat{\mathbf{\beta}}_{LSE}) =
+\hat{\sigma}^2(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}$$
+
+where
+
+The projection matrix $\mathbf{P_X}$ is $\mathbf{X}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}\mathbf{X}^{\mathrm{T}}$.
+\subsubsection{Test for the effect of Prob, the probability of imprisonment on Crime, adjusting for the other variables.}
+\label{sec-1-2-3}
+
+ Prob is determined as the ratio of the number of commitments to the
+ number of offenses.
+\begin{itemize}
+
+\item Hypotheses:
+\label{sec-1-2-3-1}%
+\begin{itemize}
+\item \textbf{Null} $H_0:\, \beta 14
+\end{itemize}
+ = 0$ 
+\begin{itemize}
+\item \textbf{Alternate} $H_A:\, \beta 14 \neq 0$
+\end{itemize}
+
+\begin{align*} 
+   \hat{\mathbf{\beta}}_{LSE} &\sim N(\mathbf{\beta}, \sigma^2(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}) \\
+   q^\mathrm{T}\hat{\mathbf{\beta}}_{LSE} &\sim N(q^\mathrm{T}\mathbf{\beta},\sigma^2q^\mathrm{T}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q)   \\
+\frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE} - q^{\mathrm{T}}\mathbf{\beta}}{ \hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}} &\sim T_{n-p}
+\text{Under $H_0$:}\\
+\frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE}}{ \hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}} &\sim T_{n-p}
+\end{align*}
+ 
+
+\item Rejection criterion\\
+\label{sec-1-2-3-2}%
+$$\left\lvert \frac{q^{\mathrm{T}}\hat{\mathbf{\beta}}_{LSE}}{
+\hat{\sigma}\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}}
+\right\rvert > t_{n-p}^{-1} (1 - \alpha/2)$$ 
+
+
+
+
+\begin{center}
+\begin{tabular}{rrrrrrrrrrrrrr}
+ 15.1  &  1  &   9.1  &   5.8  &   5.6  &   0.51  &     95  &   33  &  30.1  &  0.108  &  4.1  &  3940  &  26.1  &  0.084602  \\
+ 14.3  &  0  &  11.3  &  10.3  &   9.5  &  0.583  &  101.2  &   13  &  10.2  &  0.096  &  3.6  &  5570  &  19.4  &  0.029599  \\
+ 14.2  &  1  &   8.9  &   4.5  &   4.4  &  0.533  &   96.9  &   18  &  21.9  &  0.094  &  3.3  &  3180  &    25  &  0.083401  \\
+ 13.6  &  0  &  12.1  &  14.9  &  14.1  &  0.577  &   99.4  &  157  &     8  &  0.102  &  3.9  &  6730  &  16.7  &  0.015801  \\
+ 14.1  &  0  &  12.1  &  10.9  &  10.1  &  0.591  &   98.5  &   18  &     3  &  0.091  &    2  &  5780  &  17.4  &  0.041399  \\
+ 12.1  &  0  &    11  &  11.8  &  11.5  &  0.547  &   96.4  &   25  &   4.4  &  0.084  &  2.9  &  6890  &  12.6  &  0.034201  \\
+\end{tabular}
+\end{center}
+
+
+
+
+
+\item The $(1-\alpha)$ Confidence Interval of $q^{\mathrm{T}}\beta$\\
+\label{sec-1-2-3-3}%
+$$q^{\mathrm{T}}\hat{\mathbf{\beta}} \pm
+t^{-1}_{n-p}(1-\alpha/2)s\sqrt{q^{\mathrm{T}}(\mathbf{X}^{\mathrm{T}}\mathbf{X})^{-1}q}$$
+
+
+\end{itemize} % ends low level
+
+\end{document}

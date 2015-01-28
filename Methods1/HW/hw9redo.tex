@@ -1,0 +1,206 @@
+% Created 2015-01-09 Fri 21:57
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Homework 9 Redo}
+\author{Nooreen Dabbish}
+\date{2015-01-08}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Problem 2 Cherry tree data}
+\label{sec-1}
+\subsection{Data:}
+\label{sec-1-1}
+
+
+\begin{table}[htb]
+\caption{Diameter, Height, and Volume of Cherry Trees.} 
+\begin{center}
+\begin{tabular}{rrr}
+ Diam  &  Height  &  Volume  \\
+  8.3  &      70  &    10.3  \\
+  8.6  &      65  &    10.3  \\
+  8.8  &      63  &    10.2  \\
+ 10.5  &      72  &    16.4  \\
+ 10.7  &      81  &    18.8  \\
+ 10.8  &      83  &    19.7  \\
+ 11.0  &      66  &    15.6  \\
+ 11.0  &      75  &    18.2  \\
+ 11.1  &      80  &    22.6  \\
+ 11.2  &      75  &    19.9  \\
+ 11.3  &      79  &    24.2  \\
+ 11.4  &      76  &    21.0  \\
+ 11.4  &      76  &    21.4  \\
+ 11.7  &      69  &    21.3  \\
+ 12.0  &      75  &    19.1  \\
+ 12.9  &      74  &    22.2  \\
+ 12.9  &      85  &    33.8  \\
+ 13.3  &      86  &    27.4  \\
+ 13.7  &      71  &    25.7  \\
+ 13.8  &      64  &    24.9  \\
+ 14.0  &      78  &    34.5  \\
+ 14.2  &      80  &    31.7  \\
+ 14.5  &      74  &    36.3  \\
+ 16.0  &      72  &    38.3  \\
+ 16.3  &      77  &    42.6  \\
+ 17.3  &      81  &    55.4  \\
+ 17.5  &      82  &    55.7  \\
+ 17.9  &      80  &    58.3  \\
+ 18.0  &      80  &    51.5  \\
+ 18.0  &      80  &    51.0  \\
+ 20.6  &      87  &    77.0  \\
+\end{tabular}
+\end{center}
+\end{table}
+\subsection{Build a linear regression model.}
+\label{sec-1-2}
+
+
+\begin{align*}
+\text{Let } \\
+V &= \mathrm{volume}\\
+D &= \mathrm{diameter}\\
+H &= \mathrm{height}\\
+\intertext{Assuming that the tree is cylindrical:}\\
+V &= ^1/_4 \pi D^2 H\\
+\ln V &= \beta_0 + \beta_1 \ln H + \beta_2 \ln D + \epsilon
+\end{align*}
+\subsection{Plot scatterplots of the data.}
+\label{sec-1-3}
+
+
+
+\begin{verbatim}
+trees <- read.table("../Data/cherry.txt", header=T)
+attach(trees)
+plot(trees)
+\end{verbatim}
+\subsection{Solve the linear regression ``by hand''}
+\label{sec-1-4}
+
+
+
+
+| % latex table generated in R 3.0.2 by xtable 1.7-4 package |
+| % Fri Jan  9 21:57:08 2015                                 |
+| \begin{bmatrix}{}                                          |
+| -6.63 \\                                                   |
+| 1.12 \\                                                    |
+| 1.98 \\                                                    |
+| \end{bmatrix}                                              |
+|                                                            |
+\section{Testing  Org-Babel-R}
+\label{sec-2}
+
+
+
+
+\begin{verbatim}
+cd ~ && du -sc * |grep -v total
+\end{verbatim}
+
+
+
+\begin{verbatim}
+pie(dirs[,1], labels = dirs[,2])
+\end{verbatim}
+
+\includegraphics[width=.9\linewidth]{../../images/babel/dirs.png}
+
+
+\begin{verbatim}
+x*x
+\end{verbatim}
+
+
+
+\begin{verbatim}
+ 36
+\end{verbatim}
+
+
+\begin{center}
+\begin{tabular}{rrrrrrrrrr}
+ 1  &  2  &  3  &  4  &   5  &   6  &   7  &   8  &   9  &  10  \\
+ 2  &  4  &  6  &  8  &  10  &  12  &  14  &  16  &  18  &  20  \\
+\end{tabular}
+\end{center}
+
+
+
+
+\begin{verbatim}
+(defun fibonacci (n)
+  (if (or (= n 0) (= n 1))
+      n
+    (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+
+(mapcar (lambda (row)
+          (mapcar #'fibonacci row)) fib-inputs)
+\end{verbatim}
+
+
+\begin{verbatim}
+runif(n=5, min=0, max=1)
+\end{verbatim}
+
+
+\begin{verbatim}
+colMeans(x)
+\end{verbatim}
+
+
+\begin{center}
+\begin{tabular}{l}
+ mean     \\
+\hline
+ \#ERROR  \\
+\end{tabular}
+\end{center}
+
+
+
+
+
+\begin{center}
+\begin{tabular}{rrrl}
+ x  &   y  &    z  &  sum      \\
+ 1  &  10  &  100  &  \#ERROR  \\
+ 2  &  20  &  200  &           \\
+ 3  &  30  &  300  &           \\
+\end{tabular}
+\end{center}
+
+
+
+
+\begin{verbatim}
+(setq debug-on-error t)
+\end{verbatim}
+\section{Scratchpad}
+\label{sec-3}
+
+\end{document}

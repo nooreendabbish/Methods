@@ -1,0 +1,227 @@
+#+TITLE: Homework 8 Redo
+#+AUTHOR: Nooreen Dabbish
+#+STARTUP: hideblocks
+#+PROPERTY: session *R*
+#+OPTIONS: toc:nil
+#+PROPERTY: session hw8session
+* Example of Org-Babel for R Literate Programming
+** R text output
+A simple summary. 
+
+
+
+#+header: :width 8 :height 8 :R-dev-args bg="olivedrab", fg="hotpink"
+#+begin_src R :file z.pdf :results graphics :tangle tangle
+  plot(matrix(rnorm(100), ncol=2), type="l")
+#+end_src
+
+#+RESULTS:
+[[file:z.pdf]]
+
+
+
+#+begin_src R :results output :exports both
+   x <- 1:10
+   library(ascii)
+   options(asciiType="org")
+   ascii(summary(table(1:4, 1:4)))
+#+end_src
+
+#+RESULTS:
+: - Number of cases in table: 4 
+: - Number of factors: 2 
+: - Test for independence of all factors:
+:   - Chisq = 12, df = 9, p-value = 0.2133
+:   - Chi-squared approximation may be incorrect
+
+** R graphics output
+Note we use the object =x= generated in previous code block, thanks to
+the header option =:session *R*=.  The output graphics file is
+=a.png=. 
+
+#+name: theimage
+#+begin_src R :results graphics :exports results :file a.pdf
+  y <- rnorm(10)
+  plot(x, y)
+#+end_src
+
+
+
+#+attr_latex: width=0.8\textwidth,placement=[p]
+#+label: fig:one
+#+caption: Scatter Plot with Regression Line
+#+RESULTS: theimage
+[[file:a.pdf]]
+
+Same plot with larger dimension:
+
+#+NAME: imagetwo
+#+begin_src R :results graphics :exports results :file b.pdf :tangle tangle
+  plot(x, y)
+#+end_src
+
+#+attr_latex: width=0.8\textwidth,placement=[p]
+#+label: fig:one
+#+caption: Scatter Plot with Regression Line
+#+RESULTS: imagetwo
+[[file:b.pdf]]
+
+
+* Problem 1
+$\mu_{0} = 3.35$ percent butterfat\\
+$\sigma = 0.15$
+
+** Find the rejection region at the significance level \alpha = 0.05
+\begin{align*}
+H_{0}&:\, \mu = \mu_{0} = 3.35\\
+H_{A}&:\, \mu \neq \mu_{0}\\
+\alpha &= \mathrm{P}(\mathrm{Accept } H_{0} \mid H_{0} \mathrm{ true})\\
+       &= \mathrm{P}(z_{\frac{\alpha}{2}} < Z < z_{1 - \frac{\alpha}{2}} \mid \mu=\mu_{0}})\\
+       &(SRC_R[:exports results raw]{round(qnorm(.025),2)}< Z < SRC_R[:exports results]{round(qnorm(.975),2)})
+\end{align*}  
+y
+(SRC_R[:exports results :results raw]{round(qnorm(.025),2)}< Z < SRC_R[:exports results :results raw]{round(qnorm(.975),2)})
+
+
+* Problem 2
+
+** Data for Yatch Race
+#+tblname: yatch
+| Yacht               | Year | Days | Hours | Minutes |   Time |
+| Rani                | 1945 |    6 |    14 |      22 |   9502 |
+| Morna               | 1946 |    5 |     2 |      53 |   7373 |
+| Morna               | 1947 |    5 |     3 |       3 |   7383 |
+| Morna               | 1948 |    4 |     5 |       1 |   6061 |
+| WaltzingMatilda     | 1949 |    5 |    10 |      33 |   7833 |
+| MargaretRintoul     | 1950 |    5 |     5 |      28 |   7528 |
+| MargaretRintoul     | 1951 |    4 |     2 |      29 |   5909 |
+| Nocturne            | 1952 |    6 |     2 |      34 |   8794 |
+| Solveig             | 1953 |    5 |     7 |      12 |   7632 |
+| KurrewaIV           | 1954 |    5 |     6 |       9 |   7569 |
+| Even                | 1955 |    4 |    18 |      13 |   6853 |
+| KurrewaIV           | 1956 |    4 |     4 |      31 |   6031 |
+| KurrewaIV           | 1957 |    3 |    18 |      30 |   5430 |
+| Solo                | 1958 |    5 |     2 |      32 |   7352 |
+| Solo                | 1959 |    4 |    13 |      33 |   6573 |
+| KurrewaIV           | 1960 |    4 |     8 |      11 |   6251 |
+| Astor               | 1961 |    4 |     4 |      42 |   6042 |
+| Ondine              | 1962 |    3 |     3 |      46 |   4546 |
+| Astor               | 1963 |    4 |    10 |      53 |   6413 |
+| Astor               | 1964 |    3 |    20 |       5 |   5525 |
+| Stormvogel          | 1965 |    3 |    20 |      30 |   3930 |
+| Fidelis             | 1966 |    4 |     8 |      39 |   6279 |
+| PenDuickIII         | 1967 |    4 |     4 |      10 |   6010 |
+| OndineII            | 1968 |    4 |    30 |      20 |   7580 |
+| Crusade             | 1969 |    3 |    15 |       7 |   5227 |
+| Buccaneer           | 1970 |    3 |    14 |       6 |   5166 |
+| Kialoa              | 1971 |    3 |    12 |      46 |   5086 |
+| AmericanEagle       | 1972 |    3 |     4 |      42 |   4602 |
+| Helsal              | 1973 |    3 |     1 |      32 |   4412 |
+| OndineIII           | 1974 |    3 |    13 |      51 |   5151 |
+| Kialoa              | 1975 |    2 |    14 |      36 |   3756 |
+| Ballyhoo            | 1976 |    3 |     7 |      59 |   4799 |
+| KialoaII            | 1977 |    3 |    10 |      14 |   4934 |
+| Apollo              | 1978 |    4 |     2 |      23 |   5903 |
+| BumblebeeIV         | 1979 |    3 |     1 |      45 |   4425 |
+| NewZealand          | 1980 |    2 |    18 |      45 |   4005 |
+| Vengeance           | 1981 |    3 |    22 |      30 |   5670 |
+| CondorofBermuda     | 1982 |    3 |     0 |      59 |   4379 |
+| Condor              | 1983 |    3 |     0 |      50 |   4370 |
+| NewZealand          | 1984 |    3 |    11 |      21 |   5001 |
+| Apollo              | 1985 |    3 |     4 |      32 |   4592 |
+| CondorofBermuda     | 1986 |    2 |    23 |      26 |   4286 |
+| Sovereign           | 1987 |    2 |    21 |      58 |   4198 |
+| Ragamuffin          | 1988 |    3 |    15 |      29 |   5249 |
+| Drumbeat            | 1989 |    3 |     6 |      21 |   4701 |
+| Ragamuffin          | 1990 |    2 |    21 |       5 |   4145 |
+| Brindabella         | 1991 |    3 |     1 |      14 |   4394 |
+| NewZealandEndeavour | 1992 |    2 |    19 |      19 |   4039 |
+| NinetySeven         | 1993 |    4 |     0 |      54 |   5814 |
+| Tasmania            | 1994 |    2 |    17 |      48 |   3948 |
+| Sayonara            | 1995 |    3 |     0 |      53 | 4373.6 |
+| MorningGlory        | 1996 |    2 |    14 |       7 | 3727.2 |
+| Brindabella         | 1997 |    2 |    23 |      37 | 4297.2 |
+
+** Plot Histograms of Time and Log(Time-3100)
+#+name: prob2a
+#+begin_src R :var ytbl=yatch :results graphics :exports results :file prob2a.pdf
+  ynames <- ytbl[1,]
+  ytbl <- data.frame(ytbl)[-1,]
+  colnames(ytbl) <- ynames
+  attach(ytbl)
+  par(mfrow=c(1,2))
+  hist(as.numeric(Time))
+  hist(log(as.numeric(Time)-3100))
+#+end_src
+
+#+CAPTION:    Histograms of Time and Log(Time - 3100)
+#+LABEL:      fig:prob2a
+#+ATTR_LaTeX: width=9cm
+#+RESULTS: prob2a
+[[file:prob2a.pdf]]
+
+
+
+** Plot a scatterplot log(Time - 3100) vs. Year
+#+name: prob2b
+#+begin_src R :results graphics :exports results :file prob2b.pdf
+  head(ytbl)
+  ytbl[,-1] <- sapply(ytbl[,-1], as.numeric)
+  par(mfrow=c(1,1))
+  Y <- log(ytbl[,"Time"]-3100)
+  Year <- as.numeric(Year)
+  beta1 = (sum((Year - mean(Year))*(Y - mean(Y))))/sum((Year - mean(Year))^2)
+  beta0 = mean(Y) - beta1 * mean(Year)
+  beta0
+  plot(Year, Y)
+  
+#+end_src
+
+#+RESULTS: prob2b
+[[file:prob2b.pdf]]
+
+*** Write out a linear model to study the relationship between log(Time - 3100) and Year. 
+Interpret your two parameters in the model.
+
+\begin{align*}
+\mathrm{Let} Y_i &= log(\mathrm{Time}_i -3100)\\
+\mathrm{Model:} Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\\
+\hat{\beta}_1 &= \frac{S_{xy}}{S_{xx}} \\
+              &=\frac{ \sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2}\\
+              &= SRC_R[:results raw]{round(beta1,2)}\\
+\hat{\beta}_{0} &= \bar(Y) - \hat{\beta}_{1}\bar{X}\\
+              &= SRC_R[:results raw]{round(beta0,2)}
+\end{align*}
+
+*Interpretation:* \beta_0 tells us the value of Y when/if X equals 0.
+So in year 0, we would expect $\log(\mathrm{Time} - 3100)$ to be
+approximately 66. Solving for Time gives SRC_R{round(exp(beta0)+3100,2)}.
+
+\beta_1 tells us the magnitude of increase in $\log(\mathrm{Time} -
+3100)$ for a 1 year increase in time. Since \beta_0 is negative, it
+is actually a decrease. Solving for Time gives SRC_R{round(exp(beta1)+3100,2)}
+
+* Problem 3 Matrix Practice
+
+#+name: prob3a
+#+begin_src R :exports results :results output latex
+    a <- matrix (c(3, 0, 2, -1, 2, 2, 1, 0 ,-1), 3, 3, byrow=T)
+    b <- matrix (c(1, -2, 0, -2, -1, 1), 3, 2, byrow=T)
+    c <- a %*% b
+    library(xtable)
+  ?xtable
+    x <- xtable(c,align=rep("",ncol(c)+1)) # We repeat empty string 6 times
+    print(x, floating=FALSE, tabular.environment="bmatrix", hline.after=NULL, 
+  include.rownames=FALSE, include.colnames=FALSE)
+#+end_src
+
+#+RESULTS: prob3a
+#+BEGIN_LaTeX
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Fri Jan  9 13:52:12 2015
+\begin{pmatrix}{}
+  1.00 & -4.00 \\ 
+  -3.00 & 0.00 \\ 
+  2.00 & -3.00 \\ 
+  \end{pmatrix}
+#+END_LaTeX

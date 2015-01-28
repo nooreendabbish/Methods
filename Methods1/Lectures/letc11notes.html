@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Lecture 11 Notes</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="Lecture 11 Notes"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2015-01-09T23:55-0500"/>
+<meta name="author" content="Nooreen Dabbish"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js">
+/**
+ *
+ * @source: http://orgmode.org/mathjax/MathJax.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ * Copyright (C) 2012-2013  MathJax
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/mathjax/MathJax.js.
+ *
+ */
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code below.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code below is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code below.
+*/
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Lecture 11 Notes</h1>
+
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Cheatsheet codesamples</h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> From orgmode tutorials&hellip;</h3>
+<div class="outline-text-3" id="text-1-1">
+
+
+<p>
+*Playing with Org-mode-R:
+</p>
+
+
+<pre class="src src-R">plot(matrix(rnorm(100), ncol=2), type=<span style="color: #8b2252;">"l"</span>)
+</pre>
+
+
+
+<pre class="src src-R"><span style="color: #008b8b;">library</span>(ascii)
+options(asciiType=<span style="color: #8b2252;">"org"</span>)
+ascii(summary(table(1:4, 1:4)))
+</pre>
+
+
+
+<pre class="src src-R"><span style="color: #008b8b;">library</span>(ascii)
+a <span style="color: #008b8b;">&lt;-</span> runif(100)
+c <span style="color: #008b8b;">&lt;-</span> <span style="color: #8b2252;">"Quantiles of 100 random numbers"</span>
+b <span style="color: #008b8b;">&lt;-</span> ascii(quantile(a),header=T,include.colnames=T,caption=c)
+print(b,type=<span style="color: #8b2252;">"org"</span>)
+rm(a,b,c)
+</pre>
+
+
+
+<pre class="src src-R"><span style="color: #008b8b;">library</span>(ggplot2)
+<span style="color: #b22222;"># </span><span style="color: #b22222;">create factors with value labels </span>
+mtcars$gear <span style="color: #008b8b;">&lt;-</span> factor(mtcars$gear,levels=c(3,4,5),
+        labels=c(<span style="color: #8b2252;">"3gears"</span>,<span style="color: #8b2252;">"4gears"</span>,<span style="color: #8b2252;">"5gears"</span>)) 
+mtcars$am <span style="color: #008b8b;">&lt;-</span> factor(mtcars$am,levels=c(0,1),
+        labels=c(<span style="color: #8b2252;">"Automatic"</span>,<span style="color: #8b2252;">"Manual"</span>)) 
+mtcars$cyl <span style="color: #008b8b;">&lt;-</span> factor(mtcars$cyl,levels=c(4,6,8),
+   labels=c(<span style="color: #8b2252;">"4cyl"</span>,<span style="color: #8b2252;">"6cyl"</span>,<span style="color: #8b2252;">"8cyl"</span>)) 
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Kernel density plots for mpg</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">grouped by number of gears (indicated by color)</span>
+qplot(mpg, data=mtcars, geom=<span style="color: #8b2252;">"density"</span>, fill=gear, alpha=I(.5), 
+   main=<span style="color: #8b2252;">"Distribution of Gas Milage"</span>, xlab=<span style="color: #8b2252;">"Miles Per Gallon"</span>, 
+   ylab=<span style="color: #8b2252;">"Density"</span>)
+
+<span style="color: #a020f0;">if</span>(<span style="color: #228b22;">FALSE</span>){<span style="color: #b22222;"># </span><span style="color: #b22222;">Scatterplot of mpg vs. hp for each combination of gears and cylinders</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">in each facet, transmittion type is represented by shape and color</span>
+qplot(hp, mpg, data=mtcars, shape=am, color=am, 
+   facets=gear~cyl, size=I(3),
+   xlab=<span style="color: #8b2252;">"Horsepower"</span>, ylab=<span style="color: #8b2252;">"Miles per Gallon"</span>) 
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Separate regressions of mpg on weight for each number of cylinders</span>
+qplot(wt, mpg, data=mtcars, geom=c(<span style="color: #8b2252;">"point"</span>, <span style="color: #8b2252;">"smooth"</span>), 
+   method=<span style="color: #8b2252;">"lm"</span>, formula=y~x, color=cyl, 
+   main=<span style="color: #8b2252;">"Regression of MPG on Weight"</span>, 
+   xlab=<span style="color: #8b2252;">"Weight"</span>, ylab=<span style="color: #8b2252;">"Miles per Gallon"</span>)
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Boxplots of mpg by number of gears </span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">observations (points) are overlayed and jittered</span>
+qplot(gear, mpg, data=mtcars, geom=c(<span style="color: #8b2252;">"boxplot"</span>, <span style="color: #8b2252;">"jitter"</span>), 
+   fill=gear, main=<span style="color: #8b2252;">"Mileage by Gear Number"</span>,
+   xlab=<span style="color: #8b2252;">""</span>, ylab=<span style="color: #8b2252;">"Miles per Gallon"</span>)}
+</pre>
+
+
+
+<pre class="src src-R"><span style="color: #008b8b;">library</span>(xtable)
+x <span style="color: #008b8b;">&lt;-</span> rnorm(100)
+y <span style="color: #008b8b;">&lt;-</span> x + rnorm(100)
+xtable(summary(lm(y ~ x)))
+</pre>
+
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> From Random</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<p>(-1.96&lt; Z &lt; 1.96)
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<colgroup><col class="left" /><col class="left" /><col class="left" />
+</colgroup>
+<thead>
+<tr><th scope="col" class="left">Y</th><th scope="col" class="left">X</th><th scope="col" class="left">Z</th></tr>
+</thead>
+<tbody>
+<tr><td class="left">1</td><td class="left">2</td><td class="left">3</td></tr>
+</tbody>
+</table>
+
+
+
+
+<p>
+<a href="example.pdf">example.pdf</a>
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> From a HW</h3>
+<div class="outline-text-3" id="text-1-3">
+
+
+
+
+</div>
+
+<div id="outline-container-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1"><span class="section-number-4">1.3.1</span> Plot Histograms of Time and Log(Time-3100)</h4>
+<div class="outline-text-4" id="text-1-3-1">
+
+
+
+<p>
+<a href="prob2a.pdf">prob2a.pdf</a>
+</p>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2"><span class="section-number-4">1.3.2</span> Plot a scatterplot log(Time - 3100) vs. Year</h4>
+<div class="outline-text-4" id="text-1-3-2">
+
+
+
+<p>
+<a href="prob2b.pdf">prob2b.pdf</a>
+</p>
+<ul>
+<li id="sec-1-3-2-1">Write out a linear model to study the relationship between log(Time - 3100) and Year.<br/>
+Interpret your two parameters in the model.
+
+
+
+\begin{align*}
+\mathrm{Let} Y_i &= log(\mathrm{Time}_i -3100)\\
+\mathrm{Model:} Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\\
+\hat{\beta}_1 &= \frac{S_{xy}}{S_{xx}} \\
+              &=\frac{ \sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2}\\
+              &= -0.03\\
+\hat{\beta}_{0} &= \bar(Y) - \hat{\beta}_{1}\bar{X}\\
+              &= 65.64
+\end{align*}
+
+<p>
+<b>Interpretation:</b> &beta;<sub>0</sub> tells us the value of Y when/if X equals 0.
+So in year 0, we would expect \(\log(\mathrm{Time} - 3100)\) to be
+approximately 66. Solving for Time gives <code>3.2226970275426e+28</code>.
+</p>
+<p>
+&beta;<sub>1</sub> tells us the magnitude of increase in \(\log(\mathrm{Time} -
+3100)\) for a 1 year increase in time. Since &beta;<sub>0</sub> is negative, it
+is actually a decrease. Solving for Time gives <code>3100.97</code>
+</p>
+
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Concepts to review</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Matrix</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<ul>
+<li><code>[&nbsp;]</code> Positive definite, relationship to full rank if any?
+</li>
+<li><code>[&nbsp;]</code> projection matrices
+</li>
+<li><code>[&nbsp;]</code> Orthogonal matrix
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Concepts</h3>
+<div class="outline-text-3" id="text-2-2">
+
+
+</div>
+
+<div id="outline-container-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> Multiple Linear Regression</h4>
+<div class="outline-text-4" id="text-2-2-1">
+
+<ul>
+<li><code>[X]</code> Show that \(\hat{\beta}\) is unbiased.
+</li>
+<li><code>[X]</code> Why is \(Var(\hat{\beta}) = \sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}\)
+    \(Var(\mathbf{A}\mathbf{X}) = \mathbf{A} Var(\mathbf{X})
+  \mathbf{A}^{T}\)
+    Why is the variance of <b>X&beta;</b> 0?
+</li>
+<li><code>[X]</code> Gauss Markov Theorem
+    BLUE
+</li>
+</ul>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> SLR/MLR connection</h4>
+<div class="outline-text-4" id="text-2-2-2">
+
+<ul>
+<li><code>[&nbsp;]</code> Reread
+</li>
+<li><code>[&nbsp;]</code> Do HW problem
+</li>
+</ul>
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2015-01-09T23:55-0500</p>
+<p class="author">Author: Nooreen Dabbish</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.3f with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,997 @@
+\documentclass[12pt]{article}
+
+\usepackage{amscd}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{amsmath,mathtools,amssymb,amsfonts, amsthm}
+\usepackage{caption}
+\usepackage{graphicx,graphics,psfrag,epsf,subcaption,epsfig}
+\usepackage{setspace,parskip}
+\usepackage{latexsym}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{framed,color}
+%\usepackage{xcolor}
+\usepackage{listings,bera,pstricks-add,caption,etoolbox}
+
+
+\definecolor{shadecolor}{rgb}{1,0.8,0.3}
+
+%\usepackage{showkeys}
+\newcommand{\blind}{0}
+\newcommand{\ignore}[1]i{}
+\newcommand{\blank}{\vspace{3ex}}
+%\usepackage{amsrefs}
+%\doublespacing
+%\fontsize{12pt}{\baselineskip}
+%\parskip=\baselineskip %\advance\parskip by 0pt plus 2pt
+\setlength\parskip{10pt}
+
+\lstset{  %
+    breaklines=true,%default : false 
+    breakindent=10pt,%default: 20pt 
+    linewidth=\linewidth,%default : \linewidth,
+    basicstyle=\ttfamily,% cannot take arguments
+    %keywordstyle=\color{Blue}\sffamily\bfseries,                                
+    %identifierstyle=\color{Black},                                      
+    %commentstyle=\color{OliveGreen}\itshape,                                    
+    stringstyle=\rmfamily,                                                      
+    showspaces=false,%default false
+    showstringspaces=false,%default: true
+    backgroundcolor=\color{shadecolor},
+    frame=single,%default frame=none 
+    rulecolor=\color{black},  
+    % the following must be defined to make hacking work.
+    framerule=0.4pt,%expand outward 
+    framesep=3pt,%expand outward
+    xleftmargin=3.4pt,%to make the frame fits in the text area. 
+    xrightmargin=3.4pt,%to make the frame fits in the text area. 
+    tabsize=2,%default :8 only influence the lstlisting and lstinline.
+    aboveskip=7pt plus 2pt, 
+    belowskip=-8pt plus 2pt
+} 
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+\newcommand{\thmref}[1]{Theorem~\ref{#1}}
+\newcommand{\propref}[1]{Proposition~\ref{#1}}
+%\newcommand{\corref}[1]{Corollary~\ref{#1}}
+\newcommand{\lemref}[1]{Lemma~\ref{#1}}
+\newcommand{\secref}[1]{\S\ref{#1}}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newcommand{\etc}{\textit{etc}.}
+\newcommand{\etal}{\textit{et al}}
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+\newcommand{\st}{\textit{s.t.}}
+\newcommand{\vs}{\textit{vs.}}
+\newcommand{\iid}{\textit{i.i.d.}}
+
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Rank}{\mathrm{Rank}}
+\newcommand{\trans}{\mathrm{T}}
+\newcommand{\ud}{\,\mathrm{d}}
+\newcommand{\uH}{\,\mathrm{H}}
+
+\newcommand{\EE}{\,\mathbb{E}\,}
+\newcommand{\PP}{\,\mathbb{P}\,}
+\newcommand{\VV}{\,\mathbb{V}\,}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\Or}{\mathcal{O}}
+\newcommand{\Ir}{\mathcal{I}}
+\newcommand{\Br}{\mathcal{B}}
+\newcommand{\Cr}{\mathcal{C}}
+\newcommand{\Dr}{\mathcal{D}}
+\newcommand{\Sr}{\mathcal{S}}
+\newcommand{\Ur}{\mathcal{U}}
+\newcommand{\Vr}{\mathcal{V}}
+\newcommand{\Cf}{\mathfrak{C}}
+\newcommand{\Sf}{\mathfrak{S}}
+
+\newcommand{\va}{\mathbf{a}}
+\newcommand{\vA}{\mathbf{A}}
+\newcommand{\vb}{\mathbf{b}}
+\newcommand{\vB}{\mathbf{B}}
+\newcommand{\vc}{\mathbf{c}}
+\newcommand{\vd}{\mathbf{d}}
+\newcommand{\ve}{\mathbf{e}}
+\newcommand{\vh}{\mathbf{h}}
+\newcommand{\vi}{\mathbf{i}}
+\newcommand{\vI}{\mathbf{I}} % this is capital ai
+\newcommand{\vJ}{\mathbf{J}}
+\newcommand{\vK}{\mathbf{K}}
+\newcommand{\vk}{\mathbf{k}}
+\newcommand{\vl}{\mathbf{l}} % this is small el
+\newcommand{\vL}{\mathbf{L}}
+\newcommand{\vm}{\mathbf{m}} 
+\newcommand{\vn}{\mathbf{n}}
+\newcommand{\vp}{\mathbf{p}}
+\newcommand{\vP}{\mathbf{P}}
+\newcommand{\vq}{\mathbf{q}}
+\newcommand{\vr}{\mathbf{r}}
+\newcommand{\vu}{\mathbf{u}}
+\newcommand{\vR}{\mathbf{R}}
+\newcommand{\vS}{\mathbf{S}}
+\newcommand{\vT}{\mathbf{T}}
+\newcommand{\vt}{\mathbf{t}}
+\newcommand{\vx}{\mathbf{x}}
+\newcommand{\vX}{\mathbf{X}}
+\newcommand{\vy}{\mathbf{y}}
+\newcommand{\vY}{\mathbf{Y}}
+\newcommand{\vone}{\boldsymbol{1}}
+\newcommand{\vzero}{\boldsymbol{0}}
+\newcommand{\balp}{\boldsymbol\alpha}
+\newcommand{\bbeta}{\boldsymbol\beta}
+\newcommand{\beps}{\boldsymbol\epsilon}
+\newcommand{\beeta}{\boldsymbol\eta}
+\newcommand{\bdel}{\boldsymbol\delta}
+\newcommand{\bmu}{\boldsymbol\mu}
+\newcommand{\bth}{\boldsymbol\theta}
+\newcommand{\bvth}{\boldsymbol\vartheta}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bLam}{\boldsymbol\Lambda}
+\newcommand{\bSigma}{\boldsymbol\Sigma}
+\newcommand{\bpi}{\boldsymbol\pi}
+
+\begin{document}
+
+\title{\textsc{FALL 2013\\
+Stat 8003: Statistical Methods I\\
+Lecture 1}}
+\author{Jichun Xie}
+\date{}
+
+\maketitle
+
+\section{Syllabus}
+
+\section{Examples of Statistics and Its Applications}
+
+\subsection{Investigation of Salary Discrimination}
+
+When a group of workers believes that their employer is illegally
+discriminating against the group, legal remedies are often
+available. Usually such groups are minorities consisting of a racial,
+ethnic, gender, or age group. The discrimination may deal with salary,
+benefits, working conditions, mandatory retirement, etc. The
+statistical evidence is often crucial to the development of the legal
+case.
+
+For example, if there is doubt about salary discrimination between
+male and female workers. What would statisticians do? Usually, they
+collect data from a subpoena by the legal team. The variables include
+salaries, years of experience, years of education, a measure of
+current job responsibility or complexity, a measure of the worker's
+current productivity, and, the last but not the least, gender. The
+statisticians consider linear regression model. First they put all the
+variables other than gender in the model, and then they put all the
+variables in the model. If the second model works much better for the
+data, or equivalently, gender is proven to be statistically
+significant, then this may be regarded as statistical evidence of
+salary discrimination between female and male employers. We will
+discuss in detail how to analyze data using linear regression model
+and how to judge whether a variable is statistically significant in
+this class.
+
+\subsection{Detection of Academic Fabrication}
+
+Five years ago, Duke University announced it had found the holy grail
+of cancer research. Dr.~Anil Potti in the Dr.~Joseph Nevins group
+discovered how to match a patient's tumor to the best chemotherapy
+drug. It was a breakthrough because every person's DNA is unique, so
+every tumor is different. A drug that kills a tumor in one person, for
+example, might not work in another. The research was published in the
+most prestigious medical journals. Duke is excited as well as the 112
+patients who signed up for the revolutionary therapy.  Doctors
+everywhere were eager to save lives with the new discovery. Later,
+however, two statisticians at MD Anderson Cancer Center began
+analyzing Dr.~Potti's data to verify his results. However, they
+noticed that something really odd that they couldn't explain. They
+then emailed their questions to Duke. Dr.~Potti admitted a few
+clerical errors, but he said that the new work confirmed his
+results. And Duke moved ahead. Dr.~Nevins and Dr.~Potti started a
+company to market the process. They made a fortune. Patients enrolled
+in the clinical trials are assigned with the treatment they would
+believe to be the best for them. However, at MD Anderson Cancer
+Center, the statisticians kept finding errors that they thought were
+alarming.  The statisticians then wrote a statistical paper analyzing
+the errors they found in the revolutionary treatment. And they
+submitted the paper to Annals of Applied Statistics. They also
+contacted Duke, and Duke invited some external review committee to
+analyze Dr.~Potti's investigation. After three months, the review
+committee concluded that Dr.~Potti was not wrong.  So the clinical
+trial went on. Things haven't been changed too much until later, the
+editor of a small independent newsletter, called ``The Cancer Lette'',
+got a tip from a confidential source: check Dr.~Potti's Rhodes
+scholarship. Dr.~Potti claimed he got the scholarship when he applied
+for federal grants. The trouble is that it wasn't true. Till then,
+Dr.~Nevins realized that maybe Dr.~Potti is faking the data. He then
+reviewed the original data and unfortunately his doubt has been
+confirmed. The data has been manipulated, and lots of the people, the
+patients, Duke including himself, have been deceived. It turned out
+that the therapy doesn't work at all. Their theory is wrong. But some
+of the patients have already died.  Well, there were statistical
+evidences that the data might be manipulated when the clinical trials
+just started. However, the evidence was neglected or ignored. If these
+evidences could be treated with enough attention, maybe the fraud
+could be discovered earlier and fewer patients would die.
+
+
+\subsection{Statistical Tests for Drugs}
+
+\textbf{Abuse of Diethylstilbestrol (DES)}
+
+Wikipedia: \url{http://en.wikipedia.org/wiki/Diethylstilbestrol}
+
+Diethylstilbestrol (DES, former BAN stilboestrol) is a synthetic
+nonsteroidal estrogen that was first synthesized in 1938. It is also
+classified as an endocrine disruptor. Human exposure to DES occurred
+through diverse sources, such as dietary ingestion from supplemented
+cattle feed and medical treatment for certain conditions, including
+breast and prostate cancers. From about 1940 to 1970, DES was given to
+pregnant women in the mistaken belief it would reduce the risk of
+pregnancy complications and losses. In 1971, DES was shown to cause a
+rare vaginal tumor in girls and women who had been exposed to this
+drug in utero. The United States Food and Drug Administration
+subsequently withdrew DES from use in pregnant women. Follow-up
+studies have indicated DES also has the potential to cause a variety
+of significant adverse medical complications during the lifetimes of
+those exposed. The United States National Cancer Institute
+recommends women born to mothers who took DES undergo special
+medical exams on a regular basis to screen for complications as a
+result of the drug. Individuals who were exposed to DES during their
+mothers' pregnancies are commonly referred to as "DES daughters" and
+"DES sons".
+
+
+\subsection{Statistical Learning and Data Mining}
+
+\textbf{Handwritten digit recognition}
+
+ \begin{itemize}
+  \item Goal: identify single digits 0 -- 9 based on images.
+  \item Raw data: images that are scaled segments from five digit ZIP codes.
+\begin{itemize}
+\item 16 $\times$ 16 eight-bit grayscale maps 
+\item Pixel intensities range from 0
+  (black) to 255 (white).
+\end{itemize}
+\item Input data: a 256 dimension vector, or feature vectors with lower dimensions.
+  \end{itemize}
+
+      \begin{figure}[h]
+    \centering
+     \includegraphics[width=0.8\textwidth, natwidth=343, natheight=224]{hand.pdf}
+    \caption{Elements of Statistical Learning
+        \textcopyright   Hastie, Tibshirani \& Friendman 2001
+        \hspace{3ex}  Chapter 1}
+  \end{figure}
+
+\textbf{Foreground motion detection}
+ \begin{itemize}
+\item Goal: extract moving objects from a video sequence.
+\item Raw data: grayscale image sequence represented by matrices of size $m
+  \times n\times t$, or color image sequence represented by 3 such arrays.
+\item Videos: 
+  \begin{itemize}
+  \item \url{http://www.youtube.com/watch?v=7pE-4eSMUs4}
+  \item \url{http://www.youtube.com/watch?v=F6rxhlkgJkk}
+  \item \url{http://www.youtube.com/watch?v=yplmDhOgNM8}
+  \end{itemize}
+  \end{itemize}
+
+
+\section{Introduction to LaTeX}
+
+References: 
+\begin{itemize}
+\item LaTeX-project: \url{http://www.latex-project.org/}
+\item LaTeX wikibook: \url{http://en.wikibooks.org/wiki/LaTeX}
+\end{itemize}
+
+\subsection{Basics}
+
+\subsubsection{Global Structures}
+\begin{lstlisting}
+\documentclass{...}  
+\usepackage{...}
+
+\begin{document}
+...
+\end{document}
+
+\end{lstlisting}
+
+
+\begin{itemize}
+\item The preamble: the area between {\verb \documentclass{...} } and 
+  {\verb \begin{document} }.
+\item document text: the area between   {\verb \begin{document} } and
+    {\verb \end{doucment} }.
+\end{itemize}
+
+\subsubsection{Text and Paragraph Formatting}
+
+\begin{lstlisting}
+  \emph{emphasis}, \textbf{bold}, \textit{italic}
+\end{lstlisting}
+  \emph{emphasis}, \textbf{bold}, \textit{italic}
+
+\blank
+
+\begin{lstlisting}
+ \begin{verbatim}
+  The verbatim environment
+    simply reproduces every
+   character you input,
+  including all  s p a c e s!
+ \end{verbatim}
+\end{lstlisting}
+\begin{verbatim}
+The verbatim environment
+  simply reproduces every
+ character you input,
+including all  s p a c e s!
+\end{verbatim}  
+
+\blank
+
+
+\begin{lstlisting}
+  \begin{doublespace}
+    This paragraph has \\ double \\ line spacing.
+  \end{doublespace}
+\end{lstlisting}
+  \begin{doublespace}
+    This paragraph has \\ double \\ line spacing.
+  \end{doublespace}
+
+\blank
+
+\begin{lstlisting}
+  \begin{spacing}{2.5}
+    This paragraph has \\ huge gaps \\ between lines.
+  \end{spacing}
+\end{lstlisting}
+  \begin{spacing}{2.5}
+    This paragraph has \\ huge gaps \\ between lines.
+  \end{spacing}
+
+\subsubsection{Labels and Cross Referencing}
+
+Another good point of LaTeX is that you can easily reference almost
+anything that is numbered (sections, figures, formulas), and LaTeX
+will take care of numbering, updating it whenever necessary. The
+commands to be used do not depend on what you are referencing, and
+they are:
+
+\begin{lstlisting}
+  \label{marker}
+\end{lstlisting}
+You give the object you want to reference a marker, you can see it
+like a name.
+
+\begin{lstlisting}
+  \ref{marker}
+\end{lstlisting}
+You can reference the object you have marked before. This prints the
+number that was assigned to the object.
+
+\begin{lstlisting}
+  \pageref{marker}
+\end{lstlisting}
+It will print the number of the page where the object is.
+
+\subsection{Mathematics}
+
+One of the greatest motivating forces for Donald Knuth when he began
+developing the original TeX system was to create something that
+allowed simple construction of mathematical formulas, whilst looking
+professional when printed. The fact that he succeeded was most
+probably why TeX (and later on, LaTeX) became so popular within the
+scientific community. Typesetting mathematics is one of LaTeX's
+greatest strengths. It is also a large topic due to the existence of
+so much mathematical notation.
+
+If your document requires only a few simple mathematical formulas,
+plain LaTeX has most of the tools that you will need. If you are
+writing a scientific document that contains numerous complicated
+formulas, you might need the \texttt{amsmath} package and the
+\texttt{mathtools} packages. Include
+\begin{lstlisting}
+  \usepackage{amsmath,mathtools}
+\end{lstlisting}
+in the preamble.
+
+\subsubsection{Mathematics Environments}
+
+Text: 
+\begin{lstlisting}
+x in the math text mode: $x$, \(x\)
+\end{lstlisting}
+x in the math text mode: $x$, \(x\)
+
+Displayed:
+\begin{lstlisting}
+There are Three ways to display a math equation:
+$$ x + y = z $$
+\[x + y = z\]
+\begin{equation*}
+  x + y = z
+\end{equation*}
+\end{lstlisting}
+There are Three ways to display a math equation:
+$$ x + y = z $$
+\[x + y = z\]
+\begin{equation*}
+  x + y = z
+\end{equation*}
+
+Displayed with equation number:
+\begin{lstlisting}
+\begin{equation}\label{eq:xyz}
+  x + y = z
+\end{equation}
+\end{lstlisting}
+\begin{equation}\label{eq:xyz}
+  x + y = z
+\end{equation}
+\begin{lstlisting}
+Equation (\ref{eq:xyz}) on page \pageref{eq:xyz} describes a relationship between $x$, $y$ and $z$.
+\end{lstlisting}
+Equation (\ref{eq:xyz}) on page \pageref{eq:xyz} describes a relationship between $x$, $y$ and
+$z$.
+
+Multi-equation display:
+\begin{lstlisting}
+\begin{align*}
+    x + y +z & =  6\\
+    x - y & = 2\\
+    x - z & = 4
+\end{align*}
+\end{lstlisting}
+  \begin{align*}
+    x + y +z & =  6\\
+    x - y & = 2\\
+    x - z & = 4
+  \end{align*}
+
+
+
+\subsubsection{Symbols}
+
+Mathematics has many symbols! One of the most difficult aspects of learning LaTeX is remembering how to produce symbols. There are of course a set of symbols that can be accessed directly from the keyboard:
+\begin{lstlisting}
+ + - = ! / ( ) [ ] < > | ' :
+\end{lstlisting}
+
+Beyond those listed above, distinct commands must be issued in order
+to display the desired symbols. There are a great deal of examples
+such as Greek letters, set and relations symbols, arrows, binary
+operators, etc. For example,
+\begin{lstlisting}
+   \forall x \in X, \quad \exists y \leq \epsilon
+\end{lstlisting}
+\[\forall x \in X, \quad \exists y \leq \epsilon\]
+
+Fortunately, there's a tool that can greatly simplify the search for
+the command for a specific symbol. Search \texttt{Detexify} and you
+will find a website that allows you search for the command by inputing
+handwriting symbols. There are also apps for iPhone and Android
+phones. Some softwares such as WinEdt incorporates a list of basic
+symbols in the toolbox. Another option would be to look in the ``The
+Comprehensive LaTeX Symbol List" available at:
+
+\centerline{\url{http://www.ctan.org/tex-archive/info/symbols/comprehensive}}
+
+Now we introduce some basic symbols that are commonly used.
+
+\textbf{Greek letters.} Greek letters are commonly used in
+mathematics, and they are very easy to type in \emph{math mode}. You
+just have to type the name of the letter after a backslash: if the
+first letter is lowercase, you will get a lowercase Greek letter, if
+the first letter is uppercase (and only the first letter), then you
+will get an uppercase letter.
+\begin{lstlisting}
+  \alpha, \beta, \gamma, \Gamma, \pi, \Pi, \phi, \varphi, \Phi
+\end{lstlisting}
+  \[\alpha, \beta, \gamma, \Gamma,
+  \pi, \Pi, \phi, \varphi, \Phi\]
+
+\textbf{Operators.} An operator is a function that is written as a
+  word: e.g. trigonometric functions (sin, cos, tan), logarithms and
+  exponentials (log, exp). LaTeX has many of these defined as
+  commands:
+  \begin{lstlisting}
+    \cos (2\theta) = \cos^2 \theta - \sin^2 \theta
+  \end{lstlisting}
+\[\cos (2\theta) = \cos^2 \theta - \sin^2 \theta\]
+For certain operators such as limits, the subscript is placed
+underneath the operator:
+\begin{lstlisting}
+  \lim_{x \to \infty} \exp(-x) = 0
+\end{lstlisting}
+  \[\lim_{x \to \infty} \exp(-x) = 0\]
+For the modular operator there are two commands: {\verb \bmod } and
+{\verb \pmod }
+\begin{lstlisting}
+  a \bmod b, \quad x \equiv a \pmod b
+\end{lstlisting}
+  \[a \bmod b, \quad x \equiv a \pmod b\]
+
+  \textbf{Powers and indices.} Powers and indices are equivalent to
+  superscripts and subscripts in normal text mode. The caret 
+({\verb ^ }) character is used to raise something, and the underscore 
+({\verb _ }) is for lowering. If more than one expression is raised or
+ lowered, they should be grouped using curly braces (\{ and \}).
+  \begin{lstlisting}
+    k_{n+1} = n^2 + k_n^2 - k_{n-1}
+  \end{lstlisting}
+  \[k_{n+1} = n^2 + k_n^2 - k_{n-1}\] An underscore ({\verb _ }) can
+  be used with a vertical bar ({\verb | }) to denote evaluation using
+  subscript notation in mathematics:
+  \begin{lstlisting}
+  f(n) = n^5 + 4n^2 + 2 |_{n=17}
+\end{lstlisting}
+  \[f(n) = n^5 + 4n^2 + 2 |_{n=17}\]
+
+  \textbf{Fractions and binomials.} A fraction is created using the
+  {\verb \frac{numerator}{denominator} } command. (For those who need
+  their memories refreshed, that's the top and bottom
+  respectively!). Likewise, the binomial coefficient (aka the Choose
+  function) may be written using the {\verb \binom } command:
+  \begin{lstlisting}
+  \frac{n!}{k!(n-k)!} = \binom{n}{k}
+  \end{lstlisting}
+  \[\frac{n!}{k!(n-k)!} = \binom{n}{k}\]
+  For relatively simple fractions, it may be more aesthetically
+  pleasing to use powers and indices: 
+  \begin{lstlisting}
+  ^3/_7, \quad 3/7
+  \end{lstlisting}
+\[  ^3/_7, \quad 3/7\]
+
+\textbf{Roots.} The {\verb \sqrt } command creates a square root
+surrounding an expression. It accepts an optional argument specified
+in square brackets ([ and ]) to change magnitude:
+\begin{lstlisting}
+  \sqrt{\frac{a}{b}}, \quad \sqrt[n]{1+x+x^2+x^3+\ldots}
+\end{lstlisting}
+\[  \sqrt{\frac{a}{b}}, \quad \sqrt[n]{1+x+x^2+x^3+\ldots}\]
+
+\textbf{Sums and integrals.} The {\verb \sum } and {\verb \int }
+commands insert the sum and integral symbols respectively, with limits
+specified using the caret ({\verb ^ }) and underscore 
+({\verb _ }). The typical notation for sums is:
+\begin{lstlisting}
+  \sum_{i=1}^{10} t_i
+\end{lstlisting}
+\[\sum_{i=1}^{10} t_i\] 
+The limits for the integrals follow the
+same notation. It's also important to represent the integration
+variables with an upright d, which in math mode is obtained through
+the {\verb \mathrm{} } command, and with a small space separating it from the
+integrand, which is attained with the {\verb \, } command.
+\begin{lstlisting}
+  \int_0^\infty \mathrm{e}^{-x}\,\mathrm{d}x
+\end{lstlisting}
+\[\int_0^\infty
+\mathrm{e}^{-x}\,\mathrm{d}x\] 
+
+\textbf{Automatic sizing.} Very often mathematical features will
+differ in size, in which case the delimiters surrounding the
+expression should vary accordingly. This can be done automatically
+using the {\verb \left,\right }, and {\verb \middle } commands. Any
+of the previous delimiters may be used in combination with these:
+\begin{lstlisting}
+  \left(\frac{x^2}{y^3}\right)
+\end{lstlisting}
+\[ \left(\frac{x^2}{y^3}\right)\]
+\begin{lstlisting}
+  P\left(A=2\middle|\frac{A^2}{B}>4\right)
+\end{lstlisting}
+\[  P\left(A=2\middle|\frac{A^2}{B}>4\right) \]
+Curly braces are defined differently by using {\verb \left\{ } and
+  {\verb \right\} },
+\begin{lstlisting}
+  \left\{\frac{x^2}{y^3}\right\}
+\end{lstlisting}
+\[ \left\{\frac{x^2}{y^3}\right\}\] 
+If a delimiter on only one side of
+an expression is required, then an invisible delimiter on the other
+side may be denoted using a period ({\verb . }).
+\begin{lstlisting}
+  \left.\frac{x^3}{3}\right|_0^1
+\end{lstlisting}
+\[\left.\frac{x^3}{3}\right|_0^1\]
+
+\textbf{Matrices and arrays.}
+A basic matrix may be created using the matrix environment[3]: in
+common with other table-like structures, entries are specified by row,
+with columns separated using an ampersand ({\verb & }) and a new rows
+separated with a double backslash ({\verb \\ })
+\begin{lstlisting}
+  \begin{matrix}
+    a & b & c \\
+    d & e & f \\
+    g & h & i
+  \end{matrix}
+\end{lstlisting}
+\[
+\begin{matrix}
+  a & b & c \\
+  d & e & f \\
+  g & h & i
+\end{matrix}\] When writing down arbitrary sized matrices, it is
+common to use horizontal, vertical and diagonal triplets of dots
+(known as ellipses) to fill in certain columns and rows. These can be
+specified using the {\verb \cdots,\vdots } and {\verb \ddots }
+respectively:
+\begin{lstlisting}
+  A_{m,n} =
+  \begin{pmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+    a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+    \vdots  & \vdots  & \ddots & \vdots  \\
+    a_{m,1} & a_{m,2} & \cdots & a_{m,n}
+  \end{pmatrix}
+\end{lstlisting}
+\[A_{m,n} =
+ \begin{pmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+  \vdots  & \vdots  & \ddots & \vdots  \\
+  a_{m,1} & a_{m,2} & \cdots & a_{m,n}
+ \end{pmatrix}\]
+
+\subsection{Tables}
+
+\subsubsection{The Tabular Environment}
+The tabular environment can be used to typeset tables with optional
+horizontal and vertical lines. LaTeX determines the width of the
+columns automatically.  The first line of the environment has the
+form:
+\begin{lstlisting}
+  \begin{tabular}[pos]{table spec}
+\end{lstlisting}
+The \emph{table spec}  argument tells LaTeX the alignment to be used in 
+each column and the vertical lines to insert.
+The number of columns does not need to be specified as it is inferred
+by looking at the number of arguments provided. It is also possible to add
+vertical lines between the columns here. The following symbols are
+available to describe the table columns (some of them require that the 
+package array has been loaded):
+
+\begin{tabular}[h]{|l|p{14cm}|}
+  \hline
+  l &	left-justified column\\
+  c&	centered column\\
+  r&	right-justified column\\
+  p{'width'}&   paragraph column with text vertically aligned at the
+  top\\
+  m{'width'}& paragraph column with text vertically aligned in the middle (requires array package)\\
+  b{'width'}&	paragraph column with text vertically aligned at the bottom (requires array package)\\
+  |	&vertical line\\
+  ||	&double vertical line\\
+  \hline
+\end{tabular}
+
+The optional parameter pos can be used to specify the vertical
+position of the table relative to the baseline of the surrounding
+text. In most cases, you will not need this option. It becomes
+relevant only if your table is not in a paragraph of its own. You can
+use the following letters:
+
+\begin{tabular}[h]{|l|l|}
+\hline
+b &	bottom \\
+c & 	center (default)\\
+p	& top\\
+\hline
+\end{tabular}
+
+In the first line you have pointed out how many columns you want, 
+their alignment and the vertical lines to separate them. Once in the 
+environment, you have to introduce the text you want, separating 
+between cells and introducing new lines. The commands you have 
+to use are the following:
+
+\begin{tabular}[h]{|l|p{14cm}|}
+\hline
+{\verb & } &	column separator\\
+{\verb \\ } &  start new row (additional space may be specified after {\verb \\ }  using square brackets, such as {\verb \\[6pt] })\\
+{\verb \hline } &	horizontal line\\
+\hline
+\end{tabular}
+
+\subsubsection{Basic Examples}
+
+This example shows how to create a simple table in LaTeX. 
+It is a three-by-three table, but without any lines.
+\begin{lstlisting}
+\begin{tabular}{ l c r }
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+\end{tabular}
+\end{lstlisting}
+
+\begin{tabular}{ l c r }
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+\end{tabular}
+
+Expanding upon that by including some vertical lines:
+\begin{lstlisting}
+\begin{tabular}{ l | c || r }
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+\end{tabular}
+\end{lstlisting}
+
+\begin{tabular}{ l | c || r }
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+\end{tabular}
+
+To add horizontal lines to the very top and bottom edges of the table:
+\begin{lstlisting}
+\begin{tabular}{ l | c || r }
+  \hline                        
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+  \hline  
+\end{tabular}
+\end{lstlisting}
+
+\begin{tabular}{ l | c || r }
+  \hline                        
+  1 & 2 & 3 \\
+  4 & 5 & 6 \\
+  7 & 8 & 9 \\
+  \hline  
+\end{tabular}
+
+And finally, to add lines between all rows, as well as 
+centering (notice the use of the center environment --  of course, 
+the result of this is not obvious from the preview on this web page):
+\begin{lstlisting}
+\begin{center}
+  \begin{tabular}{ l | c || r }
+    \hline
+    1 & 2 & 3 \\ \hline
+    4 & 5 & 6 \\ \hline
+    7 & 8 & 9 \\
+    \hline
+  \end{tabular}
+\end{center}
+\end{lstlisting}
+
+\begin{center}
+  \begin{tabular}{ l | c || r }
+    \hline
+    1 & 2 & 3 \\ \hline
+    4 & 5 & 6 \\ \hline
+    7 & 8 & 9 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsubsection{Floating with Table}
+To tell LaTeX we want to use our table as a float, we need to 
+place a tabular environment in a table environment, which is able 
+to float and add a label and caption.
+
+The table environment is a type of floats just as figure is. In fact, 
+they bear a lot of similarities (positionning, captions, \etc). 
+\begin{lstlisting}
+\begin{table}[position specifier]
+  \centering
+  \begin{tabular}{table spec}
+    ... your table ...
+  \end{tabular}
+  \caption{This table shows some data}
+  \label{tab:myfirsttable}
+\end{table}
+\end{lstlisting}
+
+You can set the optional parameter position specifier to define
+ the position of the table, where it should be placed. The following 
+characters are all possible placements. Using sequences of it 
+define your "wishlist" to LaTeX.
+
+\begin{tabular}[h]{|l|p{15cm}|}
+\hline
+h &	where the table is declared (here)\\
+t &	at the top of the page\\
+b & at the bottom of the page\\
+p &	on a dedicated page of floats\\
+! &	override the default float restrictions. E.g., the maximum size
+allowed of a ``b'' float is normally quite small; if you want a large one,
+you need this ! parameter as well.\\
+\hline
+\end{tabular}
+
+Table \ref{tab:myfirsttable} is an example of floating table.
+\begin{lstlisting}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ l | c || r }
+    \hline
+    1 & 2 & 3 \\ \hline
+    4 & 5 & 6 \\ \hline
+    7 & 8 & 9 \\
+    \hline
+  \end{tabular}
+  \caption{This table shows some data}
+  \label{tab:myfirsttable}
+\end{table}
+\end{lstlisting}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ l | c || r }
+    \hline
+    1 & 2 & 3 \\ \hline
+    4 & 5 & 6 \\ \hline
+    7 & 8 & 9 \\
+    \hline
+  \end{tabular}
+  \caption{This table shows some data}
+  \label{tab:myfirsttable}
+\end{table}
+
+\subsection{Floats, Figures and Captions}
+
+\subsubsection{Figures}
+
+To create a figure that floats, use the figure environment.
+\begin{lstlisting}
+\begin{figure}[placement specifier]
+... figure contents ...
+\end{figure}
+\end{lstlisting}
+
+The placement specifier parameter exists as a compromise, and its
+purpose is to give the author a greater degree of control over where 
+certain floats are placed. Specifier Permission
+
+\begin{tabular}[h]{|l|p{15cm}|}
+\hline
+h &	Place the float here, i.e., approximately at the same point it
+occurs in the source text (however, not exactly at the spot)\\
+t	& Position at the top of the page.\\
+b &	Position at the bottom of the page.\\
+p &	Put on a special page for floats only.\\
+!	& Override internal parameters LaTeX uses for determining "good" float positions.\\
+H	& Places the float at precisely the location in the LaTeX code.
+Requires the float package, \eg, {\verb \usepackage{float} }. This
+is somewhat equivalent to {\verb h! }.\\
+\hline
+\end{tabular}
+
+\subsubsection{Captions}
+
+It is always good practice to add a caption to any figure or table.
+ Fortunately, this is very simple in LaTeX. All you need to do is use 
+the {\verb \caption{''text''} } command within the float environment. Because 
+of how LaTeX deals sensibly with logical structure, it will
+automatically keep track of the numbering of figures, so you do not
+need to include this within the caption text.
+
+The location of the caption is traditionally underneath the float. 
+However, it is up to you to therefore insert the caption command after 
+the actual contents of the float (but still within the
+environment). If you place it before, then the caption will appear
+above the float. 
+
+Figure \ref{fig:dog} and Figure \ref{fig:reversedog} are two examples.
+\begin{lstlisting}
+\begin{figure}[h!]
+  \caption{A picture of a dog.}
+  \centering
+    \includegraphics[width=0.5\textwidth,
+     natwidth=1024,natheight=768]{dog.jpg}\label{fig:dog}
+\end{figure}
+\end{lstlisting}
+
+\begin{figure}[h!]
+  \caption{A picture of a dog.}
+  \centering
+    \includegraphics[width=0.5\textwidth,
+       natwidth=1024,natheight=768]{dog.jpg}\label{fig:dog}
+\end{figure}
+
+\begin{lstlisting}
+\begin{figure}[h!]
+  \centering
+    \reflectbox{ \includegraphics[width=0.5\textwidth,natwidth=1920,natheight=1080]{dog.jpg} }
+  \caption{A picture of the same dog
+           looking the other way!}
+\end{figure}
+\end{lstlisting}
+
+\begin{figure}[h!]
+  \centering
+    \reflectbox{ \includegraphics[width=0.5\textwidth,
+        natwidth=1920,natheight=1080]{dog.jpg} }
+  \caption{A picture of the same dog
+           looking the other way!}\label{fig:reversedog}
+\end{figure}
+
+\subsubsection{Multiple Figures in One Float}
+
+A useful extension is the {\verb subcaption } package, which uses
+subfloats within a single float. This gives the author the ability to
+have subfigures within figures,or subtables within table
+floats. Subfloats have their own caption, and an optional global
+caption. An example will best illustrate the usage of this package:
+
+\begin{lstlisting}
+\begin{figure}[t]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth,natwidth=1024,
+                     natheight=768]{dog.jpg}
+                \caption{A dog}
+                \label{fig:dog2}
+        \end{subfigure}%
+         \qquad %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth,natwidth=1000,
+                     natheight=781]{cat.jpg}
+                \caption{A cat}
+                \label{fig:cat}
+        \end{subfigure}
+        \caption{Pictures of animals}\label{fig:animals}
+\end{figure}
+\end{lstlisting}
+
+\begin{figure}[t]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth,natwidth=1024,
+                     natheight=768]{dog.jpg}
+                \caption{A dog}
+                \label{fig:dog2}
+        \end{subfigure}%
+         \qquad %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.45\textwidth}
+                \centering
+                \includegraphics[width=\textwidth,natwidth=1000,
+                     natheight=781]{cat.jpg}
+                \caption{A cat}
+                \label{fig:cat}
+        \end{subfigure}
+        \caption{Pictures of animals}\label{fig:animals}
+\end{figure}
+
+
+
+
+
+\end{document}
+
+

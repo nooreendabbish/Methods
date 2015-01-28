@@ -1,0 +1,4 @@
+
+plot(matrix(rnorm(100), ncol=2), type="l")
+
+plot(x, y)

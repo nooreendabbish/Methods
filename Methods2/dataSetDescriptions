@@ -1,0 +1,297 @@
+wolfriver
+Attached Files:
+File wolfriver.txt (557 B)
+Wolf River Pollution
+
+
+
+Description
+
+Jaffe, Parker and Wilson have investigated the concentration of several hydrophobic organic substances (such as hexachlorobenzene, chlordane, heptachlor, aldrin, dieldrin, endrin) in the Wolf River in Tennessee. Measurements were taken downstream of an abandoned dump site that had previously been used by the pesticide industry to dispose of its waste products.
+
+It was expected that these hydrophic substances might have a nonhomogeneous vertical distribution in the river because of differences in density between these compounds and water and because of the adsorption of these compounds on sediments, which could lead to higher concentrations on the bottom. It is important to check this hypothesis because the standard procedure of sampling at six-tenths of the depth could miss the bulk of these pollutants if the distribution were not uniform.
+
+Grab samples were taken with a La Motte-Vandorn water sampler of 1 litre capacity at various depths of the river. This sampler consists of a horizontal plexiglas tube of 7 centimetres diameter and a plunger of each side which shuts the sampler when the sampler is at the desired depth. Ten surface, 10 mid-depth and 10 bottom samples were collected, all within a relatively short period. Until they were analysed the samples were stored in 1-quart mason jars at low temperature.
+
+In the analysis of the samples, a 250-millilitre water sample was taken from each mason jar and was extracted with 1 millilitre of either hexanes or petroleum ether. A sample of the extract was then injected into a gas chromatograph and the output was compared against standards of known concentrations. The test procedure was repeated two more times, injecting different samples of the extract in the gas chromatograph. The average aldrin and hexachlorobenzene (HCB) concentrations (in nanograms per liter) in these 30 samples are given in the data.
+
+
+Source
+
+Jaffe, P. R., Parker, F. L., and Wilson, D. J. (1982). Distribution of toxic substances in rivers. Journal of the Environmental Engineering Division, 108, 639-649.
+
+Hogg, R. V., and Ledolter, J. (1992). Applied Statistics for Engineers and Physical Scientists. Macmillan, New York. Exercises 1.4-3 and 1.5-1.
+
+
+
+flicker
+Attached Files:
+File flicker.txt (214 B)
+Eye Colour and Flicker Frequency
+
+
+Keywords: one-way analysis of variance
+
+Description
+
+An individual's critical flicker frequency is the highest frequency at which the flicker in a flickering light source can be detected. At frequencies above the critical frequency, the light source appears to be continuous even though it is actually flickering. This investigation recorded critical flicker frequency and iris colour of the eye for 19 subjects.
+
+Variable Description
+
+Colour Eye colour: Brown, Green or Blue
+
+Flicker Critical flicker frequency in cycles/sec
+
+
+Source
+
+The effect of iris color on critical flicker frequency. Journal of General Psychology (1973), 91-95.
+
+Devore and Peck, Page 566.
+
+Analysis
+
+
+fullmoon
+Attached Files:
+File fullmoon.txt (547 B)
+Mental Hospital Admissions During Full Moons
+
+Keywords: two-way analysis of variance
+
+Description
+
+
+Larsen and Marx (1986) write
+
+
+In folklore, the full moon is often portrayed as something sinister, a kind of evil force possessing the power to control our behaviour. Over the centuries, many prominent writers and philosophers have shared this belief. Milton, in Paradise Lost, refers to
+
+
+Demoniac frenzy, moping melancholy
+
+And moon-struck madness.
+
+
+And Othello, after the murder of Desdemona, laments
+
+
+It is the very error of the moon
+
+She comes more near the earth than she was want
+
+And makes men mad.
+
+
+On a more scholarly level, Sir William Blackstone, the renowned eighteenth centure English barrister, defined a "lunatic" as
+
+one who hath ... lost the use of his reason and who hath lucid intervals, sometimes enjoying his senses and sometimes not, and that frequently depending upon changes of the moon.
+
+
+The data give the admission rates to the emergency room of a Virginia mental health clinic before, during and after the 12 full moons from August 1971 to July 1972.
+
+
+Variable Description
+
+Month Month of year: Aug, Sep, ... Jul
+
+Moon Before, During or After the full moon
+
+Admission Admission rate (patients/day)
+
+
+Source
+
+Blackman, S., and Catalina, D. (1973). The moon and the emergency room. Perceptual and Motor Skills 37, 624-626.
+
+Ovlin, J. F. (1943). Moonlight and nervous disorders. American Journal of Psychiatry 99, 578-584.
+
+Larsen, R.J., and Marx, M.L., (1986). An Introduction to Mathematical Statistics and Its Applications 2nd Edition. Prentice-Hall, Englewood Cliffs, New Jersey. Case Study 1.2.3.
+
+
+memory
+Attached Files:
+File memory.txt (2.069 KB)
+Age and Memory
+
+Keywords: Balanced two-way analysis of variance, interaction.
+
+Description
+
+
+Why do older people often seem not to remember things as well as younger people? Do they not pay attention? Do they just not process the material as thoroughly? One theory regarding memory is that verbal material is remembered as a function of the degree to which is was processed when it was initially presented. Eysenck (1974) randomly assigned 50 younger subjects and 50 older (between 55 and 65 years old) to one of five learning groups. The Counting group was asked to read through a list of words and count the number of letters in each word. This involved the lowest level of processing. The Rhyming group was asked to read each word and think of a word that rhymed with it. The Adjective group was asked to give an adjective that could reasonably be used to modify each word in the list. The Imagery group was instructed to form vivid images of each word, and this was assumed to require the deepest level of processing. None of these four groups was told they would later be asked to recall the items. Finally, the Intentional group was asked to memorize the words for later recall. After the subjects had gone through the list of 27 items three times they were asked to write down all the words they could remember.
+
+Variable Description
+
+Age Younger or Older
+
+Process The level of processing: Counting, Rhyming, Adjective, Imagery or Intentional
+
+Words Number of words recalled
+
+Source
+
+Eysenck, M. W. (1974). Age differences in incidental learning. Developmental Psychology, 10, 936-941.
+
+Howell, D. C. (1999). Fundamental Statistics for the Behavioral Sciences, 4th Edition. Duxbury Press, Pacific Grove, California.
+
+
+
+insulation
+Attached Files:
+File insulation.txt (1.335 KB)
+Impact Strength Of Insulation Cuts
+
+Variable Description
+
+Lot Lot of insulating material
+
+Cut Lengthwise (Length) or crosswise (Cross)
+
+Strength Impact strength in foot-pounds
+
+Data File (tab-delimited text)
+
+Source
+
+Ostle, B. (1963). Statistics in Research: Basic Concepts and Techniques for Research. Ames: Iowa State University Press.
+
+
+olympic
+Attached Files:
+File olympic.txt (504 B)
+Olympic Records for High Jump, Discus and Long Jump
+
+
+Keywords: simple linear regression, outliers, examination of residuals
+
+Description
+
+Winning heights or distances (inches) for the High Jump, Discus and Long Jump events at the Olympics up to 1996
+
+Data File (tab-delimited text)
+
+Source
+
+The data up to 1984 is from the DASL library. Later data collected by Gordon Smyth.
+
+
+auction
+Attached Files:
+File auction.txt (378 B)
+Selling Price of Antique Grandfather Clocks
+
+
+Description
+
+
+The data give the selling price at auction of 32 antique grandfather clocks. Also recorded is the age of the clock and the number of people who made a bid.
+
+
+Variable Description
+
+Age Age of the clock (years)
+
+Bidders Number of individuals participating in the bidding
+
+Price Selling price (pounds sterling)
+
+
+
+Data File (tab-delimited text)
+
+Source
+
+The data are from Mendenhall and Sincich (1993, page 173). Professor WR Stephenson at Iowa State University observes that the currency should be pounds sterling and not dollars as stated in Mendenhall and Sincich (1993).
+
+Mendenhall, W, and Sincich, TL (1993). A Second Course in Statistics: Regression Analysis, 6th Edition, Prentice-Hall.
+
+Professor WR Stephenson, Department of Statistics, Iowa State University. Clock data from Stat 401.
+
+
+cheese
+Attached Files:
+File cheese.txt (749 B)
+Datafile Name: Cheese
+
+Story Names: Cheddar Cheese Taste
+
+Reference: Moore, David S., and George P. McCabe (1989). Introduction to the Practice of Statistics.
+
+Authorization:
+
+Description: As cheese ages, various chemical processes take place that determine the taste of the final product. This dataset contains concentrations of various chemicals in 30 samples of mature cheddar cheese, and a subjective measure of taste for each sample. The variables "Acetic" and "H2S" are the natural logarithm of the concentration of acetic asid and hydrogen sulfide respectively. The variable "Lactic" has not been transformed.
+
+Number of cases: 30
+
+Variable Names:
+
+Case: Sample number
+
+Taste: Subjective taste test score, obtained by combining the scores of several tasters
+
+Acetic: Natural log of concentration of acetic acid
+
+H2S: Natural log of concentration of hydrogen sulfide
+
+Lactic: Concentration of lactic acid
+
+
+physical
+Attached Files:
+File physical.txt (975 B)
+Mass and Physical Measurements for Male Subjects
+
+Description
+
+For his MS305 data project, Michael Larner measured the weight and various physical measurements for 22 male subjects aged 16 - 30. Subjects were randomly chosen volunteers, all in reasonable good health. Subjects were requested to slightly tense each muscle being measured to ensure measurement consistency. Apart from Mass, all measurements are in cm.
+
+
+Variable Description
+
+Mass Weight in kg
+
+Fore Maximum circumference of forearm
+
+Bicep Maximum circumference of bicep
+
+Chest Distance around chest directly under the armpits
+
+Neck Distance around neck, approximately halfway up
+
+Waist Distance around waist, approximately trouser line
+
+Thigh Circumference of thigh, measured halfway between the knee and the top of the leg
+
+Calf Maximum circumference of calf
+
+Height Height from top to toe
+
+Shoulders Distance around shoulders, measured around the peak of the shoulder blades
+
+Data file (tab-delimited text)
+
+Source
+
+Larner, M. (1996). Mass and its Relationship to Physical Measurements. MS305 Data Project, Department of Mathematics, University of Queensland.
+
+
+G-Induced Loss
+Attached Files:
+File ginducedloss.txt (82 B)
+
+titanic
+Attached Files:
+File titanicpassenger.txt (53.105 KB)
+
+alchyp
+Attached Files:
+File alchyp.txt (190 B)
+The data comes from a small studyin Western Australia of hypertension, alcohol, and obesity. This studywas partly designed to mimic a previously reported U.S. study based ona larger sample. A log-linear interaction model is a convenient andeffective way of investigating associations among the threevariables. A prior-posterior analysis of this 3 x 2 x 4 contingencytable using prior information from the previous study (Klatsky et al.,1977) may be appropriate. The previous study reported the generalconclusion that alcohol intake and obesity were significantly andindependently associated with hypertension (blood pressure). Althougha few summary statistics were reported, the full data were notpublished. One difference between the two studies was in thedefinition of obesity categories.
+
+The data is listed as follows: the first column (Obesity) contains anumerical value representing the level of obesity (1=low, 2=average,3=high), the second column (BP) contains a numerical indicator of thepresence of hypertension (0=no, 1 =yes). The next five columns arelabelled with the levels of alcoholic intake of the subjects, indrinks per day. These columns contain the frequency of observationsthat have this level of intake, for each group of obesity level andhypertension presence. 
+
+
+apexdata
+Attached Files:
+File apexdata.txt (292 B)

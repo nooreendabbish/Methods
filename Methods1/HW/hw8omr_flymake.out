@@ -1,0 +1,10 @@
+\BOOKMARK [1][-]{section.1}{Example of Org-Babel for R Literate Programming}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{R text output}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{R graphics output}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Problem 1}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Find the rejection region at the significance level \040= 0.05}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Problem 2}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Data for Yatch Race}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Plot Histograms of Time and Log\(Time-3100\)}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Plot a scatterplot log\(Time - 3100\) vs. Year}{section.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Write out a linear model to study the relationship between log\(Time - 3100\) and Year.}{subsection.3.3}% 10

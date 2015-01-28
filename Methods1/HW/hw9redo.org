@@ -1,0 +1,218 @@
+#+TITLE: Homework 9 Redo
+#+AUTHOR: Nooreen Dabbish
+#+DATE: <2015-01-08 Thu>
+#+OPTIONS: toc:nil H:2 num:2
+#+BABEL: :session RHW9 :cache yes :exports results :tangle yes
+
+* Problem 2 Cherry tree data
+
+** Data:
+
+#+tblname: cherry
+#+caption: Diameter, Height, and Volume of Cherry Trees.
+| Diam | Height | Volume |
+|  8.3 |     70 |   10.3 |
+|  8.6 |     65 |   10.3 |
+|  8.8 |     63 |   10.2 |
+| 10.5 |     72 |   16.4 |
+| 10.7 |     81 |   18.8 |
+| 10.8 |     83 |   19.7 |
+| 11.0 |     66 |   15.6 |
+| 11.0 |     75 |   18.2 |
+| 11.1 |     80 |   22.6 |
+| 11.2 |     75 |   19.9 |
+| 11.3 |     79 |   24.2 |
+| 11.4 |     76 |   21.0 |
+| 11.4 |     76 |   21.4 |
+| 11.7 |     69 |   21.3 |
+| 12.0 |     75 |   19.1 |
+| 12.9 |     74 |   22.2 |
+| 12.9 |     85 |   33.8 |
+| 13.3 |     86 |   27.4 |
+| 13.7 |     71 |   25.7 |
+| 13.8 |     64 |   24.9 |
+| 14.0 |     78 |   34.5 |
+| 14.2 |     80 |   31.7 |
+| 14.5 |     74 |   36.3 |
+| 16.0 |     72 |   38.3 |
+| 16.3 |     77 |   42.6 |
+| 17.3 |     81 |   55.4 |
+| 17.5 |     82 |   55.7 |
+| 17.9 |     80 |   58.3 |
+| 18.0 |     80 |   51.5 |
+| 18.0 |     80 |   51.0 |
+| 20.6 |     87 |   77.0 |
+
+
+** Build a linear regression model.
+
+\begin{align*}
+\text{Let } \\
+V &= \mathrm{volume}\\
+D &= \mathrm{diameter}\\
+H &= \mathrm{height}\\
+\intertext{Assuming that the tree is cylindrical:}\\
+V &= ^1/_4 \pi D^2 H\\
+\ln V &= \beta_0 + \beta_1 \ln H + \beta_2 \ln D + \epsilon
+\end{align*}
+
+** Plot scatterplots of the data.
+
+#+name: prob2b
+#+begin_src R :results output graphics :file scatter.pdf 
+  trees <- read.table("../Data/cherry.txt", header=T)
+  attach(trees)
+  plot(trees)
+#+end_src 
+
+#+RESULTS: prob2b
+[[file:scatter.pdf]]
+
+** Solve the linear regression "by hand"
+
+#+name: prob2b-2
+#+begin_src R :exports results :results latex
+  attach(trees)
+  n <- dim(trees)[1]
+  Y <- log(Volume)
+  X <- cbind(rep(1,31), log(Height), log(Girth))
+  #solve(A,B) gives the solution to A %*% X = B
+  #solve(X) gives inverse of X
+  betahat <- solve(t(X)%*%(X))%*%t(X)%*%Y
+  library(xtable)
+  x <- xtable(betahat, align=rep("",ncol(betahat)+1))
+  print(x,  floating=FALSE, tabular.environment="bmatrix", hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+end_src
+
+#+RESULTS: prob2b-2
+#+BEGIN_LaTeX
+| % latex table generated in R 3.0.2 by xtable 1.7-4 package |
+| % Fri Jan  9 21:58:27 2015                                 |
+| \begin{bmatrix}{}                                          |
+| -6.63 \\                                                   |
+| 1.12 \\                                                    |
+| 1.98 \\                                                    |
+| \end{bmatrix}                                              |
+|                                                            |
+#+END_LaTeX
+
+#+name: prob2b-3
+#+begin_src R :exports results :results output
+  Y
+  sigma <- t(Y)%*%Y - t(Y)%*%(X%*% solve(t(X)%*%X)%*%t(X))%*%Y
+  sigma
+#+end_src
+
+#+RESULTS: prob2b-3
+
+
+* Testing  Org-Babel-R
+
+
+#+name: directories
+#+begin_src sh :results replace
+  cd ~ && du -sc * |grep -v total
+#+end_src
+
+#+RESULTS: directories
+|    84 | Desktop              |
+| 49508 | Documents            |
+|     4 | Downloads            |
+|     4 | Music                |
+|   308 | Pictures             |
+|     4 | Public               |
+| 41512 | R                    |
+|     4 | Templates            |
+|     4 | Videos               |
+|   100 | blah.jpg             |
+|  6476 | emacsext             |
+|    12 | examples.desktop     |
+|     8 | image.jpeg           |
+|  6296 | nooreen              |
+|   192 | printer_installation |
+|  1552 | pythonext            |
+|     4 | saint                |
+|     4 | webcam               |
+
+
+#+begin_src R :session R-pie-example :file ../../images/babel/dirs.png
+  pie(dirs[,1], labels = dirs[,2])
+#+end_src
+
+#+RESULTS: directory-pie-chart
+[[file:../../images/babel/dirs.png]]
+
+#+name: square
+#+header: :var x=0
+#+begin_src R
+x*x
+#+end_src
+
+#+RESULTS: square
+: 0
+
+#+call: square(x=6)
+
+#+RESULTS: square(x=6)
+: 36
+
+#+tblname: fibonacci-inputs
+| 1 | 2 | 3 | 4 |  5 |  6 |  7 |  8 |  9 | 10 |
+| 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 | 18 | 20 |
+
+#+name: fibonacci-seq
+#+begin_src emacs-lisp :var fib-inputs=fibonacci-inputs 
+  (defun fibonacci (n)
+    (if (or (= n 0) (= n 1))
+        n
+      (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+  
+  (mapcar (lambda (row)
+            (mapcar #'fibonacci row)) fib-inputs)
+#+end_src
+
+#+RESULTS: fibonacci-seq
+| 1 | 1 | 2 |  3 |  5 |   8 |  13 |  21 |   34 |   55 |
+| 1 | 3 | 8 | 21 | 55 | 144 | 377 | 987 | 2584 | 6765 |
+
+#+name: tbl-example-data
+#+begin_src R 
+runif(n=5, min=0, max=1)
+#+end_src
+
+#+RESULTS: tbl-example-data
+| 0.537353621795774 |
+| 0.498519919347018 |
+| 0.212443253491074 |
+|  0.98742634197697 |
+| 0.294778409181163 |
+
+#+name: R-mean
+#+begin_src R :var x=""
+colMeans(x)
+#+end_src
+
+#+tblname: summaries
+| mean   |
+|--------|
+| #ERROR |
+#+TBLFM: @2$1='(org-sbe "R-mean" (x "tbl-example-data()"))
+
+
+#+tblname: mytesttable
+| x |  y |   z | sum    |
+| 1 | 10 | 100 | #ERROR |
+| 2 | 20 | 200 |        |
+| 3 | 30 | 300 |        |
+#+TBLFM: @2$4='(+ @1$1 6)
+
+#+begin_src emacs-lisp
+ (setq debug-on-error t)
+#+end_src
+
+#+RESULTS:
+: t
+
+
+* Scratchpad
+

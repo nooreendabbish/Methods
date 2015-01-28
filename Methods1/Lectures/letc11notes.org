@@ -1,0 +1,213 @@
+#+TITLE: Lecture 11 Notes
+#+AUTHOR: Nooreen Dabbish
+#+STARTUP: hideblocks
+#+OPTIONS: toc:nil
+
+
+* Cheatsheet codesamples
+** From orgmode tutorials...
+
+*Playing with Org-mode-R:
+#+header: :width 8 :height 8 :R-dev-args bg="olivedrab", fg="hotpink"
+#+begin_src R :file z.pdf :results graphics
+plot(matrix(rnorm(100), ncol=2), type="l")
+#+end_src
+
+#+RESULTS:
+[[file:z.pdf]]
+
+#+begin_src R :results output org
+  library(ascii)
+  options(asciiType="org")
+  ascii(summary(table(1:4, 1:4)))
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC org
+- Number of cases in table: 4 
+- Number of factors: 2 
+- Test for independence of all factors:
+  - Chisq = 12, df = 9, p-value = 0.2133
+  - Chi-squared approximation may be incorrect
+#+END_SRC
+
+#+BEGIN_SRC R :results output org
+ library(ascii)
+ a <- runif(100)
+ c <- "Quantiles of 100 random numbers"
+ b <- ascii(quantile(a),header=T,include.colnames=T,caption=c)
+ print(b,type="org")
+ rm(a,b,c)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC org
+,#+CAPTION: Quantiles of 100 random numbers
+| 0%   | 25%  | 50%  | 75%  | 100% |
+|------+------+------+------+------|
+| 0.00 | 0.35 | 0.60 | 0.84 | 1.00 |
+#+END_SRC
+
+#+name: r-with-ggplot2
+#+begin_src R :results output graphics :file ~/Documents/Methods/Methods1/lec10notes-foo.png :width 400 :height 300
+  library(ggplot2)
+  # create factors with value labels 
+  mtcars$gear <- factor(mtcars$gear,levels=c(3,4,5),
+          labels=c("3gears","4gears","5gears")) 
+  mtcars$am <- factor(mtcars$am,levels=c(0,1),
+          labels=c("Automatic","Manual")) 
+  mtcars$cyl <- factor(mtcars$cyl,levels=c(4,6,8),
+     labels=c("4cyl","6cyl","8cyl")) 
+  
+  # Kernel density plots for mpg
+  # grouped by number of gears (indicated by color)
+  qplot(mpg, data=mtcars, geom="density", fill=gear, alpha=I(.5), 
+     main="Distribution of Gas Milage", xlab="Miles Per Gallon", 
+     ylab="Density")
+  
+  if(FALSE){# Scatterplot of mpg vs. hp for each combination of gears and cylinders
+  # in each facet, transmittion type is represented by shape and color
+  qplot(hp, mpg, data=mtcars, shape=am, color=am, 
+     facets=gear~cyl, size=I(3),
+     xlab="Horsepower", ylab="Miles per Gallon") 
+  
+  # Separate regressions of mpg on weight for each number of cylinders
+  qplot(wt, mpg, data=mtcars, geom=c("point", "smooth"), 
+     method="lm", formula=y~x, color=cyl, 
+     main="Regression of MPG on Weight", 
+     xlab="Weight", ylab="Miles per Gallon")
+  
+  # Boxplots of mpg by number of gears 
+  # observations (points) are overlayed and jittered
+  qplot(gear, mpg, data=mtcars, geom=c("boxplot", "jitter"), 
+     fill=gear, main="Mileage by Gear Number",
+     xlab="", ylab="Miles per Gallon")}
+#+end_src
+
+#+RESULTS: r-with-ggplot2
+[[file:~/Documents/Methods/Methods1/lec10notes-foo.png]]
+
+#+begin_src R :results output latex
+  library(xtable)
+  x <- rnorm(100)
+  y <- x + rnorm(100)
+  xtable(summary(lm(y ~ x)))
+#+end_src
+
+#+RESULTS:
+#+BEGIN_LaTeX
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Wed Jan  7 11:35:10 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & -0.0606 & 0.0988 & -0.61 & 0.5414 \\ 
+  x & 0.9552 & 0.1023 & 9.34 & 0.0000 \\ 
+   \hline
+\end{tabular}
+\end{table}
+#+END_LaTeX
+
+
+** From Random
+(SRC_R[:exports results :results raw]{round(qnorm(.025),2)}< Z < SRC_R[:exports results :results raw]{round(qnorm(.975),2)})
+
+#+tblname: example
+| Y | X | Z |
+|---+---+---|
+| 1 | 2 | 3 | 
+
+#+name: ex1
+#+begin_src R :var mytable=example :results graphics :exports results :file example.pdf
+  mytable
+  barplot(mytable)
+#+end_src
+
+#+RESULTS: ex1
+[[file:example.pdf]]
+
+** From a HW
+
+
+*** Plot Histograms of Time and Log(Time-3100)
+#+name: prob2a
+#+begin_src R :results graphics :exports results :file prob2a.pdf
+  ytbl <- read.table(file='~/Documents/Methods/Methods1/Data/yacht.txt', header=T)
+  #ynames <- ytbl[1,]
+  #ytbl <- data.frame(ytbl)[-1,]
+  #colnames(ytbl) <- ynames
+  attach(ytbl)
+  par(mfrow=c(1,2))
+  hist(as.numeric(Time))
+  hist(log(as.numeric(Time)-3100))
+#+end_src
+
+#+attr_latex: width=0.8\textwidth,placement=[p]
+#+label: fig:histograms
+#+caption: Histograms of Yacht Data
+#+RESULTS: prob2a
+[[file:prob2a.pdf]]
+
+
+*** Plot a scatterplot log(Time - 3100) vs. Year
+#+name: prob2b
+#+begin_src R :results graphics :exports results :file prob2b.pdf
+  head(ytbl)
+  ytbl[,-1] <- sapply(ytbl[,-1], as.numeric)
+  par(mfrow=c(1,1))
+  Y <- log(ytbl[,"Time"]-3100)
+  Year <- as.numeric(Year)
+  beta1 = (sum((Year - mean(Year))*(Y - mean(Y))))/sum((Year - mean(Year))^2)
+  beta0 = mean(Y) - beta1 * mean(Year)
+  beta0
+  plot(Year, Y)
+  
+#+end_src
+
+#+RESULTS: prob2b
+[[file:prob2b.pdf]]
+
+**** Write out a linear model to study the relationship between log(Time - 3100) and Year. 
+Interpret your two parameters in the model.
+
+\begin{align*}
+\mathrm{Let} Y_i &= log(\mathrm{Time}_i -3100)\\
+\mathrm{Model:} Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\\
+\hat{\beta}_1 &= \frac{S_{xy}}{S_{xx}} \\
+              &=\frac{ \sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2}\\
+              &= SRC_R[:results raw]{round(beta1,2)}\\
+\hat{\beta}_{0} &= \bar(Y) - \hat{\beta}_{1}\bar{X}\\
+              &= SRC_R[:results raw]{round(beta0,2)}
+\end{align*}
+
+*Interpretation:* \beta_0 tells us the value of Y when/if X equals 0.
+So in year 0, we would expect $\log(\mathrm{Time} - 3100)$ to be
+approximately 66. Solving for Time gives SRC_R{round(exp(beta0)+3100,2)}.
+
+\beta_1 tells us the magnitude of increase in $\log(\mathrm{Time} -
+3100)$ for a 1 year increase in time. Since \beta_0 is negative, it
+is actually a decrease. Solving for Time gives SRC_R{round(exp(beta1)+3100,2)}
+
+
+* Concepts to review
+** Matrix
+- [ ] Positive definite, relationship to full rank if any?
+- [ ] projection matrices
+- [ ] Orthogonal matrix
+** Concepts
+*** Multiple Linear Regression
+- [X] Show that $\hat{\beta}$ is unbiased.
+- [X] Why is $Var(\hat{\beta}) = \sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}$
+    $Var(\mathbf{A}\mathbf{X}) = \mathbf{A} Var(\mathbf{X})
+  \mathbf{A}^{T}$
+    Why is the variance of *X\beta* 0?
+- [X] Gauss Markov Theorem
+    BLUE
+*** SLR/MLR connection
+- [ ] Reread
+- [ ] Do HW problem
+
+

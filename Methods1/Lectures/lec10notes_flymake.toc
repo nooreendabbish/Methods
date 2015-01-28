@@ -1,0 +1,1 @@
+\contentsline {section}{\numberline {1}Sample Size and Power Analysis for Normal Distribution}{2}{section.1}
