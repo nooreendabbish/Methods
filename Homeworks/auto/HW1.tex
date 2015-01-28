@@ -1,0 +1,290 @@
+% Created 2015-01-27 Tue 23:10
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{methodshw}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{8004 Homework 1}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{Write out the following models of elementary/intermediate statistical analysis in the matrix form: $$ \mathbf{Y} = \mathbf{X\beta} +\mathbf{\epsilon} $$}
+\label{sec-1}
+\subsection{A one-variable quadratic polynomial regression model}
+\label{sec-1-1}
+
+$$y_i = \alpha_0 + \alpha_1x_i + \alpha_2 x_i^2 + \epsilon_i \textrm{ for }   (i = 1,2,\ldots,5)$$. 
+
+$$\mathbf{y} = \begin{pmatrix} y_1 \\ y_2 \\ y_3
+\\ y_4\\ y_5\end{pmatrix},
+\mathbf{X}= \begin{pmatrix} 1 & x_1 & x_1^2 \\ 
+                            1 & x_2 & x_2^2 \\ 
+                            1 & x_3 & x_3^2 \\ 
+                            1 & x_4 & x_4^2 \\ 
+                            1 & x_5 & x_1^2 \end{pmatrix},
+\mathbf{\beta} = \begin{pmatrix} \alpha_0 \\ \alpha_1 \\ \alpha_2
+\end{pmatrix}, 
+\mathbf{\epsilon} = \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\
+\epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \end{pmatrix}$$
+
+\textbf{y} = \textbf{X$\beta$} + \textbf{$\epsilon$}  in this model is therefore:
+
+$$\begin{pmatrix} y_1 \\ y_2 \\ y_3
+\\ y_4\\ y_5\end{pmatrix} = \begin{pmatrix} 1 & x_1 & x_1^2 \\ 
+                            1 & x_2 & x_2^2 \\ 
+                            1 & x_3 & x_3^2 \\ 
+                            1 & x_4 & x_4^2 \\ 
+                            1 & x_5 & x_1^2 \end{pmatrix} \begin{pmatrix} \alpha_0 \\ \alpha_1 \\ \alpha_2
+\end{pmatrix} + \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\
+\epsilon_3 \\ \epsilon_4 \\ \epsilon_5 \end{pmatrix}$$
+\subsection{A two-factor ANCOVA model without interactions}
+\label{sec-1-2}
+
+$$y_{ijk} = \mu + \alpha_i + \beta_j + \gamma(x_{ijk} - \bar{x}) +
+\epsilon_{ijk}\,\, \textrm{ for } i= 1, 2,\,j=1,2,\,\textrm{ and }k =1,2.$$
+
+This model describes an 8-dimensional data space:
+
+$$\mathbf{y} = \begin{pmatrix} y_{111} \\ y_{112} \\  y_{121}
+\\ y_{122} \\ y_{211} \\ y_{212} \\ y_{221} \\ y_{222}
+\end{pmatrix},\, 
+\mathbf{\epsilon} = \begin{pmatrix} \epsilon_{111} \\ \epsilon_{112} \\  \epsilon_{121}
+\\ \epsilon_{122} \\ \epsilon_{211} \\ \epsilon_{212} \\ \epsilon_{221} \\ \epsilon_{222} \end{pmatrix}$$
+
+The vector of centered x-values may be calculated as $$\bm{x}_c = (\bm{I}-
+\frac{1}{n} \bm{J}) \begin{pmatrix} x_{111} \\ x_{112} \\  x_{121}
+\\ x_{122} \\ x_{211} \\ x_{212} \\ x_{221} \\ x_{222} \end{pmatrix}
+= \begin{pmatrix} x_{111} -\bar{x} \\ x_{112} - \bar{x} \\  x_{121} - \bar{x}
+\\ x_{122} -\bar{x} \\ x_{211} -\bar{x} \\ x_{212} -\bar{x}
+\\ x_{221} - \bar{x} \\ x_{222} -\bar{x} \end{pmatrix}$$
+
+
+
+
+The design matrix \textbf{X}  and regression coefficient vector \textbf{$\beta$} are given by: 
+$$\mathbf{X} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:09:49 2015
+\begin{pmatrix}{}
+  1.00 & 1.00 & 0.00 & 1.00 & x_{111} -\bar{x}\\ 
+  1.00 & 1.00 & 0.00 & 1.00 & x_{112} -\bar{x} \\ 
+  1.00 & 1.00 & 0.00 & 0.00 & x_{121} -\bar{x}\\ 
+  1.00 & 1.00 & 0.00 & 0.00 & x_{122} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 1.00 & x_{211} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 1.00 & x_{212} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 0.00 & x_{221} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 0.00 & x_{222} -\bar{x}\\ 
+  \end{pmatrix},\,
+\mathbf{\beta} = \begin{pmatrix} \mu \\ \alpha_1 \\ \alpha_2
+\\ \beta_1 \\ \beta_2 \\ \gamma \end{pmatrix}$$
+
+Putting these together gives the model:
+$$\begin{pmatrix} y_{111} \\ y_{112} \\  y_{121}
+\\ y_{122} \\ y_{211} \\ y_{212} \\ y_{221} \\ y_{222}
+\end{pmatrix} =  
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:09:49 2015
+\begin{pmatrix}{}
+  1.00 & 1.00 & 0.00 & 1.00 & x_{111} -\bar{x}\\ 
+  1.00 & 1.00 & 0.00 & 1.00 & x_{112} -\bar{x} \\ 
+  1.00 & 1.00 & 0.00 & 0.00 & x_{121} -\bar{x}\\ 
+  1.00 & 1.00 & 0.00 & 0.00 & x_{122} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 1.00 & x_{211} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 1.00 & x_{212} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 0.00 & x_{221} -\bar{x}\\ 
+  1.00 & 0.00 & 1.00 & 0.00 & x_{222} -\bar{x}\\ 
+  \end{pmatrix}
+\begin{pmatrix} \mu \\ \alpha_1 \\ \alpha_2
+\\ \beta_1 \\ \beta_2 \\ \gamma \end{pmatrix} + 
+\begin{pmatrix} \epsilon_{111} \\ \epsilon_{112} \\  \epsilon_{121}
+\\ \epsilon_{122} \\ \epsilon_{211} \\ \epsilon_{212} \\ \epsilon_{221} \\ \epsilon_{222} \end{pmatrix}$$
+
+
+
+*  Use eigen() function in R to compute the eigenvalues and eigenvectors of 
+
+
+
+$$\mathbf{V}=
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:28:16 2015
+\begin{pmatrix}{}
+    3 &  -1 &   1 \\ 
+   -1 &   5 &  -1 \\ 
+    1 &  -1 &   3 \\ 
+  \end{pmatrix}
+$$
+
+Then use R to find and ``inverse square root'' of this matrix.
+That is, find a symmetric matrix $\mathbf{W}$ such that
+$\mathbf{WW}=\mathbf{V}^{-1}$.
+\subsection{Eigenvalues and Eigenvectors}
+\label{sec-2-1}
+
+
+The eigenvalues are \bm{\lambda} = \begin{pmatrix} $\lambda$$_1$
+\\ \lambda$_2$ \\ \lambda$_3$ \end{pmatrix} =
+\begin{pmatrix}{}
+    5 \\ 
+    2 \\ 
+    1 \\ 
+  \end{pmatrix}.
+
+With corresponding eigenvectors:
+$$\mathbf{e_1} = 
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:52:05 2015
+\begin{pmatrix}{}
+  0.41 \\ 
+  -0.82 \\ 
+  0.41 \\ 
+  \end{pmatrix},\,
+\mathbf{e_2} =
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:52:05 2015
+\begin{pmatrix}{}
+  0.58 \\ 
+  0.58 \\ 
+  0.58 \\ 
+  \end{pmatrix},\,
+\mathbf{e_3} =
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 13:52:05 2015
+\begin{pmatrix}{}
+  0.71 \\ 
+  0.00 \\ 
+  -0.71 \\ 
+  \end{pmatrix}.
+$$
+\subsection{Inverse Square Root}
+\label{sec-2-2}
+
+
+
+
+$$\mathbf{W} = 
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 14:47:29 2015
+\begin{pmatrix}{}
+  0.3889 & 0.0556 & -0.1111 \\ 
+  0.0556 & 0.2222 & 0.0556 \\ 
+  -0.1111 & 0.0556 & 0.3889 \\ 
+  \end{pmatrix}$$
+\subsubsection{Determinants and Inverses.}
+\label{sec-3-1}
+
+
+The determinant of A is -1.00000000513756e-06
+and the determinant of B is SRC$_R$[:session \textbf{hw1} :results
+raw]\{det(B)\}.
+
+\#\#
+
+$$\mathbf{A}^{-1} = 
+% Mon Jan 26 14:52:44 2015
+\begin{pmatrix}{}
+  -4001999.98 & 4000999.98 \\ 
+  4000999.98 & -3999999.98 \\ 
+  \end{pmatrix}\, \textrm{ and }\, 
+\mathbf{B}^{-1}  =
+\begin{pmatrix}{}
+  1334000.33 & -1333666.67 \\ 
+  -1333666.67 & 1333333.33 \\ 
+  \end{pmatrix}$$
+
+\#$$ -3\mathbf{B}^{-1} = 
+\begin{pmatrix}{}
+  -4002001.00 & 4001000.00 \\ 
+  4001000.00 & -4000000.00 \\ 
+  \end{pmatrix}$$
+\section{Consider the matrices}
+\label{sec-3}
+
+
+
+
+$$\mathbf{A} = 
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}\,\textrm{ and }\mathbf{B} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}.$$
+
+Obviously, these matrices are nearly identical. Use R and compute the
+determinants and inverses of these matrices. (Even though the
+original two matrices are nearly the same, $\mathbf{A}^{-1} \approx
+-3\mathbf{B}^{-1}$. This shos that small changes in the elements of
+nearly singular matrices can have big eggects on some matrix
+operations.)
+\section{Write an R function to conduct projection, e.g. with the name project().}
+\label{sec-4}
+
+The input is the given design matrix $\mathbf{X}$, and the output is
+the projection matrix $\mathbf{P_X}$ for projecting a vector onto the
+column space of $\mathbf{X}$.
+
+
+\begin{verbatim}
+projection <- function (X) {X%*%(solve(t(X)%*%X))%*%t(X)}
+\end{verbatim}
+\section{Consider the (non-full-rank) two-way ``effect model'' with interactions in the Example (d) in lecture.}
+\label{sec-5}
+\subsection{Determine which of the parametric functions below are estimable:}
+\label{sec-5-1}
+
+
+$\alpha$$_1$,$\alpha$$_2$ - $\alpha$$_a$, $\mu$ + $\alpha$$_1$+ $\beta$$_1$+$\delta$$_{\mathrm{11}}$,
+$\delta$$_{\mathrm{12}}$, $\delta$$_{\mathrm{12}}$ - $\delta$$_{\mathrm{11}}$ - ($\delta$$_{\mathrm{22}}$ - $\delta$$_{\mathrm{21}}$)
+
+For those that are estimable, find $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}$, such that  $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}\mathbf{Y}$ procudes the
+extimate os $\mathbf{C}^{T}\mathbf{\beta}$.
+\subsection{For thte parameter vector $\beta$ written in the order used in class, consider the hypothesis $H_0$ : \$\mathbf{C\beta} = \mathbf{0} for}
+\label{sec-5-2}
+
+
+
+
+$$\mathbf{C} =
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 08:36:22 2015
+\begin{pmatrix}{}
+    0 &   1 &  -1 &   0 &   0 &   0 &   0 &   0 &   0 \\ 
+    0 &   0 &   0 &   0 &   0 &   1 &  -1 &  -1 &   1 \\ 
+  \end{pmatrix}$$
+
+Is this hypothesis testable? Explain.
+
+\end{document}

@@ -1,0 +1,10 @@
+#+TITLE: 8004 Homework 2
+#+AUTHOR: Nooreen Dabbish
+#+LATEX_HEADER: \usepackage{methodshw}
+#+OPTIONS: toc:nil
+
+* Write out the following models of elementary/intermediate statistical analysis in the matrix form: $$ \mathbf{Y} = \mathbf{X\beta}+\mathbf{\epsilon} $$
+* Use \begin{tt} eigen()\end{tt} function in R to compute the eigenvalues and eigenvectors of 
+* Consider the matrices
+* Write an R function to conduct projection, e.g. with the name {\tt project()}
+* Consider the (non-full-rank) two-way "effect model" with interactions in the Example (d) in lecture. 

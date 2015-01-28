@@ -1,0 +1,114 @@
+#+TITLE: Homework Template
+#+AUTHOR: Nooreen Dabbish
+#+LATEX_HEADER: \usepackage{bm}
+#+OPTIONS: toc:nil
+
+* Write out the following models of elementary/intermediate statistical analysis in the matrix form:
+$$ \bm{Y} = \bm{X\beta} +\bm{\epsilon} $$
+** A one-variable quadratic polynomial regression model 
+$$y_i = \alpha_0 + \alpha_1x_i + \alpha_2 x_i^2 + \epsilon_i $$ for ($$i = 1,2,\ldots,5)$$. 
+
+** A two-factor ANCOVA model without interactions 
+$$y_{ijk} = \mu + \alpha_i + \beta_j + \gamma(x_{ijk} - \bar{x}) +
+\epsilon_{ijk}$$
+for $i= 1, 2,$, $j=1,2,$ and $k =1,2.$
+
+* Use eigen() function in R to compute the eigenvaluse and eigenvectors of
+
+#+BEGIN_SRC R :session *hw1* :results output raw :exports none
+ V <- matrix(c(3, -1, 1, -1, 5, -1, 1, -1, 3), 3,3, byrow=TRUE)
+ library(xtable)
+ x <- xtable(V, align=rep("",ncol(V)+1)) # We repeat empty string 6 times
+print(x, floating=FALSE, tabular.environment="pmatrix", 
+  hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+$$\mathbf{V}=
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:52:06 2015
+\begin{pmatrix}{}
+  3.00 & -1.00 & 1.00 \\ 
+  -1.00 & 5.00 & -1.00 \\ 
+  1.00 & -1.00 & 3.00 \\ 
+  \end{pmatrix}
+$$
+
+Then use R to find and "inverse square root" of this matrix.
+That is, find a symmetric matrix $\mathbf{W}$ such that
+$\mathbf{WW}=\mathbf{V}^{-1}$.
+
+
+* Consider the matrices
+
+#+BEGIN_SRC R :session *hw1* :results output raw :exports none
+A <- matrix(c(4, 4.001, 4.001, 4.002),2,2,byrow=T)
+B <- matrix(c(4, 4.001, 4.001, 4.002001),2,2,byrow=T)
+ x <- xtable(A, align=rep("",ncol(A)+1)) # We repeat empty string
+print(x, floating=FALSE, tabular.environment="pmatrix", 
+  hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+ x <- xtable(B, align=rep("",ncol(B)+1)) # We repeat empty string 6 times
+print(x, floating=FALSE, tabular.environment="pmatrix", 
+  hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+$$\mathbf{A} = 
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}\, and \mathbf{B} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}.$$
+
+Obviously, these matrices are nearly identical. Use R and compute the
+determinants and inverses of these matrices. (Even though the
+original two matrices are nearly the same, $\mathbf{A}^{-1} \approx
+-3\mathbf{B}^{-1}$. This shos that small changes in the elements of
+nearly singular matrices can have big eggects on some matrix
+operations.)
+
+
+
+* Write an R function to conduct projection, e.g. with the name project(). 
+The input is the given design matrix $\mathbf{X}$, and the output is
+the projection matrix $\mathbf{P_X}$ for projecting a vector onto the
+column space of $\mathbf{X}$.
+
+
+* Consider the (non-full-rank) two-way "effect model" with interactions in the Example (d) in lecture.
+** Determine which of the parametric functions below are estimable:
+
+\alpha_1,\alpha_2 - \alpha_a, \mu + \alpha_1+ \beta_1+\delta_{11},
+\delta_{12}, \delta_{12} - \delta_{11} - (\delta_{22} - \delta{21})
+
+For those that are estimable, find $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}$, such that  $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}\mathbf{Y}$ procudes the
+extimate os $\mathbf{C}^{T}\mathbf{\beta}$.
+
+** For thte parameter vector \beta written in the order used in class, consider the hypothesis $H_0$ : $\mathbf{C\beta} = \mathbf{0} for 
+
+
+#+BEGIN_SRC R :session *hw1* :results output raw :exports none
+C <- matrix(c(0,1,-1,0,0,0, 0, 0,0,
+              0,0,0, 0,0,1,-1,-1,1),nrow=2,ncol=9,byrow=T)
+ x <- xtable(C, align=rep("",ncol(C)+1)) # We repeat empty string
+print(x, floating=FALSE, tabular.environment="pmatrix", 
+  hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+$$\mathbf{C} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 01:18:48 2015
+\begin{pmatrix}{}
+  0.00 & 1.00 & -1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 1.00 & -1.00 & -1.00 & 1.00 \\ 
+  \end{pmatrix}$$
+
+Is this hypothesis testable? Explain.
+

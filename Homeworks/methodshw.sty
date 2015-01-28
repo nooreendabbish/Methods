@@ -1,0 +1,31 @@
+\ProvidesPackage{methodshw}
+%  methodshw.sty Nooreen Dabbish 1/23/15
+%  To format my methods homework.
+
+\usepackage{fourier,bm,amssymb, amsfonts, amsmath, latexsym, setspace}
+%\usepackage[dvips]{graphicx}
+\usepackage[cm]{fullpage}
+\usepackage{fancyhdr,hyperref,lastpage}
+
+
+\pagestyle{fancy}
+\setlength{\headheight}{15.2pt}
+\rhead[]{\thepage}
+\lhead[]{Dabbish Methods HW 1}
+\cfoot[]{\thepage of \pageref{LastPage}} 
+\renewcommand{\headrulewidth}{1pt}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \vspace*{-\topskip}      % remove the initial space
+   \let \footnote \thanks
+  \hrule height \z@        % to avoid the insertion of lineskip glue
+    {\LARGE \@title} \hfill {\large \@author}
+\par\hfill{\large \@date}%
+  \par\endgroup            % instead of \end{center}
+  \vskip 1.5em             % <--- modify this to adjust the separation
+}
+\makeatother
+
+\renewcommand{\thesubsection}{(\alph{subsection})}

@@ -1,0 +1,129 @@
+% Created 2015-01-26 Mon 01:24
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{bm}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Homework Template}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Write out the following models of elementary/intermediate statistical analysis in the matrix form:}
+\label{sec-1}
+
+$$ \bm{Y} = \bm{X\beta} +\bm{\epsilon} $$
+\subsection{A one-variable quadratic polynomial regression model}
+\label{sec-1-1}
+
+$$y_i = \alpha_0 + \alpha_1x_i + \alpha_2 x_i^2 + \epsilon_i $$ for ($$i = 1,2,\ldots,5)$$. 
+\subsection{A two-factor ANCOVA model without interactions}
+\label{sec-1-2}
+
+$$y_{ijk} = \mu + \alpha_i + \beta_j + \gamma(x_{ijk} - \bar{x}) +
+\epsilon_{ijk}$$
+for \$i= 1, 2,\$, \$j=1,2,\$ and \$k =1,2.\$
+\section{Use eigen() function in R to compute the eigenvaluse and eigenvectors of}
+\label{sec-2}
+
+
+
+
+$$\mathbf{V}=
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:52:06 2015
+\begin{pmatrix}{}
+  3.00 & -1.00 & 1.00 \\ 
+  -1.00 & 5.00 & -1.00 \\ 
+  1.00 & -1.00 & 3.00 \\ 
+  \end{pmatrix}
+$$
+
+Then use R to find and ``inverse square root'' of this matrix.
+That is, find a symmetric matrix $\mathbf{W}$ such that
+$\mathbf{WW}=\mathbf{V}^{-1}$.
+\section{Consider the matrices}
+\label{sec-3}
+
+
+
+
+$$\mathbf{A} = 
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}\, and \mathbf{B} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 00:58:30 2015
+\begin{pmatrix}{}
+  4.00 & 4.00 \\ 
+  4.00 & 4.00 \\ 
+  \end{pmatrix}.$$
+
+Obviously, these matrices are nearly identical. Use R and compute the
+determinants and inverses of these matrices. (Even though the
+original two matrices are nearly the same, $\mathbf{A}^{-1} \approx
+-3\mathbf{B}^{-1}$. This shos that small changes in the elements of
+nearly singular matrices can have big eggects on some matrix
+operations.)
+\section{Write an R function to conduct projection, e.g. with the name project().}
+\label{sec-4}
+
+The input is the given design matrix $\mathbf{X}$, and the output is
+the projection matrix $\mathbf{P_X}$ for projecting a vector onto the
+column space of $\mathbf{X}$.
+\section{Consider the (non-full-rank) two-way ``effect model'' with interactions in the Example (d) in lecture.}
+\label{sec-5}
+\subsection{Determine which of the parametric functions below are estimable:}
+\label{sec-5-1}
+
+
+$\alpha$$_1$,$\alpha$$_2$ - $\alpha$$_a$, $\mu$ + $\alpha$$_1$+ $\beta$$_1$+$\delta$$_{\mathrm{11}}$,
+$\delta$$_{\mathrm{12}}$, $\delta$$_{\mathrm{12}}$ - $\delta$$_{\mathrm{11}}$ - ($\delta$$_{\mathrm{22}}$ - $\delta$\{21\})
+
+For those that are estimable, find $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}$, such that  $\mathbf{C}^T
+(\mathbf{X}^{T}\mathbf{X})^{-}\mathbf{X}^{T}\mathbf{Y}$ procudes the
+extimate os $\mathbf{C}^{T}\mathbf{\beta}$.
+\subsection{For thte parameter vector $\beta$ written in the order used in class, consider the hypothesis $H_0$ : \$\mathbf{C\beta} = \mathbf{0} for}
+\label{sec-5-2}
+
+
+
+
+
+$$\mathbf{C} =
+ % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Mon Jan 26 01:18:48 2015
+\begin{pmatrix}{}
+  0.00 & 1.00 & -1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 1.00 & -1.00 & -1.00 & 1.00 \\ 
+  \end{pmatrix}$$
+
+Is this hypothesis testable? Explain.
+
+\end{document}
