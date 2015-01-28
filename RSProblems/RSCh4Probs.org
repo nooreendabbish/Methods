@@ -1,0 +1,49 @@
+#+TITLE: Rencher Schaalje Chapter 4 Problems
+#+AUTHOR: Nooreen Dabbish
+#+LATEX_HEADER: \usepackage{amsmath,mathtools}
+* Problem 4.16
+Suppose that *y* is N_4(*\mu*,*\Sigma*) where:
+
+#+BEGIN_SRC R :session *RSCh4* :results output latex :exports none
+  mu <- as.matrix(c(1,2,3,-2))
+  library(xtable)
+  x <- xtable(mu, align=rep("",ncol(mu)+1))
+  print(x, floating=FALSE, tabular.environment="pmatrix",hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+$$\mathbf{\mu} = 
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Fri Jan 23 14:40:49 2015
+\begin{pmatrix}
+  1.00 \\  
+  2.00 \\  
+  3.00 \\  
+  -2.00  \\ 
+  \end{pmatrix},\,
+\mathbf{\Sigma} = 
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Fri Jan 23 14:42:00 2015
+\begin{pmatrix}
+  4.00 & 2.00 & -1.00 & 2.00  \\ 
+  2.00 & 6.00 & 3.00 & -2.00  \\ 
+  -1.00 & 3.00 & 5.00 & -4.00  \\ 
+  2.00 & -2.00 & -4.00 & 4.00  \\ 
+  \end{pmatrix}$$
+
+#+BEGIN_SRC R :session *RSCh4* :results output latex :exports none
+  sigma <- matrix(c(4,2,-1,2,2,6,3,-2,-1,3,5,-4,2,-2,-4,4), 4,4, byrow=T)
+  x <- xtable(sigma, align=rep("",ncol(sigma)+1))
+  print(x, floating=FALSE, tabular.environment="pmatrix",hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+** Find the joint and marginal distribution of /y_1/ and /y_2/.
+
+By Theorem 4.4b, any /r x 1/ subvector of *y* has a normal
+distribution with the same means, variances and covariance as in the
+orgininal /p/-variate distribution.
+
+
+$$ \mathbf{y} = \begin{pmatrix}\mathbf{y}_{1,2} \\ \mathbf{y}_{3,4} \end{pmatrix}$$
+
+
+

@@ -1,0 +1,108 @@
+#+TITLE: RS Chapter 7 notes
+#+AUTHOR: Nooreen Dabbish
+
+* 7.2 The Model (multiple regression)
+
+** Example 7.2: Change in regression parameters with deletion of an /x/ from the model
+
+
+*** Example 7.2 Data
+#+tblname: Table7_1
+| Obeservation Number |  y | x_1 | x_2 |
+|---------------------+----+-----+-----|
+|                   1 |  2 |   0 |   2 |
+|                   2 |  3 |   2 |   6 |
+|                   3 |  2 |   2 |   7 |
+|                   4 |  7 |   2 |   5 |
+|                   5 |  6 |   4 |   9 |
+|                   6 |  8 |   4 |   8 |
+|                   7 | 10 |   4 |   7 |
+|                   8 |  7 |   6 |  10 |
+|                   9 |  8 |   6 |  11 |
+|                  10 | 12 |   6 |   9 |
+|                  11 | 11 |   8 |  15 |
+|                  12 | 14 |   8 |  13 |
+#+TBLFM: @3$1..@13$1=@-1+1
+
+*** Plotting in R
+#+name: Ex7_2a
+#+BEGIN_SRC R :session *ch7* :var mydata=Table7_1 :results output graphics :file ex72.pdf
+plot(mydata[,2:4])
+#+END_SRC
+
+#+RESULTS: Ex7_2a
+[[file:ex72.pdf]]
+
+*** Example 7.3.1a
+#+name: Ex7_3_1a
+#+BEGIN_SRC R :session *ch7* :var mydata=Table7_1 :exports none :results output
+y <- matrix(mydata[,2], nrow=length(mydata[,2]),ncol=1)
+library(xtable)
+x <- xtable(y, align=rep("",ncol(y)+1))
+print(x, floating=FALSE, tabular.environment="pmatrix",hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+$$\mathbf{y}=
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Sun Jan 25 18:28:44 2015
+\begin{pmatrix}{}
+    2 \\ 
+    3 \\ 
+    2 \\ 
+    7 \\ 
+    6 \\ 
+    8 \\ 
+   10 \\ 
+    7 \\ 
+    8 \\ 
+   12 \\ 
+   11 \\ 
+   14 \\ 
+  \end{pmatrix}, \, 
+\mathbf{X} = % latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Sun Jan 25 18:39:01 2015
+\begin{pmatrix}{}
+  1.00 & 0.00 & 2.00 \\ 
+  1.00 & 2.00 & 6.00 \\ 
+  1.00 & 2.00 & 7.00 \\ 
+  1.00 & 2.00 & 5.00 \\ 
+  1.00 & 4.00 & 9.00 \\ 
+  1.00 & 4.00 & 8.00 \\ 
+  1.00 & 4.00 & 7.00 \\ 
+  1.00 & 6.00 & 10.00 \\ 
+  1.00 & 6.00 & 11.00 \\ 
+  1.00 & 6.00 & 9.00 \\ 
+  1.00 & 8.00 & 15.00 \\ 
+  1.00 & 8.00 & 13.00 \\ 
+  \end{pmatrix}
+$$
+
+
+#+BEGIN_SRC R :session *ch7* :var mydata=Table7_1  :results output :exports none
+
+X <- as.matrix(mydata[,3:4])
+X <- cbind(rep(1,length(mydata[,3])),X) 
+x <- xtable(X, align=rep("",ncol(X)+1))
+print(x, floating=FALSE, tabular.environment="pmatrix",hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Sun Jan 25 18:39:01 2015
+\begin{pmatrix}{}
+  1.00 & 0.00 & 2.00 \\ 
+  1.00 & 2.00 & 6.00 \\ 
+  1.00 & 2.00 & 7.00 \\ 
+  1.00 & 2.00 & 5.00 \\ 
+  1.00 & 4.00 & 9.00 \\ 
+  1.00 & 4.00 & 8.00 \\ 
+  1.00 & 4.00 & 7.00 \\ 
+  1.00 & 6.00 & 10.00 \\ 
+  1.00 & 6.00 & 11.00 \\ 
+  1.00 & 6.00 & 9.00 \\ 
+  1.00 & 8.00 & 15.00 \\ 
+  1.00 & 8.00 & 13.00 \\ 
+  \end{pmatrix}
+#+end_example
+

@@ -1,0 +1,15 @@
+#+OPTIONS: toc:nil H:3 num:nil
+#+STARTUP: odd
+
+#+LaTeX_HEADER: \usepackage{methodsnotes}
+
+#+TITLE: Stat 8004 Methods II
+ 
+** Class Information: 
+- Professor Tang | Thursdays 5:30 - 8:00 pm | Alter Hall A745
+
+** Linear Models *<2015-01-15>*
+**** Simple Linear Regression
+- model $Y =\beta_0 + \beta_1 X + \epsilon$
+
+

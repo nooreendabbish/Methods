@@ -1,0 +1,119 @@
+% Created 2015-01-24 Sat 18:46
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{RS Chapter 6 Simple Linear Regression}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\vspace*{1cm}
+
+\section{Example 6.2}
+\label{sec-1}
+\subsection{Data Table, ex6$_2$}
+\label{sec-1-1}
+
+
+\begin{center}
+\begin{tabular}{rr}
+  y  &   x  \\
+\hline
+ 95  &  96  \\
+ 80  &  77  \\
+  0  &   0  \\
+  0  &   0  \\
+ 79  &  78  \\
+ 77  &  64  \\
+ 72  &  89  \\
+ 66  &  47  \\
+ 98  &  90  \\
+ 90  &  93  \\
+  0  &  18  \\
+ 95  &  86  \\
+ 35  &   0  \\
+ 50  &  30  \\
+ 72  &  59  \\
+ 55  &  77  \\
+ 75  &  74  \\
+ 66  &  67  \\
+\end{tabular}
+\end{center}
+\subsection{Analysis in R}
+\label{sec-1-2}
+\subsubsection{Estimation of B$_0$, B$_1$}
+\label{sec-1-2-1}
+
+
+
+The prediction equation is: $$\hat{y} = 10.73 +
+0.87
+ x$$
+\subsubsection{(Example 6.3) t-test}
+\label{sec-1-2-2}
+
+
+We want to test the hypothesis H$_0$: $\beta$$_1$ = 0.
+
+
+
+Our t-value is 8.8. It
+is 0.999999921465578 
+\subsubsection{95\% confidence interval for $\beta$$_1$}
+\label{sec-1-2-3}
+
+
+\[
+\hat\beta_{1} \pm t_{.025,16}\frac{s}{\sqrt{\sum_{i=1}^{n} (x_i
+-\bar{x})^2}}
+\]
+
+
+
+
+ 0.87 $\pm$
+ 0.21
+
+This gives a range of $\beta$$_1$ from 0.66 to 1.08.
+\subsubsection{Coefficient of determination \emph{r$^2$} (Example 6.4)}
+\label{sec-1-2-4}
+
+ 
+ The cofficient of determination, $r^2$ is defined as $$r^2 =
+ \frac{\mathrm{SSR}}{\mathrm{SST}} = \frac{\sum_{i=1}^n (\hat{y}_i -
+ \bar{y})^2}{\sum_{i=1}^n ({y}_i - \bar{y})^2}$$
+ 
+
+
+
+ $r^2$ gives the proportion of variation in \emph{y} that is explained by
+ the model (accounted for by regression on \emph{x}).
+
+ \emph{r} is the \emph{sample correlation coefficient} between x and y, here
+ 0.91
+
+\end{document}

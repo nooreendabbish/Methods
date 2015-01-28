@@ -1,0 +1,254 @@
+#+TITLE: R&S Chapter 2 Problems
+#+AUTHOR: Nooreen Dabbish
+
+#+tblname: matrixcommands
+| Operation             | R     | J |
+| Matrix Multiplication | A%*%B | A |
+
+
+* Problem 2.2
+#+name: prob2_2
+#+BEGIN_SRC R :session *chap2* :exports code
+  A <- matrix(c(7, -3, 2, 4, 9, 5), nrow=2, ncol=3, byrow=T)
+  AT <- t(A)
+  t(t(A))
+  t(A)%*%A
+  A%*%t(A)
+#+END_SRC
+
+* Problem 2.3
+#+name: prob2_3
+#+BEGIN_SRC R :session *chap2* :exports code
+  A <- matrix(c(2,4,-1,3), 2, 2,byrow=T)
+  B <- matrix(c(1,3,2,-1),2,2,byrow=T)
+  A
+  B
+  A%*%B
+  B%*%A
+  det(A)
+  det(B)
+  det(A%*%B)
+  det(B%*%A)
+  t(A%*%B) #transpose
+  (t(B)%*%t(A))
+  library(psych)
+  tr(A%*%B) #trace
+  tr(B%*%A)
+  
+  eigen(A%*%B) #eigenvalues
+  (4 + sqrt(16+4*70))/2 #to check my answer
+  (4 - sqrt(16+4*70))/2 #to check my answer
+  
+#+END_SRC
+
+* Problem 2.6
+
+#+name: Prob2_6
+#+BEGIN_SRC R :session *chap2* :exports code
+  A <- matrix(c(8,3,7,-2,5,-3),2,3,byrow=T)
+  B <- matrix(c(-2,5,3,7,6,-4),3,2,byrow=T)
+  A%*%B
+  B%*%A
+  identical(t(A%*%B),t(B)%*%t(A))
+  library(psych)
+  identical(tr(A%*%B),tr(B%*%A))
+  identical(rbind(A[1,]%*%B,A[2,]%*%B), A%*%B)
+  identical(cbind(A%*%B[,1],A%*%B[,2]), A%*%B)
+  identical(rbind(B[1,]%*%A, B[2,]%*%A, B[3,]%*%A),B%*%A)
+    
+#+END_SRC
+
+* Problem 2.7
+
+#+name: Prob2_7
+#+BEGIN_SRC R :session *chap2* :exports code
+  A <- matrix(c(3,2,1,6,4,2,12,8,4),3,3,byrow=T)
+  A
+  B <- matrix(c(1,-1,2,-1,1,-2,-1,1,-2),3,3,byrow=T)
+  B
+  A%*%B
+  A%*%B[,1]
+  library(Matrix)
+  rankMatrix(A)
+  rankMatrix(B)[1]
+#+END_SRC
+
+
+* Problem 2.11
+
+To illustrate the product of square and diagonal matrices:
+
+$$\mathbf{DA} = \begin{pmatrix}
+                d_1 & 0 & 0 \\
+                0 & d_2 & 0 \\
+                0 & 0 & d_3\end{pmatrix}
+                \begin{pmatrix}
+                a_{11} & a_{12} & a_{13}\\
+                a_{21} & a_{22} & a_{23}\\
+                a_{31} & a_{32} & a_{33}\end{pmatrix}
+                = \begin{pmatrix}
+                d_1a_{11} & d_1a_{12} & d_1a_{13}\\
+                d_2a_{21} & d_2a_{22} & d_2a_{23}\\
+                d_3a_{31} & d_3a_{32} & d_3a_{33}\end{pmatrix}$$
+$$\mathbf{DA} =                \begin{pmatrix}
+                a_{11} & a_{12} & a_{13}\\
+                a_{21} & a_{22} & a_{23}\\
+                a_{31} & a_{32} & a_{33}\end{pmatrix}
+                 \begin{pmatrix}
+                d_1 & 0 & 0 \\
+                0 & d_2 & 0 \\
+                0 & 0 & d_3\end{pmatrix}
+= \begin{pmatrix}
+                d_1a_{11} & d_2a_{12} & d_3a_{13}\\
+                d_1a_{21} & d_2a_{22} & d_3a_{23}\\
+                d_1a_{31} & d_2a_{32} & d_3a_{33}\end{pmatrix}$$
+
+
+#+name: Prob2_11
+#+BEGIN_SRC R :session *chap2* :exports code
+  D1 <- matrix(c(3,0,0,-2),2,2,byrow=T)
+  D1
+  D2 <- matrix(c(5,0,0,0,3,0,0,0,6),3,3,byrow=T)
+  D2
+  #Use A from 2.6:
+  A <- matrix(c(8,3,7,-2,5,-3),2,3,byrow=T)
+  A
+  D1%*%A #The first row of DA is d1 times the first row of A...
+  A%*%D2
+#+END_SRC
+
+* Problem 2.14
+
+#+name: Prob2_14
+#+BEGIN_SRC R :session *chap2* :exports code
+  A <- matrix(c(5,-1,3,-1,1,2,3,2,7),3,3,byrow=T)
+  A
+  B <- matrix(c(6,-2,3,7,1,0,2,-3,5),3,3,byrow=T)
+  B
+  C <- matrix(c(2,-3,-1,4,3,1),3,2,byrow=T)
+  C
+  x <- matrix(c(3,-1,2),3,1,byrow=T)
+  x
+  y <- matrix(c(3,2,4),3,1,byrow=T)
+  y
+  z <- matrix(c(2,5),2,1,byrow=T)
+  z 
+  #a Bx
+  B%*%x
+  #b y'B
+  t(y)%*%B
+  #c x'Ax
+  t(x)%*%A%*%x
+  #d x'Cz
+  t(x)%*%C%*%z
+  #e x'x
+  t(x)%*%x
+  #f x'y
+  t(x)%*%y
+  #g xx'
+  x%*%t(x)
+  #h xy'
+  x%*%t(y)
+  #i B'B
+  t(B)%*%B
+  #j yz'
+  y%*%t(z)
+  #k zy'
+  z%*%t(y)
+  #l sqrt(y'y)
+  norm(y)
+  sqrt(t(y)%*%y)
+  norm(y, type=c("F")) #Euclidean norm
+  #m C'C
+  t(C)%*%C
+  
+  
+  
+  
+  
+  
+  
+#+END_SRC
+
+* Problem 2.15
+
+#+name: Prob2_15
+#+BEGIN_SRC R :session *chap2* 
+  #a x+y and x-y
+  x+y
+  x-y
+  tr(A)
+  tr(B)
+  A+B
+  tr(A+B)
+  #Note that trace(A(+/-)B) = trace(A) (+/-) trace(B)
+  
+  det(A%*%B)
+  det(B%*%A)
+  #+END_SRC
+
+*  Problem 2.40
+#+BEGIN_SRC R
+  Coeff <- matrix(c(1,2,3,1,-1,0,1,0,-1),3,3,byrow=T)
+  Aug <- matrix(c(1,2,3,6,1,-1,0,2,1,0,-1,-1),3,4,byrow=T)
+  Coeff
+  Aug
+  identical(Aug, cbind(Coeff,c(6,2,-1)) )
+  library(Matrix)
+  rankMatrix(Coeff)
+  rankMatrix(Aug)
+  AugAug <- rbind(Aug, 3*Aug[1,])
+  rankMatrix(AugAug)
+  AugAug
+  AugAugAug <- cbind(AugAug, Aug[2,]-c(rep(1,4)))
+  rankMatrix(AugAugAug)
+  AugAugAug
+  B <- matrix(seq(0,8, by=1), 3,3,byrow=T)
+  B%*%Coeff
+#+END_SRC
+
+ #+BEGIN_SRC J :exports code
+  a=: 3 3 $ 1 2 3 1 _1 0 1 0 _1
+  b=: i.3 3
+   b 
+  NB. I=: =@i.@#
+  NB.   I a
+  NB. %.a NB. This is the inverse.
+  NB. (b%.a) +/.*a
+  a
+  b +/ . * a NB. This is matrix mult.
+  -/ . * b NB. Determinant
+#+END_SRC
+
+ #+RESULTS:
+ #+begin_example
+ 0 1 2
+ 3 4 5
+ 6 7 8
+
+ 1  2  3
+ 1 _1  0
+ 1  0 _1
+
+  3 _1 _2
+ 12  2  4
+ 21  5 10
+
+ 0
+#+end_example
+
+* Problem 2.47
+#+BEGIN_SRC R
+  A <- matrix(c(4,2,2,2,2,0,2,0,2),3,3,byrow=T)
+  #Find a symmetric generalized inverst for A
+  library(MASS)
+  AGenInv <- ginv(A)
+  AGenInv
+  A%*%AGenInv%*%A
+  A
+  #Find a non-symmetric generalized inverse for A
+  B <- A[1:2,1:2]
+  C <- cbind(rbind( t(solve(B)), c(0,0)),c(0,0,0))
+  A%*%C%*%A
+  A
+#+END_SRC
