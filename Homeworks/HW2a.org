@@ -1,0 +1,179 @@
+#+TITLE: 8004 Homework 2
+#+AUTHOR: Nooreen Dabbish
+#+EMAIL: nerd@temple.edu
+#+LATEX_HEADER: \usepackage{methodshw}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+OPTIONS: toc:nil
+
+* Suppose that we are working under the Gauss-Markov model
+\[ \mathbf{Y} = \mathbf{X\beta} + \mathbf{\epsilon} \]
+where $E(\epsilon) = \mathbf{0}$ and
+$var(\epsilon)=\sigma^2\mathbf{I}$. Let $\hat{\mathbf{Y}}$ be the
+ordinary least square estimator of $\mathbf{Y}$.
+ 
+** Show that $\hat{\mathbf{Y}}$ and $\mathbf{Y} - \hat{\mathbf{Y}}$ are uncorrelated.
+
+Let $\hat{\mathbf{Y}} = P_X Y = X(X'X)^{-}X'Y$.
+
+First, note that $\hat{\mathbf{Y}}$ and $\mathbf{Y} -
+\hat{\mathbf{Y}}$ are orthogonal.
+
+\[
+\hat{\mathbf{Y}}'(\mathbf{Y} - \hat{\mathbf{Y}}) = (\mathbf{P_X Y})'(\mathbf{Y} - \mathbf{P_x Y})\\
+                                                 = \mathbf{Y}'
+                                                 \mathbf{P_X}' (\mathbf{Y} -
+                                                 \mathbf{P_x Y})\\
+                                                 =
+                                                 \mathbf{Y}'\mathbf{P_X
+                                                 Y} -
+                                                 \mathbf{Y}'\mathbf{P_X}'\mathbf{P_X
+                                                 Y}\\
+                                                 =
+                                                 \mathbf{Y}'\mathbf{P_X}\mathbf{Y} -
+                                                 \mathbf{Y}'\mathbf{P_X}\mathbf{Y}\\
+                                                 =\mathbf{0}
+\]
+
+Therefore, the expectation 
+\[
+E(\hat{\mathbf{Y}}'(\mathbf{Y} -
+\hat{\mathbf{Y}}))=E(\mathbf{0})=\mathbf{0}
+\]
+
+\[
+E(\hat{\mathbf{Y}})=E(\mathbf{X\hat{\beta}})\\
+                   =X E(\hat{\beta})\\
+                   =X\beta
+\]
+
+\[
+E(\mathbf{Y} - \hat{\mathbf{Y}})= \mathbf{X\beta} - \mathbf{X\beta} \\
+                                = \mathbf{0}
+\]
+
+This shows $\hat{\mathbf{Y}}$ and $\mathbf{Y} - \hat{\mathbf{Y}}$ are
+uncorrelated because $E(\hat{\mathbf{Y}}(\mathbf{Y} -
+\hat{\mathbf{Y}}) - E(\hat{\mathbf{Y}})E(\mathbf{Y} -
+\hat{\mathbf{Y}})$ is zero.
+
+
+
+** Show that 
+$$ E\{(\mathbf{Y} - \hat{\mathbf{Y}})^T(\mathbf{Y} -
+\hat{\mathbf{Y}})\} = \sigma^2\{n-\mathrm{rank}(\mathbf{X})\}.$$
+You may use Theorem 5.2a of R&S.
+
+
+Theorem 5.2a states:
+If *y* is a random vector with mean *\mu* and covariance
+matrix *\Sigma* and if *A* is a symmetric matrix of contants, then 
+\[
+E(\mathbf{y'Ay}) = tr(\mathbf{A\Sigma}) +\mathbf{\mu' A \mu}.
+\]
+
+
+We can apply Theorem 5.2a with *A* = *I* and $\mathbf{y} =
+\mathbf{Y} - \hat{\mathbf{Y}}$. From part a) above, our mean *\mu*
+is *0*. 
+\[
+Var(\mathbf{Y} - \hat{\mathbf{Y}}) = Var ((\mathbf{I} -
+\mathbf{P_X})Y) \\
+= \sigma^2(\mathbf{I} - \mathbf{P_X})
+\]
+
+The trace of an /nxn/ identity matrix *I* is n, and the trace a
+projection matrix is the rank of target space, $tr(P_X) = rank(X)$.
+
+This gives the desired result:
+$$ E\{(\mathbf{Y} - \hat{\mathbf{Y}})^T(\mathbf{Y} -
+\hat{\mathbf{Y}})\} = \sigma^2\{n-\mathrm{rank}(\mathbf{X})\}.$$
+
+
+
+
+* Consider the one-way ANOVA model $y_{ij} = \mu + \tau_i + \epsilon_{ij}$ for the jth individual of the ith group.
+Suppose there are 4 treatments (groups) and the sample sizes are 
+respectively 2,1,1,2 for treatments.
+Now suppose that $\mathbf{Y} = (y_{11}, y_{12}, y_{21}, y_{31},
+y_{41}, y_{42})^{T} = (2, 1, 4, 6, 3, 5)^{T}$ contains the observations.
+
+Use R and weighted generalized least squares to find an appropriate 
+estimate for
+$$E(\mathbf{Y})\,\mathrm{and}\,
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 
+\end{pmatrix}\mathbf{\beta}$$
+in the Aiken model with $\mathrm{var}(\epsilon) = \mathbf{V}$ for two
+cases where
+ 
+** $\mathbf{V} = \mathbf{V}_1 = \mathrm{diag}(1,9,9,1,1,9)$ and
+
+** 
+\[ 
+\mathbf{V} = \mathbf{V}_2 = 
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 9 & 0 & 0 & 0 & 0 \\
+0 & 0 & 9 & -1& 0 & 0 \\
+0 & 0 & -1& 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & -1 \\
+0 & 0 & 0 & 0 & -1 & 9
+\end{pmatrix}
+\]
+
+
+* The lm function in R allows one to do weighted least squares 
+ with the form $\sum w_i(y_i-\hat{y}_i)^2$ for positive weights $w_i$.
+ For $\mathbf{V}_1$ in the last question, find the BLUEs of the 4 cell
+ means using ~lm~ and an appropriate vector of weights.
+
+
+* By running
+
+#+BEGIN_SRC R :session *HW2* :outputs code
+library(MASS)
+data(Boston)
+#+END_SRC
+
+will load the Boston housing data into R. Use ~?Boston~ to see the
+information on the variables. Now create two matrixes $\mathbf{Y}$
+and $\mathbf{X}$ that will be used to fit a regression model to some
+of these data.
+
+\rule{0.5\textwidth}{0.5pt}
+
+Information on the variables:
+#+BEGIN_SRC R :session *HW2* :outputs both :results raw
+?Boston
+#+END_SRC
+
+#+BEGIN_SRC R :session *HW2* :outputs code
+  Y=as.matrix(Boston$medv)
+  X=as.matrix(Boston[,c('crim','nox','rm','age','dis')])
+  X=cbind(rep(1,dim(Boston)[1]),X)
+  #+END_SRC
+
+
+
+** Make a scatterplot matrix for $y,x_1,\ldots,x_5$. 
+If you had to guess based on this plot, which single predictor 
+do you think is probably the best predictor of Price? Do you 
+see any evidence of multicollinearity (correlation among the
+predictors) in this graphic?
+
+#+BEGIN_SRC R :session *HW2* :results graphics :ouputs results :file HW2_4a.pdf
+myscatter <- data.frame(cbind(Y,X[,c(2:6)]))
+plot(myscatter)
+#+END_SRC 
+
+#+RESULTS:
+[[file:HW2_4a.pdf]]
+
+
+# * Appendix: Tangled R-code
+
+# \lstinputlisting{}
+
