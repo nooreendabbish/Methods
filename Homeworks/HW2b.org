@@ -5,7 +5,7 @@
 #+LATEX_HEADER: \usepackage{booktabs}
 #+OPTIONS: toc:nil
 
-* Suppose that we are working under the Gauss-Markov model
+* Suppose that we are working under the Gauss-Markov model 
 \[ \mathbf{Y} = \mathbf{X\beta} + \mathbf{\epsilon} \]
 where $E(\epsilon) = \mathbf{0}$ and
 $var(\epsilon)=\sigma^2\mathbf{I}$. Let $\hat{\mathbf{Y}}$ be the
@@ -74,24 +74,37 @@ E(\mathbf{y'Ay}) = tr(\mathbf{A\Sigma}) +\mathbf{\mu' A \mu}.
 
 We can apply Theorem 5.2a with *A* = *I* and $\mathbf{y} =
 \mathbf{Y} - \hat{\mathbf{Y}}$. From part a) above, our mean *\mu*
-is *0*. 
-\[
-Var(\mathbf{Y} - \hat{\mathbf{Y}}) = Var ((\mathbf{I} -
-\mathbf{P_X})Y) \\
-= \sigma^2(\mathbf{I} - \mathbf{P_X})
-\]
+is *0*. The term $\mathbf{\mu' A \mu}$ is therefore *0*, and the
+expression of interest becomes:
 
+$$E\{(\mathbf{Y} - \hat{\mathbf{Y}})^T(\mathbf{Y}
+-\hat{\mathbf{Y}})\}   = tr(\Sigma)$$
+
+Where \Sigma is the covariance matrix of $\mathbf{Y} - \hat{\mathbf{Y}}$.
+
+\begin{align*}
+Var(\mathbf{Y} - \hat{\mathbf{Y}}) &= Var ((\mathbf{I} - \mathbf{P_X})Y) \\
+&= (\mathbf{I} - \mathbf{P_X}) Var(Y) (\mathbf{I} - \mathbf{P_X})' \\
+&= (\mathbf{I} - \mathbf{P_X}) Var(Y) (\mathbf{I} - \mathbf{P_X}) \\
+&= (\mathbf{I} - \mathbf{P_X}) \sigma^2 \mathbf{I} (\mathbf{I} - \mathbf{P_X}) \\
+&= \sigma^2(\mathbf{I} - \mathbf{P_X})
+\end{align*}
+
+Trace of $\mathbf{I} - \mathbf{P_X}$ is
+$tr(\mathbf{I})-tr(\mathbf{P_X})$. 
 The trace of an /nxn/ identity matrix *I* is n, and the trace a
 projection matrix is the rank of target space, $tr(P_X) = rank(X)$.
+The trace of product of a scalar /c/ and a matrix *A* is the product
+$tr(c\mathbf{A}) = c tr(\mathbf{A})$. Thus, $tr(\sigma^2(\mathbf{I} -
+\mathbf{P_X})) = \sigma^2 (n - \mathrm{rank}(\mathbf{X}))$.
+This gives the desired result: 
+$$ E\{(\mathbf{Y} - \hat{\mathbf{Y}})^T(\mathbf{Y} -\hat{\mathbf{Y}})\} 
+= \sigma^2\{n-\mathrm{rank}(\mathbf{X})\}.$$
 
-This gives the desired result:
-$$ E\{(\mathbf{Y} - \hat{\mathbf{Y}})^T(\mathbf{Y} -
-\hat{\mathbf{Y}})\} = \sigma^2\{n-\mathrm{rank}(\mathbf{X})\}.$$
 
 
 
-
-* Consider the one-way ANOVA model $y_{ij} = \mu + \tau_i + \epsilon_{ij}$ for the jth individual of the ith group.
+* Consider the one-way ANOVA model $y_{ij} = \mu + \tau_i + \epsilon_{ij}$ for the jth individual of the ith group .
 Suppose there are 4 treatments (groups) and the sample sizes are 
 respectively 2,1,1,2 for treatments.
 Now suppose that $\mathbf{Y} = (y_{11}, y_{12}, y_{21}, y_{31},
@@ -182,7 +195,7 @@ We first calculate *V^{-1/2}*:
 \end{align*}
 
 We can check this in R,
-#+BEGIN_SRC R :session *HW2* :outputs code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :outputs code :tangle yes
   V <- diag(c(1,9,9,1,1,9))
   Vhi <- solve(V^(1/2))
   lvector(Vhi)
@@ -213,7 +226,7 @@ y_{11} \\ \frac{1}{3} y_{12}\\ \frac{1}{3} y_{21}\\ y_{31}\\ y_{41}\\ \frac{1}{3
 \end{align*}
 
 Checking *U* in R gives:
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :tangle yes
   Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
   U <- Vhi %*% Y
   lvector(U)
@@ -255,7 +268,7 @@ Checking *U* in R gives:
 \end{align*}
 
 Checking *W* in R gives:
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :tangle yes
   X <- matrix(c(rep(1,6),
                 1,1,0,0,0,0,
                 0,0,1,0,0,0,
@@ -285,7 +298,7 @@ Checking *W* in R gives:
 \hat{\mathbf{U}} &=
 \mathbf{W}(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{Y}
 \end{align*}
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
   Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
   lvector(Uhat)
 #+END_SRC
@@ -307,7 +320,7 @@ Checking *W* in R gives:
 Now, we can solve for $\hat{E(\mathbf{Y})} = \hat{\mathbf{Y}} =
 \mathbf{V}^{1/2}\hat{\mathbf{U}}$:
 
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
 Yhat <- (V^{1/2})%*%Uhat
 lvector(Yhat)
 #+END_SRC
@@ -326,7 +339,7 @@ lvector(Yhat)
   \end{pmatrix}
 \]
 
-*** Solving for $\hat{C'\beta}$ given by:
+*** Solving for $\hat{\mathbf{C}'\beta}$ given by:
 
 \[
 \begin{pmatrix}
@@ -334,17 +347,16 @@ lvector(Yhat)
 1 & 0 & 1 & 0 & 0 \\
 1 & 0 & 0 & 1 & 0 \\
 1 & 0 & 0 & 0 & 1 
-\end{pmatrix}\mathbf{\beta}$$
+\end{pmatrix}\mathbf{\beta}
 \]
 
-We have $\hat{C'\beta}(U) = C'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
+We have $\hat{\mathbf{C'\beta}}(\mathbf{U}) = \mathbf{C}'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
 
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
   CT <- matrix(c(1,1,0,0,0,1,0,1,0,0,1,0,0,1,0,1,0,0,0,1), nrow=4,ncol=5, byrow=T)
   CTBetahat <- CT %*% ginv(t(W)%*%W) %*% t(W) %*% U
   lvector(CTBetahat)
 #+END_SRC
-
 
 \[
 \hat{\mathbf{C}'\mathbf{\beta}} =
@@ -357,10 +369,10 @@ We have $\hat{C'\beta}(U) = C'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
   3.20 \\ 
   \end{pmatrix} =
 \begin{pmatrix}
-\hat{\mu + \tau_1} \\
-\hat{\mu + \tau_2} \\
-\hat{\mu + \tau_3} \\
-\hat{\mu + \tau_4}
+\widehat{\mu + \tau_1} \\
+\widehat{\mu + \tau_2} \\
+\widehat{\mu + \tau_3} \\
+\widehat{\mu + \tau_4}
 \end{pmatrix}
 \]
 
@@ -377,11 +389,12 @@ We have $\hat{C'\beta}(U) = C'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
 \end{pmatrix}
 \]
 
+*** Cholesky Decomopsition attempt :noexport:
 Here, we used a method similar to the one shown above, except
 employed the use of the Cholesky Decompostion of V into a "square root."
 
 
-#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
   V <- diag(c(1,9,9,1,1,9))
   V[1,2] <- 1
   V[2,1] <- 1
@@ -391,7 +404,8 @@ employed the use of the Cholesky Decompostion of V into a "square root."
   V[5,6] <- -1
   library(Matrix)
   #Calculation of the Cholesky Decomposition and solve to find the inverse.
-  Sinv <- solve(chol(V))
+  Sinv <- solve(t(chol(V)))
+  
   
   #Elements of the GLS equation are multiplied by Sinv to reduce the GLS to OLS.
   Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
@@ -434,51 +448,111 @@ Results of the calculations are:
   \end{pmatrix}
 \]
 
-* \section{The lm function in R allows one to do weighted least squares}
+*** Tranformation to OLS using *V^{-1/2}*
+
+The a square root matrix $\mathbf{V_2}^{1/2}$ can be found as follows:
+
+- Write a matrix *D^{1/2}* containing the square root's of *V_2*'s eigenvalues in its' diagonal. 
+- Write a matrix *C* whose columns are the normalized eigenvectors of *V_2*.
+- *V_2^{1/2}* is the product $\mathbf{CD^{1/2}C'}$.
+
+We will use the square root as above to transform the GLS equations
+into OLS as above.
+     
+#+BEGIN_SRC R :session *HW2* :exports code :reults none :tangle yes
+  Dh <- diag(sqrt(eigen(V)$values))
+  C <- eigen(V)$vectors 
+  Vh <- C %*% Dh %*% t(C)
+  Vhi <- solve(Vh)
+  
+  Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+  Yp <- Vhi %*% Y
+  
+  X <- matrix(c(rep(1,6),
+                1,1,0,0,0,0,
+                0,0,1,0,0,0,
+                0,0,0,1,0,0,
+                0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+  Xp <- Vhi %*% X
+  
+  
+  Yphat <- Xp %*% ginv(t(Xp) %*% Xp) %*% t(Xp) %*% Yp
+  Yhat <- (Vh)%*%Yphat
+  lvector(Yhat)
+  
+  CT <- matrix(c(1,1,0,0,0,1,0,1,0,0,1,0,0,1,0,1,0,0,0,1), nrow=4,ncol=5, byrow=T)
+  CTBetahat <- CT %*% ginv(t(Xp)%*%Xp) %*% t(Xp) %*% Yp
+  lvector(CTBetahat)
+#+END_SRC
+
+Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}* are:
+
+\[
+\widehat{E(\mathbf{Y})} =
+\begin{pmatrix}{}
+  2.00 \\ 
+  2.00 \\ 
+  4.00 \\ 
+  6.00 \\ 
+  3.33 \\ 
+  3.33 \\ 
+  \end{pmatrix}\,\,\mathrm{and}\,\,\widehat{\mathbf{C'\beta}} =
+\begin{pmatrix}{}
+  2.00 \\ 
+  4.00 \\ 
+  6.00 \\ 
+  3.33 \\ 
+  \end{pmatrix}
+\]
+
+* The lm function in R allows one to do weighted least squares
  with the form $\sum w_i(y_i-\hat{y}_i)^2$ for positive weights $w_i$.
  For $\mathbf{V}_1$ in the last question, find the BLUEs of the 4 cell
- means using ~lm~ and an appropriate vector of weights.
+ means using lm and an appropriate vector of weights.
 
 
-I call ~lm~ to model $\mathbf{Y}$ as a function of the design matrix $\mathbf{X}$ with
-"no intercept" and with the weights from the diagonal of $\mathbf{V}_1^{-1/2}$.
+I call lm to model $\mathbf{Y}$ as a function of the design matrix $\mathbf{X}$ with
+"no intercept" and with the weights from the diagonal of $\mathbf{V_1}^{-1}$.
 
-#+BEGIN_SRC R :session *HW2* :results output raw :exports code
-  lmod <- lm(Y ~ 0 + X[,2] + X[,3] + X[,4] + X[,5], weights=diag(Vhi))
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
+  V <- diag(c(1,9,9,1,1,9))
+  Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+  X <- matrix(c(rep(1,6),
+                1,1,0,0,0,0,
+                0,0,1,0,0,0,
+                0,0,0,1,0,0,
+                0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+  lmod <- lm(Y ~ 0 + X[,2:5], weights=diag(solve(V)))
   xtable(summary(lmod))
 #+END_SRC
 
-#+RESULTS:
-% latex table generated in R 3.0.2 by xtable 1.7-4 package
-% Thu Feb 12 00:38:54 2015
 \begin{table}[ht]
 \centering
-\begin{tabular}{rrrrr}
+Results of calling lm with weights from $V_1^{-1}$\\
+\begin{tabular}{rrrrrr}
   \hline
- & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+ Parameter & X-location & Estimate & Std. Error & t value & Pr(>|t|) \\ 
   \hline
-X[, 2] & 1.7500 & 0.6847 & 2.56 & 0.1250 \\ 
-  X[, 3] & 4.0000 & 1.3693 & 2.92 & 0.0999 \\ 
-  X[, 4] & 6.0000 & 0.7906 & 7.59 & 0.0169 \\ 
-  X[, 5] & 3.5000 & 0.6847 & 5.11 & 0.0362 \\ 
+$\widehat{\mu + \tau_1}$ & X[, 2:5]1 & 1.9000 & 0.4743 & 4.01 & 0.0570 \\ 
+$\widehat{\mu + \tau_2}$ &  X[, 2:5]2 & 4.0000 & 1.5000 & 2.67 & 0.1165 \\ 
+$\widehat{\mu + \tau_3}$ &  X[, 2:5]3 & 6.0000 & 0.5000 & 12.00 & 0.0069 \\ 
+$\widehat{\mu + \tau_4}$ &  X[, 2:5]4 & 3.2000 & 0.4743 & 6.75 & 0.0213 \\ 
    \hline
 \end{tabular}
 \end{table}
 
-The estimates of the 4 cell means are shown in the table from R
-above. They are $\hat{\mu + \tau_1} = 1.75$, $\hat{\mu + \tau_2} =
-4.00$,
-$\hat{\mu + \tau_3} = 6.00$, and $\hat{\mu + \tau_4} = 3.5$.
+The parameter estimates generated here by ~lm~ are idetical to those obtained in
+question 2a, using *V_1* as a source of weights.
 
-
-
-
-* By running
+* By running 
 
 #+BEGIN_SRC R :session *HW2* :exports code
 library(MASS)
 data(Boston)
 #+END_SRC
+
+#+RESULTS:
+: Boston
 
 will load the Boston housing data into R. Use ~?Boston~ to see the
 information on the variables. Now create two matrixes $\mathbf{Y}$
@@ -498,56 +572,206 @@ Information on the variables:
   X=cbind(rep(1,dim(Boston)[1]),X)
   #+END_SRC
 
+
 ** Make a scatterplot matrix for $y,x_1,\ldots,x_5$. 
 If you had to guess based on this plot, which single predictor 
 do you think is probably the best predictor of Price? Do you 
 see any evidence of multicollinearity (correlation among the
 predictors) in this graphic?
 
-#+BEGIN_SRC R :session *HW2* :results graphics :ouputs results :file HW2_4a.pdf
+#+BEGIN_SRC R :session *HW2* :results graphics :ouputs results :file HW2_4a.pdf :tangle yes
 myscatter <- data.frame(cbind(Y,X[,c(2:6)]))
 plot(myscatter)
 #+END_SRC 
 
-#+RESULTS:
+#+CAPTION: Scatterplot matrix showing relationships amoung Boston housing data variables.
+#+NAME: fig:HW2-4a
+#+ATTR_LATEX: placement=[H]
 [[file:HW2_4a.pdf]]
 
 Based on this scatterplot, I think that 'rm' the average number of
 rooms per dwelling is the best predictor of price, 'V1'. There is
-strong and numerous evidence of multicollinearity in the scatter
+strong evidence of multicollinearity in the scatter
 plot. The ‘age’ or fraction of owner-occupied units built prior to
 1940 and 'dis' the weighted mean of distances to five Boston 
 employment centres appear to have a strong linear relationship, as
-'age' increases, 'dis' tends to decrease. 
+'age' increases, 'dis' tends to decrease. 'nox', the concentration of
+Nitrous Oxide has a linear relationship with 'age' as well as 'dis'.
 
-# * Appendix: Tangled R-code
+** Use qr() function to find the rank of *X*
 
-# \lstinputlisting{}
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+qr(X)$rank
+#+END_SRC
+
+The rank of $\mathbf{X}$ is 6.
+
+** Use R matrix operations on the $\mathbf{X}$ matrix and $\mathbf{Y}$ vector
+to find the estimated coefficient vector $\hat{\beta}$, the estimated
+mean vector $\hat{\mathbf{Y}}$, and the vector of residuals
+$\mathbf{e} = \mathbf{Y} - \mathbf{\hat{Y}}$.
+
+\[ \hat{\beta} = (\mathbf{X}'\mathbf{X})^{-}\mathbf{X}'\mathbf{Y} \]
+
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+betahat <- ginv(t(X)%*%X) %*% t(X) %*% Y
+lvector(betahat)
+#+END_SRC
+
+\[
+\hat{\beta} =
+\begin{pmatrix}{}
+  -6.23 \\ 
+  -0.21 \\ 
+  -18.05 \\ 
+  7.74 \\ 
+  -0.07 \\ 
+  -1.19 \\ 
+  \end{pmatrix}
+\]
+
+\[ \hat{\mathbf{Y}} = \mathbf{X} (\mathbf{X}'\mathbf{X})^{-}\mathbf{X}'\mathbf{Y} \]
+Also, $\hat{\mathbf{Y}} = \mathbf{X}\hat{\beta}$.
+
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+Yhat <- X %*% betahat
+err <- Y- Yhat
+lvector(Yhat)
+lvector(err)
+#+END_SRC
+
+\[
+\mathbf{\hat{Y}} =
+\begin{pmatrix}{}
+  25.70 \\ 
+  23.80 \\ 
+  30.89 \\ 
+  \vdots \\
+  28.73 \\ 
+  27.17 \\ 
+  21.70 \\ 
+  \end{pmatrix},\,\,\,\text{and}\,\,\mathbf{e} =
+\begin{pmatrix}{}
+  -1.70 \\ 
+  -2.20 \\ 
+  3.81 \\ 
+   \vdots \\
+  -4.83 \\ 
+  -5.17 \\ 
+  -9.80 \\ 
+  \end{pmatrix}
+\]
+
+** Plot the residuals against the fitted means
+
+#+BEGIN_SRC R :session *HW2* :exports code :results graphics :ouputs results :file HW2_4d.pdf
+plot(Yhat, err, xlab="Yhat, Fitted Means", ylab="Y-Yhat, Residuals")
+#+END_SRC
+
+#+CAPTION: Residuals versus fitted means.
+#+NAME: fig:HW2-4d
+#+ATTR_LATEX: placement=[H]
+[[file:HW2_4d.pdf]]
 
 
-* notes :noexport:
-\begin{align*}
-\mathbf{W}'\mathbf{W} &= 
-\begin{pmatrix}
-1 & \frac{1}{3} & \frac{1}{3} & 1 & \frac{1}{3}\\
-1 & \frac{1}{3} & 0           & 0 & 0           \\
-0 & 0           & \frac{1}{3} & 0 & 0           \\
-0 & 0           & 0           & 1 & 0           \\
-0 & 0           & 0           & 0 & \frac{1}{3} \\
-1 & 0           & 0           & 0 & 0           \\
-0 & \frac{1}{3} & 0           & 0 & 0           \\
-0 & 0           & \frac{1}{3} & 0 & 0           \\
-0 & 0           & 0           & 1 & 0           \\
-0 & 0           & 0           & 0 & 0           \\
-0 & 0           & 0           & 0 & \frac{1}{3}
-\end{pmatrix}
-\begin{pmatrix}
-  1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
-  \frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 \\ 
-  \frac{1}{3} & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 \\ 
-  1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
-  1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
-  \frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & 0 & \frac{1}{3} \\ 
-  \end{pmatrix}\\
-&= 
-\end{align*}
+In this plot, there does seem to be non-constant variance,
+heteroscedasticity, which is perhaps nonlinear. The residuals 
+tend to be farthest from zero for the smallest and largest Yhat
+values.
+
+There is also some kind of artifact creating a straight line in 
+upper right hand corner of the graph. 
+
+** Create a normal plot from the values in the residuals vector.
+
+This plot asseses the residuals for normality. I used the ~qqnorm~
+and ~qqline~ functions. 
+
+#+BEGIN_SRC R :session *HW2* :exports code :results graphics :ouputs results :file HW2_4e.pdf
+qqnorm(err, ylab="Residuals", main="Normal Q-Q plot for Boston Housing Data Residuals")
+qqline(err)
+#+END_SRC
+
+#+CAPTION: Normal Q-Q Plot for Boston Housing data.
+#+NAME: fig:HW2-4e
+#+ATTR_LATEX: placement=[H]
+[[file:HW2_4e.pdf]]
+
+** Compute the sum of squared residulas and the corresponding estimates of \sigma^2
+
+\[ \hat{\sigma^2} =
+\frac{(\mathbf{Y}-\hat{\mathbf{Y}})'(\mathbf{Y}-\hat{\mathbf{Y}})}{n -
+\text{rank}(\mathbf{X})}
+\]
+
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+  sigsqhat <- t(err) %*% err / (dim(X)[1] - qr(X)$rank)
+  sigsqhat
+  #+END_SRC
+
+The estimate obtained for $\hat{\sigma^2}$ was 34.82387.
+
+** Call the lm function in R and confirm your answers,
+and note that ~?lm~ gives you various information such as the outputs
+of the function.
+
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw :tangle yes
+  ml = lm(medv~crim+nox+rm+age+dis, data=Boston)
+  summary(ml)
+  xtable(summary(ml))
+#+END_SRC
+
+
+Call:
+lm(formula = medv ~ crim + nox + rm + age + dis, data = Boston)
+
+\begin{table}[ht]
+\centering
+Residuals:\\
+\begin{tabular}{rrrrr}
+\hline
+    Min   &   1Q &   Median &      3Q  &     Max\\
+\hline 
+-18.313  & -2.917 &  -0.785 &   1.979 &  38.442 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+\centering
+Coefficients:\\
+\begin{tabular}{rrrrr}
+  \hline
+ & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
+  \hline
+(Intercept) & -6.2273 & 4.0147 & -1.55 & 0.1215 \\ 
+  crim & -0.2081 & 0.0340 & -6.11 & 0.0000 \\ 
+  nox & -18.0509 & 3.9471 & -4.57 & 0.0000 \\ 
+  rm & 7.7353 & 0.3954 & 19.56 & 0.0000 \\ 
+  age & -0.0666 & 0.0151 & -4.40 & 0.0000 \\ 
+  dis & -1.1910 & 0.2167 & -5.50 & 0.0000 \\ 
+   \hline
+\end{tabular}\\
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+\end{table}
+
+
+Residual standard error: 5.901 on 500 degrees of freedom
+Multiple R-squared:  0.5924,	Adjusted R-squared:  0.5883 
+F-statistic: 145.3 on 5 and 500 DF,  p-value: < 2.2e-16
+
+
+The coefficient estimates listed above are the same as those
+calculated earlier for betahat. Additionally the residual and fitted
+means are the same:
+
+#+BEGIN_SRC R :session *HW2* :exports both :results output :tangle yes
+head(ml$residuals - err)
+#+END_SRC 
+
+
+#+BEGIN_SRC R :session *HW2* :exports both :results output :tangle yes
+head(ml$fit - Yhat)
+#+END_SRC 
+
+
