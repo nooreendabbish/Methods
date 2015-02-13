@@ -1,4 +1,4 @@
-% Created 2015-02-12 Thu 14:17
+% Created 2015-02-12 Thu 21:25
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -314,7 +314,7 @@ lvector(W)
   0.33 & 0.00 & 0.00 & 0.00 & 0.33 \\ 
   \end{pmatrix}
 \]
-\subsubsection{Solving for $\hat{E(Y)}$: $\mathbf{U} = \mathbf{W\beta} + \mathbf{\epsilon}$ for $\hat{\mathbf{U}}$}
+\subsubsection{Solving for $\widehat{E(\mathbf{Y})}$: $\mathbf{U} = \mathbf{W\beta} + \mathbf{\epsilon}$ for $\hat{\mathbf{U}}$}
 \label{sec-2-1-1}
 
 
@@ -364,7 +364,7 @@ lvector(Yhat)
   3.20 \\ 
   \end{pmatrix}
 \]
-\subsubsection{Solving for $\widehat{\mathbf{C}'\beta}$ given by:}
+\subsubsection{Solving for $\widehat{\mathbf{C}\beta}$ given by:}
 \label{sec-2-1-2}
 
 
@@ -377,7 +377,7 @@ lvector(Yhat)
 \end{pmatrix}\mathbf{\beta}
 \]
 
-We have $\widehat{\mathbf{C'\beta}} = \mathbf{C}'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
+We have $\widehat{\mathbf{C\beta}} = \mathbf{C}(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
 
 
 \begin{verbatim}
@@ -387,7 +387,7 @@ lvector(CTBetahat)
 \end{verbatim}
 
 \[
-\widehat{\mathbf{C}'\mathbf{\beta}} =
+\widehat{\mathbf{C}\mathbf{\beta}} =
 % latex table generated in R 3.0.2 by xtable 1.7-4 package
 % Wed Feb 11 22:43:35 2015
 \begin{pmatrix}{}
@@ -434,6 +434,14 @@ into OLS as above.
      
 
 \begin{verbatim}
+V <- diag(c(1,9,9,1,1,9))
+V[1,2] <- 1
+V[2,1] <- 1
+V[4,3] <- -1
+V[3,4] <- -1
+V[6,5] <- -1
+V[5,6] <- -1
+
 Dh <- diag(sqrt(eigen(V)$values))
 C <- eigen(V)$vectors 
 Vh <- C %*% Dh %*% t(C)
@@ -449,7 +457,7 @@ X <- matrix(c(rep(1,6),
               0,0,0,0,1,1),nrow = 6,byrow=FALSE)
 Xp <- Vhi %*% X
 
-
+library(MASS)
 Yphat <- Xp %*% ginv(t(Xp) %*% Xp) %*% t(Xp) %*% Yp
 Yhat <- (Vh)%*%Yphat
 lvector(Yhat)
@@ -459,7 +467,7 @@ CTBetahat <- CT %*% ginv(t(Xp)%*%Xp) %*% t(Xp) %*% Yp
 lvector(CTBetahat)
 \end{verbatim}
 
-Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}$ are:
+Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C\beta}$ are:
 
 \[
 \widehat{E(\mathbf{Y})} =
@@ -470,7 +478,7 @@ Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}$ are:
   6.00 \\ 
   3.33 \\ 
   3.33 \\ 
-  \end{pmatrix}\,\,\mathrm{and}\,\,\widehat{\mathbf{C'\beta}} =
+  \end{pmatrix}\,\,\mathrm{and}\,\,\widehat{\mathbf{C\beta}} =
 \begin{pmatrix}{}
   2.00 \\ 
   4.00 \\ 
@@ -677,7 +685,8 @@ value  Y response value was censored at \$50,000.
 
 
 This plot asseses the residuals for normality. I used the \verb~qqnorm~
-and \verb~qqline~ functions. 
+and \verb~qqline~ functions. Here the error/residual quantiles are plotted 
+against the theorhetical quantiles for the normal(0,$\sigma$$^2$) assumption.
 
 
 \begin{verbatim}
@@ -690,6 +699,11 @@ qqline(err)
 \includegraphics[width=0.7\textwidth]{HW2_4e.pdf}
 \caption{Normal Q-Q Plot for Boston Housing data.}
 \end{figure}
+
+While the Q-Q plot is linear for the central values, the largest and
+smallest residuals deviate significantly. This suggests that our
+underlying assumption that the errors are normally distributed may
+be incorrect.
 \subsection{Compute the sum of squared residulas and the corresponding estimates of $\sigma$$^2$}
 \label{sec-4-6}
 
@@ -793,5 +807,11 @@ head(ml$fit - Yhat)
  5 -7.077006e-12
  6 -1.175948e-12
 \end{verbatim}
+\section{Appendix: Tangled R code}
+\label{sec-5}
+
+
+
+\lstinputlisting{HW2c.R}
 
 \end{document}

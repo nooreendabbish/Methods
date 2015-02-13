@@ -292,7 +292,7 @@ Checking *W* in R gives:
   \end{pmatrix}
 \]
 
-*** Solving for $\hat{E(Y)}$: $\mathbf{U} = \mathbf{W\beta} + \mathbf{\epsilon}$ for $\hat{\mathbf{U}}$  
+*** Solving for $\widehat{E(\mathbf{Y})}$: $\mathbf{U} = \mathbf{W\beta} + \mathbf{\epsilon}$ for $\hat{\mathbf{U}}$  
 
 \begin{align*}
 \hat{\mathbf{U}} &=
@@ -339,7 +339,7 @@ lvector(Yhat)
   \end{pmatrix}
 \]
 
-*** Solving for $\widehat{\mathbf{C}'\beta}$ given by:
+*** Solving for $\widehat{\mathbf{C}\beta}$ given by:
 
 \[
 \begin{pmatrix}
@@ -350,7 +350,7 @@ lvector(Yhat)
 \end{pmatrix}\mathbf{\beta}
 \]
 
-We have $\widehat{\mathbf{C'\beta}} = \mathbf{C}'(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
+We have $\widehat{\mathbf{C\beta}} = \mathbf{C}(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{U}$
 
 #+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
   CT <- matrix(c(1,1,0,0,0,1,0,1,0,0,1,0,0,1,0,1,0,0,0,1), nrow=4,ncol=5, byrow=T)
@@ -359,7 +359,7 @@ We have $\widehat{\mathbf{C'\beta}} = \mathbf{C}'(\mathbf{W}'\mathbf{W})^{-}\mat
 #+END_SRC
 
 \[
-\widehat{\mathbf{C}'\mathbf{\beta}} =
+\widehat{\mathbf{C}\mathbf{\beta}} =
 % latex table generated in R 3.0.2 by xtable 1.7-4 package
 % Wed Feb 11 22:43:35 2015
 \begin{pmatrix}{}
@@ -394,7 +394,7 @@ Here, we used a method similar to the one shown above, except
 employed the use of the Cholesky Decompostion of V into a "square root."
 
 
-#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle no
   V <- diag(c(1,9,9,1,1,9))
   V[1,2] <- 1
   V[2,1] <- 1
@@ -459,7 +459,15 @@ The a square root matrix $\mathbf{V_2}^{1/2}$ can be found as follows:
 We will use the square root as above to transform the GLS equations
 into OLS as above.
      
-#+BEGIN_SRC R :session *HW2* :exports code :reults none :tangle yes
+#+BEGIN_SRC R :session *HW2* :exports code :results none :tangle yes
+  V <- diag(c(1,9,9,1,1,9))
+  V[1,2] <- 1
+  V[2,1] <- 1
+  V[4,3] <- -1
+  V[3,4] <- -1
+  V[6,5] <- -1
+  V[5,6] <- -1
+
   Dh <- diag(sqrt(eigen(V)$values))
   C <- eigen(V)$vectors 
   Vh <- C %*% Dh %*% t(C)
@@ -475,7 +483,7 @@ into OLS as above.
                 0,0,0,0,1,1),nrow = 6,byrow=FALSE)
   Xp <- Vhi %*% X
   
-  
+  library(MASS)
   Yphat <- Xp %*% ginv(t(Xp) %*% Xp) %*% t(Xp) %*% Yp
   Yhat <- (Vh)%*%Yphat
   lvector(Yhat)
@@ -485,7 +493,9 @@ into OLS as above.
   lvector(CTBetahat)
 #+END_SRC
 
-Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}$ are:
+#+RESULTS:
+
+Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C\beta}$ are:
 
 \[
 \widehat{E(\mathbf{Y})} =
@@ -496,7 +506,7 @@ Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}$ are:
   6.00 \\ 
   3.33 \\ 
   3.33 \\ 
-  \end{pmatrix}\,\,\mathrm{and}\,\,\widehat{\mathbf{C'\beta}} =
+  \end{pmatrix}\,\,\mathrm{and}\,\,\widehat{\mathbf{C\beta}} =
 \begin{pmatrix}{}
   2.00 \\ 
   4.00 \\ 
@@ -504,6 +514,7 @@ Results obtained for $\widehat{E(\mathbf{Y})}$ and $\widehat{C'\beta}$ are:
   3.33 \\ 
   \end{pmatrix}
 \]
+
 
 * The lm function in R allows one to do weighted least squares
  with the form $\sum w_i(y_i-\hat{y}_i)^2$ for positive weights $w_i$.
@@ -688,7 +699,8 @@ value  Y response value was censored at $50,000.
 ** Create a normal plot from the values in the residuals vector.
 
 This plot asseses the residuals for normality. I used the ~qqnorm~
-and ~qqline~ functions. 
+and ~qqline~ functions. Here the error/residual quantiles are plotted 
+against the theorhetical quantiles for the normal(0,\sigma^2) assumption.
 
 #+BEGIN_SRC R :session *HW2* :exports code :results graphics :ouputs results :file HW2_4e.pdf
 qqnorm(err, ylab="Residuals", main="Normal Q-Q plot for Boston Housing Data Residuals")
@@ -699,6 +711,11 @@ qqline(err)
 #+NAME: fig:HW2-4e
 #+ATTR_LATEX: placement=[H]
 [[file:HW2_4e.pdf]]
+
+While the Q-Q plot is linear for the central values, the largest and
+smallest residuals deviate significantly. This suggests that our
+underlying assumption that the errors are normally distributed may
+be incorrect.
 
 ** Compute the sum of squared residulas and the corresponding estimates of \sigma^2
 
@@ -776,5 +793,12 @@ head(ml$residuals - err)
 #+BEGIN_SRC R :session *HW2* :exports both :results output :tangle yes
 head(ml$fit - Yhat)
 #+END_SRC 
+
+
+
+* Appendix: Tangled R code
+
+
+\lstinputlisting{HW2c.R}
 
 
