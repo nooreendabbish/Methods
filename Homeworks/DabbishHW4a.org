@@ -1,0 +1,78 @@
+#+TITLE: 8004 Homework 4
+#+AUTHOR: Nooreen Dabbish
+#+EMAIL: nerd@temple.edu
+#+LATEX_HEADER: \usepackage{methodshw}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+OPTIONS: toc:nil
+
+# Code to input variables, libraries, and commonly used functions:
+#+NAME: common
+#+BEGIN_SRC R :session *HW4* :exports none :tangle yes
+library(MASS); library(xtable)
+  lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+   x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+   print(x, floating=FALSE, tabular.environment="pmatrix", 
+     hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+   }
+
+#Variables from Problem 2 of HW3:
+  V1 <- diag(c(1,9,9,1,1,9))
+  Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+  X <- matrix(c(rep(1,6),
+                1,1,0,0,0,0,
+                0,0,1,0,0,0,
+                0,0,0,1,0,0,
+                0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+
+  V2 <- diag(c(1,9,9,1,1,9))
+  V2[1,2] <- 1
+  V2[2,1] <- 1
+  V2[4,3] <- -1
+  V2[3,4] <- -1
+  V2[6,5] <- -1
+  V2[5,6] <- -1
+
+#+END_SRC
+
+* Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model
+
+** Find 90% two-sided confidence limits for \sigma.
+** Find 90% two-sided confidence limits for \mu + \tau_2.
+
+** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
+
+** Find a /p/-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs /H_a/ : not /H_0/.
+
+** Find 90% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.
+
+** Find 90% two-sided prediction limints for the difference between a pair of future values, one from the first set of conditions (i.e. with mean \mu + \tau_1) and one from the second set of conditions (i.e. with mean \mu + \tau_2).
+
+** Find a /p/-value for testing the following: What is the practical interpretation of this test?   
+\( H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 1 & 0 & -1 & 0 \\ 0 & 1 & 0 & 0 & -1 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}. \) 
+** Find a /p/-value for testing:
+\(H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 0 & 1 & -1 & 0 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
+* Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of /y/ on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.
+** Find 90% two-sided condifence limits for \sigma.
+
+
+
+
+
+** Find 90% two-sided condifence limits for the mean response under the conditions of data point #1.
+
+** Find 90% two-sided condifence limits for the difference in mean responses under the conditions of data points #1 and #2. .
+
+** Find a /p/-value for testing the hypothesis that the conditions of data points #1 and #2 produce the same mean response.
+** Find 90% two-sided prediction limits for an additional response for the set of conditions $x_1 = 0.005, x_2 = 0.45, x_3 = 7, x_4 = 45,$ and $x_5 = 6$.
+** Find a /p/-value for testing the hypothesis that a model including only /x_1/, /x_3/, and /x_5/ is adequare for "explaining" home price. (Hint: write it in the form of /H_0/ : *C\beta = 0*).
+* Problem 3
+** In the context of Problem 1, part g), suppose that in fact \tau_1 = \tau_2, \tau_3 = \tau_4 = \tau_1 - d\sigma. What is the distribution of the F statistic?
+** Use R to plot the power of the \alpha = 0.05 level test as a function of /d/ for /d/ \in [-5,5], that is plotting /P/ (F > the cut-off value) against /d/. The R function pf(q,df1,df2,ncp) will compute cumulative (non-central) F probabilities for you corresponding to the value q, for degrees of freedom df1 and df2 when the noncentrality parameter is ncp.
+
+\newpage
+* Appendix: Tangled R code
+
+
+\lstinputlisting{DabbishHW4a.R}
+
+
