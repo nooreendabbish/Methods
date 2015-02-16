@@ -37,19 +37,175 @@ library(MASS); library(xtable)
 * Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model
 
 ** Find 90% two-sided confidence limits for \sigma.
-** Find 90% two-sided confidence limits for \mu + \tau_2.
 
-** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
+*** Background
 
-** Find a /p/-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs /H_a/ : not /H_0/.
+The model described in HW3, Problem 2 in 
+$\mathbf{Y}=\mathbf{X\beta}+\epsilon$ matrix form is:
 
-** Find 90% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.
+\[
+\begin{pmatrix}
+y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
+\end{pmatrix} = 
+\begin{pmatrix} 
+2\\ 1\\ 4\\ 6\\ 3\\ 5
+\end{pmatrix} = 
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 & 1 \\
+\end{pmatrix}  
+\begin{pmatrix}
+\mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 
+\end{pmatrix} + 
+\begin{pmatrix}
+\epsilon_{11} \\ \epsilon_{12}\\ \epsilon_{21}\\ \epsilon_{31}\\ \epsilon_{41}\\ \epsilon_{42}
+\end{pmatrix}
+\]
 
-** Find 90% two-sided prediction limints for the difference between a pair of future values, one from the first set of conditions (i.e. with mean \mu + \tau_1) and one from the second set of conditions (i.e. with mean \mu + \tau_2).
+Also, we are given that var(\epsilon)= *V*, for *V_1* =
+diag(1,9,9,1,1,9) and \( \mathbf{V_2} = \begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 9 & 0 & 0 & 0 & 0 \\
+0 & 0 & 9 & -1& 0 & 0 \\
+0 & 0 & -1& 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & -1 \\
+0 & 0 & 0 & 0 & -1 & 9
+\end{pmatrix} \).
 
-** Find a /p/-value for testing the following: What is the practical interpretation of this test?   
+We have $\mathbf{Y} \sim N_n(\mathbf{X\beta},\sigma^2\mathbf{V})$. To
+find a suitable estimator for \sigma^2, first transform the
+Generalized Least Squares model into an Ordinary Least Squares model
+by multiplying by *V^{-1/2}*. This gives *U* + *W\beta* =
+$\epsilon^{\star}$, where *U* = *V^{-1/2} Y*, *W* = *V^{-1/2} X*, and
+$\epsilon^{\star}$ = *V^{-1/2} \epsilon*. Note that $\mathbf{U} \sim
+N_n(\mathbf{W\beta}, \sigma^2 \mathbf{I})$. 
+
+Now find an estimator for \sigma^2 for use in construction of the
+confidence interval using the variance of *U*. var(*U*) = \sigma^2 *I*
+= E(*U* - E(*U*))^2 = E(*U* - *WB*)^2. First observe the distribution
+of $\mathbf{U} - \hat{\mathbf{U}} \sim$ N_n(*0*, \sigma^2 *I*). 
+Consider $$ \frac{SSE}{\sigma^2} =
+\frac{(\mathbf{U}-\hat{\mathbf{U}})'(\mathbf{U}-\hat{\mathbf{U}})}{\sigma^2}
+=\frac{1}{\sigma^2}
+((\mathbf{I}-\mathbf{P_W})\mathbf{U})'((\mathbf{I}-\mathbf{P_W})\mathbf{U})
+= \frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
+\mathbf{P_W})\mathbf{U}$$
+Note that the product of $\frac{1}{\sigma^2}(\mathbf{I} -
+\mathbf{P_W})$ and $cov(\mathbf{U}) = \sigma^2 \mathbf{I}$ is $\mathbf{U} - \hat{\mathbf{U}}$
+is  $\frac{1}{\sigma^2}(\mathbf{I} -
+\mathbf{P_W}) \sigma^2 \mathbf{I} = (\mathbf{I} - \mathbf{P_W})$.
+The result is a projection matrix orthogonal to C(*W*). It is also
+idempotent, a property of all projection matrices which can also be
+shown: (*I* - *P_W*)(*I* - *P_W*) = *I* - *I P_W* - *P_W I* + *P_W
+P_W* = *I* - *P_W*. Further rank(*I-P_W*)=n-rank(*W*)
+
+The following theorem applies to the  quadratic form $\frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
+\mathbf{P_W})\mathbf{U}$ and shows that it is distributed
+$\chi^2((n-rank(*W*))$.
+
+\begin{theorem} \label{quadnormchisq}
+Let \textbf{y} be distributed N_p($\mathbf{\mu}$, $\mathbf{\Sigma}$), \textbf{A} be a symmetric matric of constants, rank(\textbf{A})=r, and define $\lambda = \frac{1}{2} \mathbf{\mu'A\mu}$.
+Then, \textbf{y'Ay} follows $\chi^2(r,\lambda)$ if and only if $\mathbf{A\Sigma}$ is idempotent.
+\end{theorem}
+
+Here, *y* = *U*, *\mu* = *W\beta*, *\Sigma* = \sigma^2 *I*, *A* =
+$\frac{1}{\sigma^2}(\mathbf{I} - \mathbf{P_W})$, and $\lambda =
+\frac{1}{2 \sigma^2} \beta'\mathbf{W}'(\mathbf{I} -\mathbf{P_W})\mathbf{W\beta} = \mathbf{0}$. 
+
+To find two-sided 90% confidence limits for \sigma^2, we note SSE
+= *U'(I-P_W)U* and write:
+
+1 - \alpha = P(lower $\frac{\alpha}{2}$ quantile of \chi^2(n-rank(*W*)) <
+$\frac{SSE}{\sigma^2}$ < upper $\frac{\alpha}{2}$ quantile of \chi^2(n-rank(*W*)))
+
+.90 = P(lower .05 quantile of \chi^2(n-rank(*W*)) <
+$\frac{SSE}{\sigma^2}$ < upper .05 quantile of \chi^2(n-rank(*W*)))
+
+Solving for an interval for \sigma^2, we have:
+
+.90 = P($\frac{SSE}{\text{upper .05 quantile of
+}\chi^2(n-\text{rank}(\mathbf{W}))}$ < \sigma^2 <
+$\frac{SSE}{\text{lower .05 quantile of
+}\chi^2(n-\text{rank}(\mathbf{W}))}$))
+
+
+
+
+*** Interval for \sigma^2 using *V_1*
+
+#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
+  #Find V^(-1/2)
+  Vh1 <-solve(V1^(1/2))
+
+  #Transform model to OLS
+  U <- Vh1 %*% Y
+  W <- Vh1 %*% X
+  
+  Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+  
+  SSE <- t(U-Uhat) %*% (U-Uhat)
+  
+  qr(W)$rank
+  
+  lowerchi <- qchisq(.05, df=4)
+  upperchi <- qchisq(.95, df=4)
+  
+  SSE/lowerchi
+  SSE/upperchi
+#+END_SRC
+
+For the covariance matrix *V_1* given in HW3 problem 2, we found an
+SSE of SRC_R[ :session *HW4*]{SSE} and two-sided 90% confidence
+limits for \sigma^2 of SRC_R[ :session *HW4*]{round(SSE/upperchi,4)} <
+\sigma^2 < SRC_R[ :session *HW4*]{round(SSE/lowerchi,4)}.
+
+*** Interval for \sigma^2 using *V_2*
+
+#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
+  #Find V^(-1/2) using spectral decompostion
+  Vh2 <-solve(eigen(V2)$vectors %*% diag(sqrt(eigen(V2)$values)) %*% t(eigen(V2)$vectors))
+  
+  #Transform model to OLS
+  U <- Vh2 %*% Y
+  W <- Vh2 %*% X
+  
+  Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+  
+  SSE <- t(U-Uhat) %*% (U-Uhat)
+  
+  qr(W)$rank
+  
+  lowerchi <- qchisq(.05, df=4)
+  upperchi <- qchisq(.95, df=4)
+  
+  
+#+END_SRC
+
+For the covariance matrix *V_2* given in HW3 problem 2, we found an
+SSE of SRC_R[ :session *HW4*]{round(SSE,4)} and two-sided 90% confidence
+limits for \sigma^2 of SRC_R[ :session *HW4*]{round(SSE/upperchi,4)} <
+\sigma^2 < SRC_R[ :session *HW4*]{round(SSE/lowerchi,4)}.
+
+
+
+
+**** Find 90% two-sided confidence limits for \mu + \tau_2.
+
+**** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
+
+**** Find a /p/-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs /H_a/ : not /H_0/.
+
+**** Find 90% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.
+
+**** Find 90% two-sided prediction limints for the difference between a pair of future values, one from the first set of conditions (i.e. with mean \mu + \tau_1) and one from the second set of conditions (i.e. with mean \mu + \tau_2).
+
+**** Find a /p/-value for testing the following: What is the practical interpretation of this test?   
 \( H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 1 & 0 & -1 & 0 \\ 0 & 1 & 0 & 0 & -1 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}. \) 
-** Find a /p/-value for testing:
+**** Find a /p/-value for testing:
 \(H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 0 & 1 & -1 & 0 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
 * Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of /y/ on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.
 ** Find 90% two-sided condifence limits for \sigma.

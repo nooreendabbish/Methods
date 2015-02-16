@@ -1,0 +1,252 @@
+% Created 2015-02-15 Sun 22:01
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{methodshw}
+\usepackage{booktabs}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{8004 Homework 4}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model}
+\label{sec-1}
+\subsection{Find 90\% two-sided confidence limits for $\sigma$.}
+\label{sec-1-1}
+\subsubsection{Background}
+\label{sec-1-1-1}
+
+
+The model described in HW3, Problem 2 in 
+$\mathbf{Y}=\mathbf{X\beta}+\epsilon$ matrix form is:
+
+\[
+\begin{pmatrix}
+y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
+\end{pmatrix} = 
+\begin{pmatrix} 
+2\\ 1\\ 4\\ 6\\ 3\\ 5
+\end{pmatrix} = 
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 & 1 \\
+\end{pmatrix}  
+\begin{pmatrix}
+\mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 
+\end{pmatrix} + 
+\begin{pmatrix}
+\epsilon_{11} \\ \epsilon_{12}\\ \epsilon_{21}\\ \epsilon_{31}\\ \epsilon_{41}\\ \epsilon_{42}
+\end{pmatrix}
+\]
+
+Also, we are given that var($\epsilon$)= \textbf{V}, for \textbf{V$_1$} =
+diag(1,9,9,1,1,9) and \( \mathbf{V_2} = \begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 0 \\
+1 & 9 & 0 & 0 & 0 & 0 \\
+0 & 0 & 9 & -1& 0 & 0 \\
+0 & 0 & -1& 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & -1 \\
+0 & 0 & 0 & 0 & -1 & 9
+\end{pmatrix} \).
+
+We have $\mathbf{Y} \sim N_n(\mathbf{X\beta},\sigma^2\mathbf{V})$. To
+find a suitable estimator for $\sigma$$^2$, first transform the
+Generalized Least Squares model into an Ordinary Least Squares model
+by multiplying by \textbf{V$^{\mathrm{-1/2}}$}. This gives \textbf{U} + \textbf{W$\beta$} =
+$\epsilon^{\star}$, where \textbf{U} = \textbf{V$^{\mathrm{-1/2}}$ Y}, \textbf{W} = \textbf{V$^{\mathrm{-1/2}}$ X}, and
+$\epsilon^{\star}$ = \textbf{V$^{\mathrm{-1/2}}$ $\epsilon$}. Note that $\mathbf{U} \sim
+N_n(\mathbf{W\beta}, \sigma^2 \mathbf{I})$. 
+
+Now find an estimator for $\sigma$$^2$ for use in construction of the
+confidence interval using the variance of \textbf{U}. var(\textbf{U}) = $\sigma$$^2$ \textbf{I}
+= E(\textbf{U} - E(\textbf{U}))$^2$ = E(\textbf{U} - \textbf{WB})$^2$. First observe the distribution
+of $\mathbf{U} - \hat{\mathbf{U}} \sim$ N$_n$(\textbf{0}, $\sigma$$^2$ \textbf{I}). 
+Consider $$ \frac{SSE}{\sigma^2} =
+\frac{(\mathbf{U}-\hat{\mathbf{U}})'(\mathbf{U}-\hat{\mathbf{U}})}{\sigma^2}
+=\frac{1}{\sigma^2}
+((\mathbf{I}-\mathbf{P_W})\mathbf{U})'((\mathbf{I}-\mathbf{P_W})\mathbf{U})
+= \frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
+\mathbf{P_W})\mathbf{U}$$
+Note that the product of $\frac{1}{\sigma^2}(\mathbf{I} -
+\mathbf{P_W})$ and $cov(\mathbf{U}) = \sigma^2 \mathbf{I}$ is $\mathbf{U} - \hat{\mathbf{U}}$
+is  $\frac{1}{\sigma^2}(\mathbf{I} -
+\mathbf{P_W}) \sigma^2 \mathbf{I} = (\mathbf{I} - \mathbf{P_W})$.
+The result is a projection matrix orthogonal to C(\textbf{W}). It is also
+idempotent, a property of all projection matrices which can also be
+shown: (\textbf{I} - \textbf{P$_W$})(\textbf{I} - \textbf{P$_W$}) = \textbf{I} - \textbf{I P$_W$} - \textbf{P$_W$ I} + \textbf{P$_W$ P$_W$} = \textbf{I} - \textbf{P$_W$}. Further rank(\textbf{I-P$_W$})=n-rank(\textbf{W})
+
+The following theorem applies to the  quadratic form $\frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
+\mathbf{P_W})\mathbf{U}$ and shows that it is distributed
+$\chi^2((n-rank(*W*))$.
+
+\begin{theorem} \label{quadnormchisq}
+Let \textbf{y} be distributed N_p($\mathbf{\mu}$, $\mathbf{\Sigma}$), \textbf{A} be a symmetric matric of constants, rank(\textbf{A})=r, and define $\lambda = \frac{1}{2} \mathbf{\mu'A\mu}$.
+Then, \textbf{y'Ay} follows $\chi^2(r,\lambda)$ if and only if $\mathbf{A\Sigma}$ is idempotent.
+\end{theorem}
+
+Here, \textbf{y} = \textbf{U}, \textbf{$\mu$} = \textbf{W$\beta$}, \textbf{$\Sigma$} = $\sigma$$^2$ \textbf{I}, \textbf{A} =
+$\frac{1}{\sigma^2}(\mathbf{I} - \mathbf{P_W})$, and $\lambda =
+\frac{1}{2 \sigma^2} \beta'\mathbf{W}'(\mathbf{I} -\mathbf{P_W})\mathbf{W\beta} = \mathbf{0}$. 
+
+To find two-sided 90\% confidence limits for $\sigma$$^2$, we note SSE
+= \textbf{U'(I-P$_W$)U} and write:
+
+1 - $\alpha$ = P(lower $\frac{\alpha}{2}$ quantile of $\chi$$^2$(n-rank(\textbf{W})) <
+$\frac{SSE}{\sigma^2}$ < upper $\frac{\alpha}{2}$ quantile of $\chi$$^2$(n-rank(\textbf{W})))
+
+.90 = P(lower .05 quantile of $\chi$$^2$(n-rank(\textbf{W})) <
+$\frac{SSE}{\sigma^2}$ < upper .05 quantile of $\chi$$^2$(n-rank(\textbf{W})))
+
+Solving for an interval for $\sigma$$^2$, we have:
+
+.90 = P($\frac{SSE}{\text{upper .05 quantile of
+}\chi^2(n-\text{rank}(\mathbf{W}))}$ < $\sigma$$^2$ <
+$\frac{SSE}{\text{lower .05 quantile of
+}\chi^2(n-\text{rank}(\mathbf{W}))}$))
+\subsubsection{Interval for $\sigma$$^2$ using \textbf{V$_1$}}
+\label{sec-1-1-2}
+
+
+
+\begin{verbatim}
+#Find V^(-1/2)
+Vh1 <-solve(V1^(1/2))
+
+#Transform model to OLS
+U <- Vh1 %*% Y
+W <- Vh1 %*% X
+
+Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+
+SSE <- t(U-Uhat) %*% (U-Uhat)
+
+qr(W)$rank
+
+lowerchi <- qchisq(.05, df=4)
+upperchi <- qchisq(.95, df=4)
+
+SSE/lowerchi
+SSE/upperchi
+\end{verbatim}
+
+For the covariance matrix \textbf{V$_1$} given in HW3 problem 2, we found an
+SSE of \texttt{0.5} and two-sided 90\% confidence
+limits for $\sigma$$^2$ of \texttt{0.0527} <
+$\sigma$$^2$ < \texttt{0.7035}.
+\subsubsection{Interval for $\sigma$$^2$ using \textbf{V$_2$}}
+\label{sec-1-1-3}
+
+
+
+\begin{verbatim}
+#Find V^(-1/2) using spectral decompostion
+Vh2 <-solve(eigen(V2)$vectors %*% diag(sqrt(eigen(V2)$values)) %*% t(eigen(V2)$vectors))
+
+#Transform model to OLS
+U <- Vh2 %*% Y
+W <- Vh2 %*% X
+
+Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+
+SSE <- t(U-Uhat) %*% (U-Uhat)
+
+qr(W)$rank
+
+lowerchi <- qchisq(.05, df=4)
+upperchi <- qchisq(.95, df=4)
+\end{verbatim}
+
+For the covariance matrix \textbf{V$_2$} given in HW3 problem 2, we found an
+SSE of \texttt{0.458333333333332} and two-sided 90\% confidence
+limits for $\sigma$$^2$ of \texttt{0.0483} <
+$\sigma$$^2$ < \texttt{0.6449}.
+\begin{itemize}
+
+\item Find 90\% two-sided confidence limits for $\mu$ + $\tau$$_2$.
+\label{sec-1-1-3-1}%
+
+
+\item Find 90\% two-sided confidence limits for $\tau$$_1$ - $\tau$$_2$.
+\label{sec-1-1-3-2}%
+
+
+\item Find a \emph{p}-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs \emph{H$_a$} : not \emph{H$_0$}.
+\label{sec-1-1-3-3}%
+
+
+\item Find 90\% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.
+\label{sec-1-1-3-4}%
+
+
+\item Find 90\% two-sided prediction limints for the difference between a pair of future values, one from the first set of conditions (i.e. with mean $\mu$ + $\tau$$_1$) and one from the second set of conditions (i.e. with mean $\mu$ + $\tau$$_2$).
+\label{sec-1-1-3-5}%
+
+
+\item Find a \emph{p}-value for testing the following: What is the practical interpretation of this test?\\
+\label{sec-1-1-3-6}%
+\( H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 1 & 0 & -1 & 0 \\ 0 & 1 & 0 & 0 & -1 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}. \) 
+
+\item Find a \emph{p}-value for testing:\\
+\label{sec-1-1-3-7}%
+\(H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 0 & 1 & -1 & 0 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
+\end{itemize} % ends low level
+\section{Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of \emph{y} on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.}
+\label{sec-2}
+\subsection{Find 90\% two-sided condifence limits for $\sigma$.}
+\label{sec-2-1}
+\subsection{Find 90\% two-sided condifence limits for the mean response under the conditions of data point \#1.}
+\label{sec-2-2}
+\subsection{Find 90\% two-sided condifence limits for the difference in mean responses under the conditions of data points \#1 and \#2. .}
+\label{sec-2-3}
+\subsection{Find a \emph{p}-value for testing the hypothesis that the conditions of data points \#1 and \#2 produce the same mean response.}
+\label{sec-2-4}
+\subsection{Find 90\% two-sided prediction limits for an additional response for the set of conditions \$x$_1$ = 0.005, x$_2$ = 0.45, x$_3$ = 7, x$_4$ = 45,\$ and $x_5 = 6$.}
+\label{sec-2-5}
+\subsection{Find a \emph{p}-value for testing the hypothesis that a model including only \emph{x$_1$}, \emph{x$_3$}, and \emph{x$_5$} is adequare for ``explaining'' home price. (Hint: write it in the form of \emph{H$_0$} : \textbf{C$\beta$ = 0}).}
+\label{sec-2-6}
+\section{Problem 3}
+\label{sec-3}
+\subsection{In the context of Problem 1, part g), suppose that in fact $\tau$$_1$ = $\tau$$_2$, $\tau$$_3$ = $\tau$$_4$ = $\tau$$_1$ - d$\sigma$. What is the distribution of the F statistic?}
+\label{sec-3-1}
+\subsection{Use R to plot the power of the $\alpha$ = 0.05 level test as a function of \emph{d} for \emph{d} $\in$ [-5,5], that is plotting \emph{P} (F > the cut-off value) against \emph{d}. The R function pf(q,df1,df2,ncp) will compute cumulative (non-central) F probabilities for you corresponding to the value q, for degrees of freedom df1 and df2 when the noncentrality parameter is ncp.}
+\label{sec-3-2}
+
+
+\newpage
+\section{Appendix: Tangled R code}
+\label{sec-4}
+
+
+
+\lstinputlisting{DabbishHW4a.R}
+
+\end{document}
