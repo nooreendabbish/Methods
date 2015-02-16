@@ -22,3 +22,38 @@ library(MASS); library(xtable)
   V2[3,4] <- -1
   V2[6,5] <- -1
   V2[5,6] <- -1
+
+#Find V^(-1/2)
+Vh1 <-solve(V1^(1/2))
+
+#Transform model to OLS
+U <- Vh1 %*% Y
+W <- Vh1 %*% X
+
+Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+
+SSE <- t(U-Uhat) %*% (U-Uhat)
+
+qr(W)$rank
+
+lowerchi <- qchisq(.05, df=4)
+upperchi <- qchisq(.95, df=4)
+
+SSE/lowerchi
+SSE/upperchi
+
+#Find V^(-1/2) using spectral decompostion
+Vh2 <-solve(eigen(V2)$vectors %*% diag(sqrt(eigen(V2)$values)) %*% t(eigen(V2)$vectors))
+
+#Transform model to OLS
+U <- Vh2 %*% Y
+W <- Vh2 %*% X
+
+Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+
+SSE <- t(U-Uhat) %*% (U-Uhat)
+
+qr(W)$rank
+
+lowerchi <- qchisq(.05, df=4)
+upperchi <- qchisq(.95, df=4)

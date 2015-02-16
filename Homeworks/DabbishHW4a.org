@@ -191,8 +191,6 @@ limits for \sigma^2 of SRC_R[ :session *HW4*]{round(SSE/upperchi,4)} <
 \sigma^2 < SRC_R[ :session *HW4*]{round(SSE/lowerchi,4)}.
 
 
-
-
 **** Find 90% two-sided confidence limits for \mu + \tau_2.
 
 **** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
