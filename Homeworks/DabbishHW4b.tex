@@ -1,4 +1,4 @@
-% Created 2015-02-18 Wed 18:55
+% Created 2015-02-18 Wed 19:08
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -38,10 +38,6 @@
 \label{sec-1}
 \subsection{Find 90\% two-sided confidence limits for $\sigma$.}
 \label{sec-1-1}
-\subsubsection{Background}
-\label{sec-1-1-1}
-\label{OLSsigsq}
-
 
 
 The model described in HW3, Problem 2 in 
@@ -70,130 +66,10 @@ y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
 \end{pmatrix}
 \]
 
-Also, we are given that var($\epsilon$)= \textbf{V}, for \textbf{V$_1$} =
-diag(1,9,9,1,1,9) and \( \mathbf{V_2} = \begin{pmatrix}
-1 & 1 & 0 & 0 & 0 & 0 \\
-1 & 9 & 0 & 0 & 0 & 0 \\
-0 & 0 & 9 & -1& 0 & 0 \\
-0 & 0 & -1& 1 & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 & -1 \\
-0 & 0 & 0 & 0 & -1 & 9
-\end{pmatrix} \).
-
-We have $\mathbf{Y} \sim N_n(\mathbf{X\beta},\sigma^2\mathbf{V})$. To
-find a suitable estimator for $\sigma$$^2$, first transform the
-Generalized Least Squares model into an Ordinary Least Squares model
-by multiplying by \textbf{V$^{\mathrm{-1/2}}$}. This gives \textbf{U} + \textbf{W$\beta$} =
-$\epsilon^{\star}$, where \textbf{U} = \textbf{V$^{\mathrm{-1/2}}$ Y}, \textbf{W} = \textbf{V$^{\mathrm{-1/2}}$ X}, and
-$\epsilon^{\star}$ = \textbf{V$^{\mathrm{-1/2}}$ $\epsilon$}. Note that $\mathbf{U} \sim
-N_n(\mathbf{W\beta}, \sigma^2 \mathbf{I})$. 
-
-Now find an estimator for $\sigma$$^2$ for use in construction of the
-confidence interval using the variance of \textbf{U}. var(\textbf{U}) = $\sigma$$^2$ \textbf{I}
-= E(\textbf{U} - E(\textbf{U}))$^2$ = E(\textbf{U} - \textbf{WB})$^2$. First observe the distribution
-of $\mathbf{U} - \hat{\mathbf{U}} \sim$ N$_n$(\textbf{0}, $\sigma$$^2$ \textbf{I}). 
-Consider $$ \frac{SSE}{\sigma^2} =
-\frac{(\mathbf{U}-\hat{\mathbf{U}})'(\mathbf{U}-\hat{\mathbf{U}})}{\sigma^2}
-=\frac{1}{\sigma^2}
-((\mathbf{I}-\mathbf{P_W})\mathbf{U})'((\mathbf{I}-\mathbf{P_W})\mathbf{U})
-= \frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
-\mathbf{P_W})\mathbf{U}$$
-Note that the product of $\frac{1}{\sigma^2}(\mathbf{I} -
-\mathbf{P_W})$ and $cov(\mathbf{U}) = \sigma^2 \mathbf{I}$ is $\mathbf{U} - \hat{\mathbf{U}}$
-is  $\frac{1}{\sigma^2}(\mathbf{I} -
-\mathbf{P_W}) \sigma^2 \mathbf{I} = (\mathbf{I} - \mathbf{P_W})$.
-The result is a projection matrix orthogonal to C(\textbf{W}). It is also
-idempotent, a property of all projection matrices which can also be
-shown: (\textbf{I} - \textbf{P$_W$})(\textbf{I} - \textbf{P$_W$}) = \textbf{I} - \textbf{I P$_W$} - \textbf{P$_W$ I} + \textbf{P$_W$ P$_W$} = \textbf{I} - \textbf{P$_W$}. Further rank(\textbf{I-P$_W$})=n-rank(\textbf{W})
-
-The following theorem applies to the  quadratic form $\frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
-\mathbf{P_W})\mathbf{U}$ and shows that it is distributed
-$\chi^2((n-rank(*W*))$.
-
-\begin{theorem} \label{quadnormchisq}
-Let \textbf{y} be distributed N_p($\mathbf{\mu}$, $\mathbf{\Sigma}$), \textbf{A} be a symmetric matric of constants, rank(\textbf{A})=r, and define $\lambda = \frac{1}{2} \mathbf{\mu'A\mu}$.
-Then, \textbf{y'Ay} follows $\chi^2(r,\lambda)$ if and only if $\mathbf{A\Sigma}$ is idempotent.
-\end{theorem}
-
-Here, \textbf{y} = \textbf{U}, \textbf{$\mu$} = \textbf{W$\beta$}, \textbf{$\Sigma$} = $\sigma$$^2$ \textbf{I}, \textbf{A} =
-$\frac{1}{\sigma^2}(\mathbf{I} - \mathbf{P_W})$, and $\lambda =
-\frac{1}{2 \sigma^2} \beta'\mathbf{W}'(\mathbf{I} -\mathbf{P_W})\mathbf{W\beta} = \mathbf{0}$. 
-
-To find two-sided 90\% confidence limits for $\sigma$$^2$, we note SSE
-= \textbf{U'(I-P$_W$)U} and write:
-
-1 - $\alpha$ = P(lower $\frac{\alpha}{2}$ quantile of $\chi$$^2$(n-rank(\textbf{W})) <
-$\frac{SSE}{\sigma^2}$ < upper $\frac{\alpha}{2}$ quantile of $\chi$$^2$(n-rank(\textbf{W})))
-
-.90 = P(lower .05 quantile of $\chi$$^2$(n-rank(\textbf{W})) <
-$\frac{SSE}{\sigma^2}$ < upper .05 quantile of $\chi$$^2$(n-rank(\textbf{W})))
-
-Solving for an interval for $\sigma$$^2$, we have:
-
-.90 = P($\frac{SSE}{\text{upper .05 quantile of
-}\chi^2(n-\text{rank}(\mathbf{W}))}$ < $\sigma$$^2$ <
-$\frac{SSE}{\text{lower .05 quantile of
-}\chi^2(n-\text{rank}(\mathbf{W}))}$
-\subsubsection{Interval for $\sigma$   using \textbf{V$_1$}}
-\label{sec-1-1-2}
-
-
-
-\begin{verbatim}
-#Find V^(-1/2)
-Vh1 <-solve(V1^(1/2))
-
-#Transform model to OLS
-U1 <- Vh1 %*% Y
-W1 <- Vh1 %*% X
-
-U1hat <- W1 %*% ginv(t(W1) %*% W1) %*% t(W1) %*% U1
-
-SSE1a <- t(U1-U1hat) %*% (U1-U1hat)
-
-qr(W1)$rank
-
-lowerchi <- qchisq(.05, df=(length(U1) - qr(W1)$rank))
-upperchi <- qchisq(.95, df=(length(U1) - qr(W1)$rank))
-
-SSE1a/lowerchi
-SSE1a/upperchi
-\end{verbatim}
-
-For the covariance matrix \textbf{V$_1$} given in HW3 problem 2, we found an
-SSE of \texttt{0.5} and two-sided 90\% confidence
-limits for $\sigma$ of \texttt{0.2889} <
-$\sigma$ < \texttt{2.2077}.
-\subsubsection{Interval for $\sigma$   using \textbf{V$_2$}}
-\label{sec-1-1-3}
-
-
-
-\begin{verbatim}
-#Find V^(-1/2) using spectral decompostion
-Vh2 <-solve(eigen(V2)$vectors %*% diag(sqrt(eigen(V2)$values)) %*% t(eigen(V2)$vectors))
-
-#Transform model to OLS
-U2 <- Vh2 %*% Y
-W2 <- Vh2 %*% X
-
-U2hat <- W2 %*% ginv(t(W2) %*% W2) %*% t(W2) %*% U2
-
-SSE1a2 <- t(U2-U2hat) %*% (U2-U2hat)
-
-qr(W2)$rank
-
-lowerchi <- qchisq(.05, df=(length(U2) - qr(W2)$rank))
-upperchi <- qchisq(.95, df=(length(U2) - qr(W2)$rank))
-\end{verbatim}
-
-
-For the covariance matrix \textbf{V$_2$} given in HW3 problem 2, we found an
-SSE of \texttt{0.4583} and two-sided 90\% confidence
-limits for $\sigma$ of \texttt{0.2766} <
-$\sigma$ < \texttt{2.1137}.
+Because the problem statement says this is a Gauss-Markov normal
+linear model, we know that \textbf{Y} $\sim$ N(\textbf{X$\beta$},$\sigma$$^2$ \textbf{I}).
 \subsubsection{Interval for $\sigma$ using \textbf{I}}
-\label{sec-1-1-4}
+\label{sec-1-1-1}
 
 The Gauss-Markov normal linear model assumes that the var(\textbf{Y}) =
 $\sigma$$^2$ \textbf{I}, and in this case we are able to solve for SSE directly
@@ -210,8 +86,8 @@ upperchi <- qchisq(.95, df=(length(Y) - qr(X)$rank))
 \end{verbatim}
 
 For the Gauss-Markov linear model of HW3 Problem 2, we found an SSE of \texttt{2.5} and two-sided 90\% confidence
-limits for $\sigma$ of \texttt{0.646} <
-$\sigma$ < \texttt{4.9366}.
+limits for $\sigma$ of \texttt{0.5656} <
+$\sigma$ < \texttt{2.6656}.
 \subsection{Find 90\% two-sided confidence limits for $\mu$ + $\tau$$_2$.}
 \label{sec-1-2}
 \label{MuTau2}
@@ -219,71 +95,6 @@ $\sigma$ < \texttt{4.9366}.
 The following provides 90\% confidence limits for $\mu$ + $\tau$$_2$ in the
 Gauss-Markov model first, where \textbf{Y} $\sim$ N$_6$(\textbf{X$\beta$}, $\sigma$$^2$ \textbf{I}) and then in the GLS cases with var(\textbf{Y}) =
 $\sigma$$^2$ \textbf{V$_1$} and var(\textbf{Y}) = $\sigma$$^2$ \textbf{V$_2$}.
-\subsubsection{Gauss-Markov case: var(\textbf{Y}) = $\sigma$$^2$ \textbf{I}}
-\label{sec-1-2-1}
-
-First note that \emph{s$^2$} = $\frac{SSE}{n-k-1}$. (\emph{n} is the number of observations, here 6, and \emph{k} the number of
-non-intercept paramaters, here 4.)
-
-Also note that $\beta$ = $\begin{pmatrix} \mu \\ \tau_1 \\ \tau_2
-\\ \tau_3 \\ \tau_4 \end{pmatrix}$ and write \textbf{a}'\textbf{$\beta$} = $\mu$ +
-$\tau$$_2$ = $(1, 0, 1, 0, 0) \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2
-\\ \tau_3 \\ \tau_4 \end{pmatrix}$, letting \textbf{a}' = (1, 0, 1, 0, 0). 
-
-The F statistic $F = \frac{(\mathbf{a}'\hat{\mathbf{\beta}} -
-\mathbf{a}'\mathbf{\beta})^2}{s^2\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}$
-follows the F(1,n-k-1) distribution so the square root,
-$\frac{\mathbf{a}'\hat{\mathbf{\beta}} -
-\mathbf{a}'\mathbf{\beta}}{s\sqrt{\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}}$
-follows \emph{t(n-k-1)}, and we have a 100(1-$\alpha$)\% confidence interval
-given by
-$$\mathbf{a}'\hat{\mathbf{\beta}} \pm t_{\frac{\alpha}{2},n-k-1} s \sqrt{\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}$$.
-
-
-\begin{verbatim}
-#Find the t distribution quantile
-t_1b <- qt(.05, (length(Y) - qr(X)$rank - 1) )
-
-a_1b = matrix(c(1,0,1,0,0))
-s_1b <- sqrt(SSE1a3/(length(Y) - qr(X)$rank - 1))
-Bhat_1b <- ginv(t(X) %*% X) %*% t(X) %*% Y
-quad_1b <- sqrt(t(a_1b) %*% ginv(t(X)%*%X) %*% a_1b)
-upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
-\end{verbatim}
-
-We find that the 90\% confidence limits for $\mu$ + $\tau$$_2$ are from \texttt{-5.9829} to \texttt{13.9829}. 
-
-
-
-\begin{verbatim}
-#Find the t distribution quantile
-t_1b <- qt(.05, (length(Y) - qr(W)$rank - 1) )
-
-a_1b = matrix(c(1,0,1,0,0))
-s_1b <- sqrt(SSE/(length(Y) - qr(W)$rank - 1))
-Bhat_1b <- ginv(t(W) %*% W) %*% t(W) %*% U
-quad_1b <- sqrt(t(a_1b) %*% ginv(t(W)%*%W) %*% a_1b)
-upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
-\end{verbatim}
-
-
-
-We find that the 90\% confidence limits for $\mu$ + $\tau$$_2$ are from \texttt{-25.9488} to \texttt{33.9488}. 
-
-
-\begin{verbatim}
-#Find the t distribution quantile
-t_1b <- qt(.05, (length(Y) - qr(W)$rank - 1) )
-
-a_1b = matrix(c(1,0,1,0,0))
-s_1b <- sqrt(SSE/(length(Y) - qr(W)$rank - 1))
-Bhat_1b <- ginv(t(W) %*% W) %*% t(W) %*% U
-quad_1b <- sqrt(t(a_1b) %*% ginv(t(W)%*%W) %*% a_1b)
-upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
-\end{verbatim}
 \subsection{Find 90\% two-sided confidence limits for $\tau$$_1$ - $\tau$$_2$.}
 \label{sec-1-3}
 \label{Tau1Tau2}
@@ -303,7 +114,7 @@ upper1c <- t(a_1c) %*% Bhat_1b - t_1b * s_1b * quad_1c
 lower1c <- t(a_1c) %*% Bhat_1b + t_1b * s_1b * quad_1c
 \end{verbatim}
 
-We find that the 90\% confidence limits for $\tau$$_1$ - $\tau$$_2$ are from \texttt{-33.5688} to \texttt{29.5688}. 
+We find that the 90\% confidence limits for $\tau$$_1$ - $\tau$$_2$ are from \texttt{-12.8237} to \texttt{7.8237}. 
 \subsection{Find a \emph{p}-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs \emph{H$_a$} : not \emph{H$_0$}.}
 \label{sec-1-4}
 \label{Tau1Tau2H0}
@@ -349,7 +160,7 @@ SSH <- t(t(a_1c) %*% Bhat_1b) %*% ginv(t(a_1c)%*%ginv(t(W)%*%W)%*%a_1c)%*%t(a_1c
 p_1d <- pf(SSH/SSE, 1, 1, lower.tail=FALSE)
 \end{verbatim}
 
-The \emph{p}-value obtained was \texttt{0.7578}. This is the probability that the central F
+The \emph{p}-value obtained was \texttt{0.7048}. This is the probability that the central F
 distribution exceeds the observed F. This suggests that we should accept the null
 hyposthesis.
 \subsection{Find 90\% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.}

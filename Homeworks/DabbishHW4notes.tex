@@ -1,0 +1,94 @@
+% Created 2015-02-19 Thu 00:17
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{amsthm, enumerate}
+\newtheorem{theorem}{Theorem}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Methods Homework 4 Notes}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Useful Theorems}
+\label{sec-1}
+
+
+\begin{theorem}
+\label{thm:idemchi}
+Suppose $\mathbf{Y} \sim MVN_n(\mathbf{\mu}, \mathbf{Sigma})$, $\Sigma$ positive definite. 
+Also suppose $\mathbf{A}_{n \times n}$ symmetric and rank($\mathbf{A}$) = $k$.
+
+If $\mathbf{A\Sigma}$ idempotent, $\mathbf{Y'AY} \sim \chi^2_k (\mu'\mathbf{A}\mu)$.
+
+\end{theorem}
+
+\begin{theorem}
+Suppose $\mathbf{Y} \sim MVN_n(\mathbf{\mu}, \sigma^2\mathbf{I})$. And the product $\mathbf{BA}=\mathbf{0}$, with A and B of appropriate size.
+
+Then,
+
+\begin{enumerate}[(a)]
+\item If $\mathbf{A}$ symmetric, $\mathbf{Y'AY}$ and $\mathbf{BY}$ are independent.
+\item If both $\mathbf{B}$ and $\mathbf{A}$ symmetric, $\mathbf{Y'AY}$ and $\mathbf{Y'BY}$ are independent.
+\end{enumerate}
+
+\end{theorem}
+\section{Distributions of interests}
+\label{sec-2}
+\subsection{SSE/$\sigma$$^2$}
+\label{sec-2-1}
+
+
+Using theorem \ref{thm:idemchi} above, we can show:
+
+$$\frac{SSE}{\sigma^2} = \frac{(\mathbf{Y} -
+\hat{\mathbf{Y}})'(\mathbf{Y} - \hat{\mathbf{Y}})}{\sigma^2} \sim
+\chi^2_{n-\text{rank}(X)}$$
+
+Rearranging to find confidence limits for $\sigma$ gives:
+
+$$P\left(\sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\,
+\chi^2_{n-\mathrm{rank}(X)}}}} < \sigma < \sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\, \chi^2_{n-\mathrm{rank}(X)}}}} \right)
+= 1 - \alpha$$
+\subsection{Estimable functions \textbf{c'$\beta$}}
+\label{sec-2-2}
+
+
+For an estimable \textbf{c'$\beta$}, we have:
+
+$$\frac{\widehat{\mathbf{c'\beta}} -
+\mathbf{c'\beta}}{\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}}} \sim
+t_{n-\mathrm{rank}(X)}$$
+
+Note that $MSE = \frac{SSE}{n-\mathrm{rank}(X)}$. Rearranging to find 1 - $\alpha$ confidence limits for \textbf{c'$\beta$},
+denoting t$^{\star}$ = the upper $\alpha$/2 quantile of t$_{\mathrm{n-rank(X)}}$, we
+have:
+
+$$P\left( \widehat{\mathbf{c'\beta}} -
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} < \mathbf{c'\beta} <  \widehat{\mathbf{c'\beta}} +
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} \right) = 1 - \alpha$$
+
+\end{document}

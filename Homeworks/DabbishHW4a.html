@@ -1,0 +1,47 @@
+<ol class='xoxo'>
+  <li>Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model
+    <ol>
+      <li>Find 90% two-sided confidence limits for \sigma.
+        <ol>
+          <li>Background </li>
+          <li>Interval for \sigma   using *V_1*</li>
+          <li>Interval for \sigma   using *V_2*</li>
+          <li>Interval for \sigma using *I*</li>
+        </ol>
+      </li>
+      <li>Find 90% two-sided confidence limits for \mu + \tau_2.</li>
+      <li>Find 90% two-sided confidence limits for \tau_1 - \tau_2.</li>
+      <li>Find a /p/-value for testing the null hypothesis $H_0 : \tau_1 - \tau_2 = 0$ vs /H_a/ : not /H_0/.
+        <ol>
+          <li>General Linear Hypothesis Test</li>
+          <li>/p/-value from the F statistic</li>
+        </ol>
+      </li>
+      <li>Find 90% two-sided predition limits for the sample mean of /n/=10 future observations from the first set of conditions.
+        <ol>
+          <li>A t statistic for prediction</li>
+        </ol>
+      </li>
+      <li>Find 90% two-sided prediction limints for the difference between a pair of future values, one from the first set of conditions (i.e. with mean \mu + \tau_1) and one from the second set of conditions (i.e. with mean \mu + \tau_2).</li>
+      <li>Find a /p/-value for testing the following: What is the practical interpretation of this test?   </li>
+      <li>Find a /p/-value for testing:</li>
+    </ol>
+  </li>
+  <li>Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of /y/ on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.
+    <ol>
+      <li>Find 90% two-sided condifence limits for \sigma.</li>
+      <li>Find 90% two-sided condifence limits for the mean response under the conditions of data point #1.</li>
+      <li>Find 90% two-sided condifence limits for the difference in mean responses under the conditions of data points #1 and #2. .</li>
+      <li>Find a /p/-value for testing the hypothesis that the conditions of data points #1 and #2 produce the same mean response.</li>
+      <li>Find 90% two-sided prediction limits for an additional response for the set of conditions $x_1 = 0.005, x_2 = 0.45, x_3 = 7, x_4 = 45,$ and $x_5 = 6$.</li>
+      <li>Find a /p/-value for testing the hypothesis that a model including only /x_1/, /x_3/, and /x_5/ is adequare for "explaining" home price. </li>
+    </ol>
+  </li>
+  <li>Problem 3
+    <ol>
+      <li>In the context of Problem 1, part g), suppose that in fact \tau_1 = \tau_2, \tau_3 = \tau_4 = \tau_1 - d\sigma. What is the distribution of the F statistic?</li>
+      <li>Use R to plot the power of the \alpha = 0.05 level test as a function of /d/ for /d/ \in [-5,5], that is plotting /P/ (F > the cut-off value) against /d/. The R function pf(q,df1,df2,ncp) will compute cumulative (non-central) F probabilities for you corresponding to the value q, for degrees of freedom df1 and df2 when the noncentrality parameter is ncp.</li>
+    </ol>
+  </li>
+  <li>Appendix: Tangled R code</li>
+</ol>

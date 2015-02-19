@@ -8,53 +8,113 @@
 # Code to input variables, libraries, and commonly used functions:
 #+NAME: common
 #+BEGIN_SRC R :session *HW4* :exports none :tangle yes
-  library(MASS); library(xtable)
-    lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
-     x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
-     print(x, floating=FALSE, tabular.environment="pmatrix", 
-       hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
-     }
+   library(MASS); library(xtable)
+     lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+      x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+      print(x, floating=FALSE, tabular.environment="pmatrix", 
+        hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+      }
+   
+   #Variables from Problem 2 of HW3:
+     Y1 <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+     X1 <- matrix(c(rep(1,6),
+                   1,1,0,0,0,0,
+                   0,0,1,0,0,0,
+                   0,0,0,1,0,0,
+                   0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+   
+   #Variables from Problem 4 of HW3:
+   data(Boston)
+   YB = as.matrix(Boston$medv)
+   XB = as.matrix(Boston[,c('crim','nox','rm','age','dis')])
+   XB = cbind(rep(1,dim(Boston)[1]),XB)
+   bhatB <- ginv(t(XB)%*%XB) %*% t(XB) %*% YB
+   YhatB <- XB %*% bhatB
+   errB <- YB - YhatB
+   sigsqhatB <- t(errB) %*% errB / (dim(XB)[1] - qr(XB)$rank)
+   
+   #functions for calculating estimates:
+   
+   sigmacalc <- function(Y, X, alpha){
+   Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
+   SSE <- t(Y-Yh) %*% (Y-Yh)
+   
+   lowerchi <- qchisq(alpha/2, df=(length(Y) - qr(X)$rank))
+   upperchi <- qchisq(1-alpha/2, df=(length(Y) - qr(X)$rank))
+   
+   return(c(sqrt(SSE/upperchi),sqrt(SSE/lowerchi)))
+   }
+   
+  X511 <- matrix(c(rep(1,9),rep(c(rep(0,7),1),3),1,1),7,5)
+  Y511 <- c(2,1,4,6,3,5,4)
+     
+   cbetacalc <- function(Y,X, alpha, ct){
+   Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
+   SSE <- t(Y-Yh) %*% (Y-Yh)
+   MSE <- SSE/(length(Y) - qr(X)$rank)
+   quad <- t(ct)%*%ginv(t(X)%*%X)%*%ct
+   
+   tstar <- qt(1-alpha/2, length(Y) - qr(X)$rank)
+   pm <- tstar  * sqrt(quad) * sqrt (MSE)
+   
+   ctbhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
+   
+   return(c(ctbhat-pm,ctbhat+pm))
+   }
+   
+   a_1c = matrix(c(0,1,-1,0,0))
+   
+   cbetacalc(Y511,X511, .1, c(1,1,0,0,0))
+   cbetacalc(Y1,X1, .1, c(1,0,1,0,0))
+   cbetacalc(Y1,X1, .1, a_1c)
+   
+  #F-test function:
   
-  #Variables from Problem 2 of HW3:
-    V1 <- diag(c(1,9,9,1,1,9))
-    Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
-    X <- matrix(c(rep(1,6),
-                  1,1,0,0,0,0,
-                  0,0,1,0,0,0,
-                  0,0,0,1,0,0,
-                  0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+   Cbetahatd <- function (Y,X, ct, d = 0){
+   
+   CGCinv <- ginv(t(ct)%*%ginv(t(X)%*%(X))%*%ct)
+   CBhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
+   Q <- t(CBhat - d)%*%CGCinv%*%(CBhat-d)
+   MSH <- Q/qr(ct)$rank
   
-    V2 <- diag(c(1,9,9,1,1,9))
-    V2[1,2] <- 1
-    V2[2,1] <- 1
-    V2[4,3] <- -1
-    V2[3,4] <- -1
-    V2[6,5] <- -1
-    V2[5,6] <- -1
+   Yhat <- X %*% ginv(t(X)%*%X)%*%t(X)%*%Y
+   SSE <- t(Y-Yhat)%*%(Y-Yhat)
+   MSE <- SSE/(length(Y) - qr(X)$rank)
+  
+   F <- MSH/MSE
+  
+   return(1-pf(F, qr(ct)$rank, length(Y)-qr(X)$rank))
+   
+   }
   
   
-  #Variables from Problem 4 of HW3:
-  data(Boston)
-  Y_B = as.matrix(Boston$medv)
-  X_B = as.matrix(Boston[,c('crim','nox','rm','age','dis')])
-  X_B = cbind(rep(1,dim(Boston)[1]),X_B)
-  bhat_B <- ginv(t(X_B)%*%X_B) %*% t(X_B) %*% Y_B
-  Yhat_B <- X_B %*% bhat_B
-  err_B <- Y_B - Yhat_B
-  sigsqhat_B <- t(err_B) %*% err_B / (dim(X_B)[1] - qr(X_B)$rank)
+   Cbetahatd(Y1, X1, c(0,1,-1,0,0))
+  
+  G <- t(matrix(c(0, 1, -1, 0, 0, 0, 1, 0, -1, 0, 0, 1, 0, 0, -1), nrow=3, ncol=5, byrow=TRUE))
+  
+   Cbetahatd(Y511, X511, G, c(0,0,0))
+  
+  H <- t(matrix(c(0, 1, -1, 0, 0, 0, 0, 1, -1, 0), nrow=2, ncol=5, byrow=T))
+  
+   Cbetahatd(Y1, X1, H, c(10,0))
+  
+  
+   homes<- read.table("http://www.public.iastate.edu/~vardeman/stat511/homes.TXT",header=T) 
+   Yhomes <-as.matrix(homes[,1])
+   Xhomes <-as.matrix(homes[,c(2,5,10,11,13)]) 
+   Xhomes <- cbind(rep(1,length(Yhomes)),Xhomes)
+  
+   C2g <- c(0,0,1,0,1,0)
+   Cbetahatd(Yhomes, Xhomes,C2g)
+  
 #+END_SRC
 
 #+RESULTS: common
-: 34.8238708232886
+: 4.56960612884975
+
 
 * Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model
 ** Find 90% two-sided confidence limits for \sigma.
-
-*** Background 
-:PROPERTIES:
-:CUSTOM_ID: OLSsigsq
-:END:
-
 
 The model described in HW3, Problem 2 in 
 $\mathbf{Y}=\mathbf{X\beta}+\epsilon$ matrix form is:
@@ -82,130 +142,8 @@ y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
 \end{pmatrix}
 \]
 
-Also, we are given that var(\epsilon)= *V*, for *V_1* =
-diag(1,9,9,1,1,9) and \( \mathbf{V_2} = \begin{pmatrix}
-1 & 1 & 0 & 0 & 0 & 0 \\
-1 & 9 & 0 & 0 & 0 & 0 \\
-0 & 0 & 9 & -1& 0 & 0 \\
-0 & 0 & -1& 1 & 0 & 0 \\
-0 & 0 & 0 & 0 & 1 & -1 \\
-0 & 0 & 0 & 0 & -1 & 9
-\end{pmatrix} \).
-
-We have $\mathbf{Y} \sim N_n(\mathbf{X\beta},\sigma^2\mathbf{V})$. To
-find a suitable estimator for \sigma^2, first transform the
-Generalized Least Squares model into an Ordinary Least Squares model
-by multiplying by *V^{-1/2}*. This gives *U* + *W\beta* =
-$\epsilon^{\star}$, where *U* = *V^{-1/2} Y*, *W* = *V^{-1/2} X*, and
-$\epsilon^{\star}$ = *V^{-1/2} \epsilon*. Note that $\mathbf{U} \sim
-N_n(\mathbf{W\beta}, \sigma^2 \mathbf{I})$. 
-
-Now find an estimator for \sigma^2 for use in construction of the
-confidence interval using the variance of *U*. var(*U*) = \sigma^2 *I*
-= E(*U* - E(*U*))^2 = E(*U* - *WB*)^2. First observe the distribution
-of $\mathbf{U} - \hat{\mathbf{U}} \sim$ N_n(*0*, \sigma^2 *I*). 
-Consider $$ \frac{SSE}{\sigma^2} =
-\frac{(\mathbf{U}-\hat{\mathbf{U}})'(\mathbf{U}-\hat{\mathbf{U}})}{\sigma^2}
-=\frac{1}{\sigma^2}
-((\mathbf{I}-\mathbf{P_W})\mathbf{U})'((\mathbf{I}-\mathbf{P_W})\mathbf{U})
-= \frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
-\mathbf{P_W})\mathbf{U}$$
-Note that the product of $\frac{1}{\sigma^2}(\mathbf{I} -
-\mathbf{P_W})$ and $cov(\mathbf{U}) = \sigma^2 \mathbf{I}$ is $\mathbf{U} - \hat{\mathbf{U}}$
-is  $\frac{1}{\sigma^2}(\mathbf{I} -
-\mathbf{P_W}) \sigma^2 \mathbf{I} = (\mathbf{I} - \mathbf{P_W})$.
-The result is a projection matrix orthogonal to C(*W*). It is also
-idempotent, a property of all projection matrices which can also be
-shown: (*I* - *P_W*)(*I* - *P_W*) = *I* - *I P_W* - *P_W I* + *P_W
-P_W* = *I* - *P_W*. Further rank(*I-P_W*)=n-rank(*W*)
-
-The following theorem applies to the  quadratic form $\frac{1}{\sigma^2} \mathbf{U}'(\mathbf{I} -
-\mathbf{P_W})\mathbf{U}$ and shows that it is distributed
-$\chi^2((n-rank(*W*))$.
-
-\begin{theorem} \label{quadnormchisq}
-Let \textbf{y} be distributed N_p($\mathbf{\mu}$, $\mathbf{\Sigma}$), \textbf{A} be a symmetric matric of constants, rank(\textbf{A})=r, and define $\lambda = \frac{1}{2} \mathbf{\mu'A\mu}$.
-Then, \textbf{y'Ay} follows $\chi^2(r,\lambda)$ if and only if $\mathbf{A\Sigma}$ is idempotent.
-\end{theorem}
-
-Here, *y* = *U*, *\mu* = *W\beta*, *\Sigma* = \sigma^2 *I*, *A* =
-$\frac{1}{\sigma^2}(\mathbf{I} - \mathbf{P_W})$, and $\lambda =
-\frac{1}{2 \sigma^2} \beta'\mathbf{W}'(\mathbf{I} -\mathbf{P_W})\mathbf{W\beta} = \mathbf{0}$. 
-
-To find two-sided 90% confidence limits for \sigma^2, we note SSE
-= *U'(I-P_W)U* and write:
-
-1 - \alpha = P(lower $\frac{\alpha}{2}$ quantile of \chi^2(n-rank(*W*)) <
-$\frac{SSE}{\sigma^2}$ < upper $\frac{\alpha}{2}$ quantile of \chi^2(n-rank(*W*)))
-
-.90 = P(lower .05 quantile of \chi^2(n-rank(*W*)) <
-$\frac{SSE}{\sigma^2}$ < upper .05 quantile of \chi^2(n-rank(*W*)))
-
-Solving for an interval for \sigma^2, we have:
-
-.90 = P($\frac{SSE}{\text{upper .05 quantile of
-}\chi^2(n-\text{rank}(\mathbf{W}))}$ < \sigma^2 <
-$\frac{SSE}{\text{lower .05 quantile of
-}\chi^2(n-\text{rank}(\mathbf{W}))}$
-
-*** Interval for \sigma   using *V_1*
-
-#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
-  #Find V^(-1/2)
-  Vh1 <-solve(V1^(1/2))
-
-  #Transform model to OLS
-  U1 <- Vh1 %*% Y
-  W1 <- Vh1 %*% X
-  
-  U1hat <- W1 %*% ginv(t(W1) %*% W1) %*% t(W1) %*% U1
-  
-  SSE1a <- t(U1-U1hat) %*% (U1-U1hat)
-  
-  qr(W1)$rank
-  
-  lowerchi <- qchisq(.05, df=(length(U1) - qr(W1)$rank))
-  upperchi <- qchisq(.95, df=(length(U1) - qr(W1)$rank))
-  
-  SSE1a/lowerchi
-  SSE1a/upperchi
-#+END_SRC
-
-For the covariance matrix *V_1* given in HW3 problem 2, we found an
-SSE of SRC_R[ :session *HW4* :tangle yes]{SSE1a} and two-sided 90% confidence
-limits for \sigma of SRC_R[ :session *HW4* :tangle yes]{round(sqrt(SSE1a/upperchi),4)} <
-\sigma < SRC_R[ :session *HW4* :tangle yes]{round(sqrt(SSE1a/lowerchi),4)}.
-
-*** Interval for \sigma   using *V_2*
-
-#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
-  #Find V^(-1/2) using spectral decompostion
-  Vh2 <-solve(eigen(V2)$vectors %*% diag(sqrt(eigen(V2)$values)) %*% t(eigen(V2)$vectors))
-  
-  #Transform model to OLS
-  U2 <- Vh2 %*% Y
-  W2 <- Vh2 %*% X
-  
-  U2hat <- W2 %*% ginv(t(W2) %*% W2) %*% t(W2) %*% U2
-  
-  SSE1a2 <- t(U2-U2hat) %*% (U2-U2hat)
-  
-  qr(W2)$rank
-  
-  lowerchi <- qchisq(.05, df=(length(U2) - qr(W2)$rank))
-  upperchi <- qchisq(.95, df=(length(U2) - qr(W2)$rank))
-#+END_SRC
-
-
-For the covariance matrix *V_2* given in HW3 problem 2, we found an
-SSE of SRC_R[ :session *HW4*]{round(SSE1a2,4)} and two-sided 90% confidence
-limits for \sigma of SRC_R[ :session *HW4*]{round(sqrt(SSE1a2/upperchi),4)} <
-\sigma < SRC_R[ :session *HW4*]{round(sqrt(SSE1a2/lowerchi),4)}.
-
-*** Interval for \sigma using *I*
-The Gauss-Markov normal linear model assumes that the var(*Y*) =
-\sigma^2 *I*, and in this case we are able to solve for SSE directly
-from $\mathbf{\hat{Y}}$ and *X*.
+Because the problem statement says this is a Gauss-Markov normal
+linear model, we know that *Y* \sim N(*X\beta*,\sigma^2 *I*).
 
 #+BEGIN_SRC R :session *HW4* :exports code :tangle yes
   Yhat <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
@@ -231,80 +169,6 @@ limits for \sigma of SRC_R[ :session *HW4*]{round(sqrt(SSE1a3/upperchi),4)} <
 The following provides 90% confidence limits for \mu + \tau_2 in the
 Gauss-Markov model first, where *Y* \sim N_6(*X\beta*, \sigma^2 *I*) and then in the GLS cases with var(*Y*) =
 \sigma^2 *V_1* and var(*Y*) = \sigma^2 *V_2*.
-
-*** Gauss-Markov case: var(*Y*) = \sigma^2 *I*
-First note that /s^2/ = $\frac{SSE}{n-k-1}$. (/n/ is the number of observations, here 6, and /k/ the number of
-non-intercept paramaters, here 4.)
-
-Also note that \beta = $\begin{pmatrix} \mu \\ \tau_1 \\ \tau_2
-\\ \tau_3 \\ \tau_4 \end{pmatrix}$ and write *a*'*\beta* = \mu +
-\tau_2 = $(1, 0, 1, 0, 0) \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2
-\\ \tau_3 \\ \tau_4 \end{pmatrix}$, letting *a*' = (1, 0, 1, 0, 0). 
-
-The F statistic $F = \frac{(\mathbf{a}'\hat{\mathbf{\beta}} -
-\mathbf{a}'\mathbf{\beta})^2}{s^2\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}$
-follows the F(1,n-k-1) distribution so the square root,
-$\frac{\mathbf{a}'\hat{\mathbf{\beta}} -
-\mathbf{a}'\mathbf{\beta}}{s\sqrt{\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}}$
-follows /t(n-k-1)/, and we have a 100(1-\alpha)% confidence interval
-given by
-$$\mathbf{a}'\hat{\mathbf{\beta}} \pm t_{\frac{\alpha}{2},n-k-1} s \sqrt{\mathbf{a}'(\mathbf{X}'\mathbf{X})^{-1}\mathbf{a}}$$.
-
-#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
-  #Find the t distribution quantile
- X <- matrix(c(rep(1,9),rep(c(rep(0,7),1),3),1,1),7,5)
- Y <- c(2,1,4,6,3,5,4) 
-
-
-  t_1b <- qt(.05, (length(Y) - qr(X)$rank) )
-  
-  a_1b = matrix(c(1,0,1,0,0))
-  s_1b_quiet <- sqrt(SSE1a3/(length(Y) - qr(X)$rank - 1))
-  Bhat_1b <- ginv(t(X) %*% X) %*% t(X) %*% Y
-  SSE <- t(Y-X%*%Bhat_1b)%*%(Y-X%*%Bhat_1b)
-s_1b <- sqrt(SSE/(length(Y) - qr(X)$rank - 1))
-  quad_1b <- sqrt(t(a_1b) %*% ginv(t(X)%*%X) %*% a_1b)
-  upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-  lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
- 
-#+END_SRC
-
-#+RESULTS:
-: 0.735356874504946
-
-We find that the 90% confidence limits for \mu + \tau_2 are from SRC_R[ :session *HW4* :tangle yes]{round(lower1b,4)} =0.7354= to SRC_R[ :session *HW4* :tangle yes]{round(upper1b,4)}. 
-
-
-#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
-  #Find the t distribution quantile
-  t_1b <- qt(.05, (length(Y) - qr(W)$rank - 1) )
-  
-  a_1b = matrix(c(1,0,1,0,0))
-  s_1b <- sqrt(SSE/(length(Y) - qr(W)$rank - 1))
-  Bhat_1b <- ginv(t(W) %*% W) %*% t(W) %*% U
-  quad_1b <- sqrt(t(a_1b) %*% ginv(t(W)%*%W) %*% a_1b)
-  upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-  lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
- 
-#+END_SRC
-
-
-
-We find that the 90% confidence limits for \mu + \tau_2 are from SRC_R[ :session *HW4* :tangle yes]{round(lower1b,4)} to SRC_R[ :session *HW4* :tangle yes]{round(upper1b,4)}. 
-
-#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
-  #Find the t distribution quantile
-  t_1b <- qt(.05, (length(Y) - qr(W)$rank - 1) )
-  
-  a_1b = matrix(c(1,0,1,0,0))
-  s_1b <- sqrt(SSE/(length(Y) - qr(W)$rank - 1))
-  Bhat_1b <- ginv(t(W) %*% W) %*% t(W) %*% U
-  quad_1b <- sqrt(t(a_1b) %*% ginv(t(W)%*%W) %*% a_1b)
-  upper1b <- t(a_1b) %*% Bhat_1b - t_1b * s_1b * quad_1b
-  lower1b <- t(a_1b) %*% Bhat_1b + t_1b * s_1b * quad_1b
- 
-#+END_SRC
-
 
 ** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
 :PROPERTIES:
@@ -415,7 +279,7 @@ $$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-k-1}s\sqrt{1+
 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3
 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
 
-*  Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of /y/ on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.
+* Problem 2 In the following make use of the data in Problem 4 of Homework Assignment 3. Consider a regression of /y/ on $x_1, x_2,\ldots,x_5$. Use R matrix calculations to do the following in a full rank Gauss-Markov normal linear model.
 ** Find 90% two-sided condifence limits for \sigma.
 
 
