@@ -1,4 +1,4 @@
-% Created 2015-02-19 Thu 14:17
+% Created 2015-02-19 Thu 23:09
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -68,6 +68,23 @@ y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
 
 Because the problem statement says this is a Gauss-Markov normal
 linear model, we know that \textbf{Y} $\sim$ N(\textbf{X$\beta$},$\sigma$$^2$ \textbf{I}).
+\subsubsection{SSE/$\sigma$$^2$}
+\label{sec-1-1-1}
+
+
+Using theorem 1 in the Appendix, we can show:
+
+$$\frac{SSE}{\sigma^2} = \frac{(\mathbf{Y} -
+\hat{\mathbf{Y}})'(\mathbf{Y} - \hat{\mathbf{Y}})}{\sigma^2} \sim
+\chi^2_{n-\text{rank}(X)}$$
+
+Rearranging to find confidence limits for $\sigma$ gives:
+
+$$P\left(\sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\,
+\chi^2_{n-\mathrm{rank}(X)}}}} < \sigma < \sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\, \chi^2_{n-\mathrm{rank}(X)}}}} \right)
+= 1 - \alpha$$
+\subsubsection{Solution from R}
+\label{sec-1-1-2}
 
 Using the hand-written function \verb~sigmacalc~, included in the
 appendix. The following two-sided 90\% confidence limits for $\sigma$ 
@@ -85,6 +102,23 @@ entity, where c' = (1, 0, 1, 0 , 0).
 \texttt{0.7354} 
 < $\mu$ + $\tau$$_2$ <
 \texttt{7.2646}
+\subsubsection{Estimable functions \textbf{c'$\beta$}}
+\label{sec-1-2-1}
+
+
+For an estimable \textbf{c'$\beta$}, we have:
+
+$$\frac{\widehat{\mathbf{c'\beta}} -
+\mathbf{c'\beta}}{\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}}} \sim
+t_{n-\mathrm{rank}(X)}$$
+
+Note that $MSE = \frac{SSE}{n-\mathrm{rank}(X)}$. Rearranging to find 1 - $\alpha$ confidence limits for \textbf{c'$\beta$},
+denoting t$^{\star}$ = the upper $\alpha$/2 quantile of t$_{\mathrm{n-rank(X)}}$, we
+have:
+
+$$P\left( \widehat{\mathbf{c'\beta}} -
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} < \mathbf{c'\beta} <  \widehat{\mathbf{c'\beta}} +
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} \right) = 1 - \alpha$$
 \subsection{Find 90\% two-sided confidence limits for $\tau$$_1$ - $\tau$$_2$.}
 \label{sec-1-3}
 \label{Tau1Tau2}
@@ -157,19 +191,19 @@ $\widehat{var(y - \hat{y}_0)} = s^22[1+ \mathbf{x_0'(X'X)^{-1}x_0}]$. Because of
 and \emph{y$_0$} and $\hat{y}_0$, we have the following t statistic:
 
 $$t = \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
-\mathbf{x_0'(X'X)^{-1}x_0}} \sim t(n-k-1)}$$
+\mathbf{x_0'(X'X)^{-1}x_0}}} \sim t(n-\mathrm{rank}(X))$$
 
 
 
 Therefore,
 
-$$P = \left[ -t_{\alpha/2,n-k-1} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
-\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-k-a}\right] = 1 -
+$$P = \left[ -t_{\alpha/2,n-rank(X)} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-rank(X)}\right] = 1 -
 \alpha$$
 
 Re-arranging in terms of $\mathbf{x_0'\hat{\beta}} = \hat{y}_0$ gives:
 
-$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-k-1}s\sqrt{1+
+$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-rank(X)}s\sqrt{1+
 \mathbf{x_0'(X'X)^{-1}x_0}}.$$
 \subsubsection{Predicitions for \emph{n} observations from $\mu$ + $\tau$$_1$}
 \label{sec-1-5-2}
@@ -177,34 +211,36 @@ $$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-k-1}s\sqrt{1+
 
 Using the preceeding theory and the handwritten R function,
 \verb~predict~, which is included in the appendix. I ran a prediction fo
-\emph{n} =10 from the first condition  \textbf{x$_0$} = (1,0,1,0,0).
+\emph{n} =10 from the first condition  \textbf{x$_0$} = (1,1,0,0,0).
 
 The 90\% confidence limits obtained for the mean were 
-\texttt{0.576} 
+\texttt{-1.0288} 
 to
-\texttt{7.424}.
+\texttt{4.0288}.
 \subsection{Find 90\% two-sided prediction limits for the difference between a pair of future values, one from the first set of conditions (i.e. with mean $\mu$ + $\tau$$_1$) and one from the second set of conditions (i.e. with mean $\mu$ + $\tau$$_2$).}
 \label{sec-1-6}
 
 
 Similar to part (e) above, here I used my \verb~predict~ function again,
-except an \emph{n} of 2 and a \textbf{x$_0$} vector of the difference of the first
-two conditions:
+except an \emph{n} of .5 in order to obtain a gamma of 2 and a \textbf{x$_0$} vector of the 
+difference of the first two conditions:
 
 (1,1,0,0,0) - (1,0,1,0,0) = (0,1,-1,0,0).
 
 This gave 90 \% prediction limits for the difference as follows:
-\texttt{-7.1169}
+\texttt{-8.6076}
 to
-\texttt{2.1169}.
+\texttt{3.6076}.
 \subsection{Find a \emph{p}-value for testing the following: What is the practical interpretation of this test?}
 \label{sec-1-7}
 
 \( H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 1 & 0 & -1 & 0 \\ 0 & 1 & 0 & 0 & -1 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}. \) 
 
-The practical interpretation of this test is to ask if all of the
-parameters are equal. I performed the test using the General Linear
-Hypothesis Testing function described above, \verb~Cbetahatd~. 
+The null hypothesis asked by this test is whether $\tau$$_1$ = $\tau$$_2$ =
+tau$_3$ = tau$_4$, if all these parameters are equal there would be no
+difference among the treatments. I performed the test using the General Linear
+Hypothesis Testing function described above, \verb~Cbetahatd~, with the
+matrix above as C in C'$\beta$ and the d-vector = (0,0,0).
 
 
 \begin{verbatim}
@@ -224,7 +260,8 @@ unlikely that all of the parameters are equal.
 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3
 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
 
-I tested this hypotheis as in question 1g), using the General Linear
+In this test, the null hypothesis asks whether $\tau$$_1$ - $\tau$$_2$ = 10
+and $\tau$$_2$ = $\tau$$_3$. I tested this hypotheis as in question 1g), using the General Linear
 Hypothesis and the F-test implemented in my function \verb~Cbetahatd~,
 note that the vector (10,0) was entered for the \textbf{d} vector.
 
@@ -251,12 +288,16 @@ confidence limits for sigma of
 
 
 
-To find these 90\% confidence limits, we will use the t-distribution
-of \$\widehat{c'\beta}, where c' is the first row of our data set
+To find these 90\% confidence limits, we will use the t$_{\mathrm{n-rank(X)}}$-distribution
+of $\frac{\widehat{c'\beta} -
+c'\beta}{\sqrt{MSE}{\sqrt{c'(X'X)^{-}c}}$, 
+where c' is the first row of our data set
 (data point \#1).
 
-Using the \verb~cbetacalc~ function to do this, as \verb~cbetacalc(YB,XB, .1, XB[1,])~ we find a 90\% confidence interval of \texttt{25.2114} 
-< mean response under the conditions of data point \#1 <
+Using the \verb~cbetacalc~ function to do this, as \verb~cbetacalc(YB,XB, .1, XB[1,])~ we find a 90\% confidence interval for the mean response under the
+conditions of data point \#1 of 
+\texttt{25.2114} 
+to 
 \texttt{26.1973}.
 \subsection{Find 90\% two-sided condifence limits for the difference in mean responses under the conditions of data points \#1 and \#2. .}
 \label{sec-2-3}
@@ -264,7 +305,7 @@ Using the \verb~cbetacalc~ function to do this, as \verb~cbetacalc(YB,XB, .1, XB
 
 
 To find these 90\% confidence limits, we will use the t-distribution
-of \$\widehat{c'\beta}, where c' is the difference beteen the first row
+function of c'$\beta$ again, where c' is the difference beteen the first row
 of our data set and the second row
 (data points \#1 and \#2).
 
@@ -285,17 +326,83 @@ my general linear hypothesis testing function: \verb~Cbetahatd(YB,XB, (XB[1,]-XB
 
 90 \% prediction limits for an additional response from these
 conditions were obtained using the conditions as our c-vector in the
-\verb~predict~ function: \verb~predict(YB,XB, .1, c(0,0.005,0.45,7,45,6), 1)~ .
+\verb~predict~ function: \verb~predict(YB,XB, .1, c(1,0.005,0.45,7,45,6), 1)~ .
 The limits obtained were 
-\texttt{24} to
-\texttt{47.7985}.
+\texttt{19.9002} to
+\texttt{39.4029}.
 \subsection{Find a \emph{p}-value for testing the hypothesis that a model including only \emph{x$_1$}, \emph{x$_3$}, and \emph{x$_5$} is adequare for ``explaining'' home price.}
 \label{sec-2-6}
 
 
- Using an F-test on the hypothesis that c'$\beta$ = $\beta$$_2$ + $\beta$$_4$ =
- 0, we find a \emph{p}-value of
- \texttt{6.73025042030595e-06} for this model.
+ We use an F-test implementation of the General Linear Hypothesis
+ test using the \verb~Cbetahatd~ function described previously. We are
+ testing the hypothesis that $\beta$$_2$ = $\beta$$_4$ =
+ 0, with a $\mathbf{C} = \begin{pmatrix} 0 & 0 & 1 & 0 & 0 & 0\\ 0 & 0 & 0 & 0
+ & 1 & 0\end{pmatrix}$.
+
+
+To investigate this solution, we also 
+
+\begin{verbatim}
+
+CB <- t(matrix(c(0,0,1,0,0,0,0,0,0,0,1,0),nrow=2,ncol=6,byrow=T))
+
+Cbetahatd(YB,XB,CB)
+\end{verbatim}
+
+
+ This gives a p-value of 3.1907809727727e-13, heavily supporting the
+ reduced model.
+\subsubsection{Full--Reduced model approach}
+\label{sec-2-6-1}
+
+We can create a \emph{p}-value to test these models using an F statistic,
+constructed out of the ratio of the difference in regression sum of
+squares between the full (SSR$_{\mathrm{full}}$) and reduced(SSR$_{\mathrm{reduced}}$) models and the sum of squared
+error (SSE). These quantities are independent and follow a
+non-central $\chi$$^2$(\emph{h},$\lambda$) and central $\chi$$^2$(\emph{n-k-1})
+respectively where \emph{n} is the number of observations, \emph{k} is the
+number of parameters in the full model, and \emph{h} is the difference in the
+number of parameters between the full and reduced models. The
+non-centrality parameter $\lambda$ can be written \textbf{$\beta$$_2$'[X$_2$'X$_2$ - X$_2$'X$_1$(X$_1$'X$_1$)$^{\mathrm{-1}}$X$_1$'X$_2$]$\beta$$_2$/2$\sigma$$^2$} where \textbf{X$_1$} and \textbf{X$_2$}
+form a partition of \textbf{X} such that we can write: $$\mathbf{y} =
+\mathbf{X\beta} + \mathbf{\epsilon} =
+(\mathbf{X}_1,\mathbf{X}_2)\begin{pmatrix} \mathbf{\beta}_1
+\\ \mathbf{\beta}_2 \end{pmatrix} + \mathbf{\epsilon} =
+\mathbf{X}_1\mathbf{\beta}_1 + \mathbf{X}_2\mathbf{\beta}_2 +
+\mathbf{\epsilon} $$
+
+And the reduced model would be \textbf{y} = \textbf{X$_1$$\beta$$_1$$^{\star}$} + $\epsilon$$^{\star}$.
+
+
+
+\begin{verbatim}
+#Find SSR in the full model.
+bhat_B <- ginv(t(XB)%*%XB)%*%t(XB)%*%YB
+SSR_Bf <- t(bhat_B) %*% t(XB) %*% YB - (length(YB)*(mean(YB))^2)
+
+#create reduced model design matric and X1_B and estimator bhat1_B
+X1_B <- XB[,-c(3,5)]
+bhat1_B <- ginv(t(X1_B)%*%X1_B) %*% t(X1_B) %*% YB
+SSR_Br <- t(bhat1_B) %*% t(X1_B) %*% YB - (length(YB)*(mean(YB))^2)
+
+YhatB <- XB%*%bhat_B
+SSE_B <- t(YB -YhatB)%*%(YB-YhatB)
+
+F_2f <- ((SSR_Bf - SSR_Br)/2)/(SSE_B/(length(YB) - qr(XB)$rank))
+
+pf_2f <- pf(F_2f, 2, (length(YB)-(qr(XB)$rank)), lower.tail=FALSE)
+\end{verbatim}
+
+This strategy arrives at a very similar \emph{p}-value: 
+\texttt{3.19090353910838e-13}.
+
+
+
+
+
+
+ 
 \section{Problem 3}
 \label{sec-3}
 \subsection{In the context of Problem 1, part g), suppose that in fact $\tau$$_1$ = $\tau$$_2$, $\tau$$_3$ = $\tau$$_4$ = $\tau$$_1$ - d$\sigma$. What is the distribution of the F statistic?}
@@ -308,13 +415,13 @@ The F statistic for Problem 1, part g is given by $F =
 
 Where $Q = (\widehat{C'\beta} -
 d)'(C'(X'X)^{-}C)^{-1}(\widehat{C'\beta} -d})$ and 
-$\lambda = \frac{1}{2\sigma^2}(C'\beta -
+$\lambda = \frac{1}{\sigma^2}(C'\beta -
 d)'(C'(X'X)^{-}C)^{-1}(C'\beta -d)$. 
 
 Therefore,
 if $\tau$$_1$ = $\tau$$_2$, and $\tau$$_3$=$\tau$$_4$=$\tau$$_1$ - d$\sigma$, our
 non-centrality parameter will equal 
-$$\lambda = \frac{1}{2\sigma^2}(0, d\sigma, d\sigma)
+$$\lambda = \frac{1}{\sigma^2}(0, d\sigma, d\sigma)
 (C'(X'X)^{-})C)^{-1} \begin{pmatrix} 0
 \\ d\sigma \\ d\sigma \end{pmatrix}.$$ 
 
@@ -334,9 +441,9 @@ $$
   \end{pmatrix}
 $$
 
-Giving $\lambda = \frac{3}{4} d^2$ so the final
+Giving $\lambda = \frac{3}{2} d^2$ so the final
 distribution of the F statistic is F({\texttt{3},
-\texttt{2}, $\frac{3}{4}d^2$).
+\texttt{2}, $\frac{3}{2}d^2$).
 \subsection{Use R to plot the power of the $\alpha$ = 0.05 level test as a function of \emph{d} for \emph{d} $\in$ [-5,5], that is plotting \emph{P} (F > the cut-off value) against \emph{d}. The R function pf(q,df1,df2,ncp) will compute cumulative (non-central) F probabilities for you corresponding to the value q, for degrees of freedom df1 and df2 when the noncentrality parameter is ncp.}
 \label{sec-3-2}
 
@@ -344,10 +451,10 @@ distribution of the F statistic is F({\texttt{3},
 
 \begin{verbatim}
 d <- seq(-5,5,by=.05)
-Power <- 1-pf(qf(0.95,3,2),3,2,.75*d^2)
+Power <- 1-pf(qf(0.95,3,2),3,2,1.5*d^2)
 plot(d, Power)
 \end{verbatim}
-
+ 
 \begin{figure}{r}{0.4\textwidth}
 \centering
 \includegraphics[: :width 0.38\textwidth :]{HW4_3b.pdf}
@@ -355,15 +462,10 @@ plot(d, Power)
 \end{figure}
 
 \newpage
-\section{Appendix: Tangled R code}
-\label{sec-4}
-
-
-\lstinputlisting{DabbishHW4a.R}
 \section{Appendix: Additional Notes}
-\label{sec-5}
+\label{sec-4}
 \subsection{Useful Theorems}
-\label{sec-5-1}
+\label{sec-4-1}
 
 
 \begin{theorem}
@@ -387,9 +489,9 @@ Then,
 
 \end{theorem}
 \subsection{Distributions of interests}
-\label{sec-5-2}
+\label{sec-4-2}
 \subsubsection{SSE/$\sigma$$^2$}
-\label{sec-5-2-1}
+\label{sec-4-2-1}
 
 
 Using theorem \ref{thm:idemchi} above, we can show:
@@ -404,7 +506,7 @@ $$P\left(\sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\,
 \chi^2_{n-\mathrm{rank}(X)}}}} < \sigma < \sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\, \chi^2_{n-\mathrm{rank}(X)}}}} \right)
 = 1 - \alpha$$
 \subsubsection{Estimable functions \textbf{c'$\beta$}}
-\label{sec-5-2-2}
+\label{sec-4-2-2}
 
 
 For an estimable \textbf{c'$\beta$}, we have:
@@ -420,5 +522,68 @@ have:
 $$P\left( \widehat{\mathbf{c'\beta}} -
 t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} < \mathbf{c'\beta} <  \widehat{\mathbf{c'\beta}} +
 t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} \right) = 1 - \alpha$$
+\subsubsection{A t statistic for prediction}
+\label{sec-4-2-3}
+
+
+Consider future observation y$_0$, y$_0$ = \textbf{x$_0$}' $\beta$ + $\epsilon$$_0$ with
+$\hat{y}_0 = \mathbf{x_0'\hat{\beta}}$, where $\hat{y_0}$ is computed
+from \emph{n} observations and y$_0$ is obtained independently. We find that
+$E(y_0 - \hat{y_0}) = 0$ and 
+
+
+$var(y_0 - \hat{y}_0) = var(\epsilon_0) +
+var(\mathbf{x_0'\hat{\beta}}) = \sigma^2[1+
+\mathbf{x_0'(X'X)^{-1}x_0}]$, where 
+$\widehat{var(y - \hat{y}_0)} = s^22[1+ \mathbf{x_0'(X'X)^{-1}x_0}]$. Because of the independence of \emph{s$^2$}
+and \emph{y$_0$} and $\hat{y}_0$, we have the following t statistic:
+
+$$t = \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \sim t(n-\mathrm{rank}(X))$$
+
+
+
+Therefore,
+
+$$P = \left[ -t_{\alpha/2,n-rank(X)} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-rank(X)}\right] = 1 -
+\alpha$$
+
+Re-arranging in terms of $\mathbf{x_0'\hat{\beta}} = \hat{y}_0$ gives:
+
+$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-rank(X)}s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}.$$
+\subsection{General Linear Hypothesis Test}
+\label{sec-4-3}
+
+\emph{The general linear hypothesis test} is the following F test for
+\emph{H$_0$} : \textbf{C$\beta$} = \textbf{0} verus \emph{H$_1$} : \textbf{C$\beta$} $\neq$ \textbf{0}, given \textbf{y}
+$\sim$ N$_n$(\textbf{X$\beta$},$\sigma$$^2$ \textbf{I}), \textbf{C} \emph{q} x (/k/+1), rank(\textbf{C}) = q, with SSH = the sum of squares due to
+the hypothesis or due to \textbf{C$\beta$}. Note that 
+
+\(\frac{SSH}{\sigma^2} = \frac{(\mathbf{C\hat{\beta}})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\hat{\beta}}}{\sigma^2}
+\sim
+\chi^2(q,\frac{(\mathbf{C\beta})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\beta}}{2\sigma^2})\)
+
+\noindent and
+
+\(\frac{SSE}{\sigma^2} = \frac{\mathbf{y}'[\mathbf{I} -
+\mathbf{X(X'X)^{-1}X}']\mathbf{y}}{\sigma^2} \sim \chi^2(n-rank(X)).\)
+
+Taking the ratio gives us our test statistic:
+$$F = \frac{SSH/q}{SSE/(n-rank(X))}$$
+
+\begin{itemize}
+\item If \emph{H$_0$} : \textbf{C$\beta$} = \textbf{0} is false, F $\sim$ F(q,n-rank(X),$\lambda$), where
+  $\lambda =
+  \frac{(\mathbf{C\beta})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\beta}}{2\sigma^2})$.
+\item Notice that if \textbf{C$\beta$} = \textbf{0} is true, $\lambda$ defined above = 0, giving F
+  $\sim$ F(q, n-rank(X)).
+\end{itemize}
+\section{Appendix: Tangled R code}
+\label{sec-5}
+
+
+\lstinputlisting{DabbishHW4c.R}
 
 \end{document}

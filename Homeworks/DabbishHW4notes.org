@@ -58,3 +58,61 @@ have:
 $$P\left( \widehat{\mathbf{c'\beta}} -
 t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} < \mathbf{c'\beta} <  \widehat{\mathbf{c'\beta}} +
 t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} \right) = 1 - \alpha$$
+
+
+** A t statistic for prediction
+
+Consider future observation y_0, y_0 = *x_0*' \beta + \epsilon_0 with
+$\hat{y}_0 = \mathbf{x_0'\hat{\beta}}$, where $\hat{y_0}$ is computed
+from /n/ observations and y_0 is obtained independently. We find that
+$E(y_0 - \hat{y_0}) = 0$ and 
+
+
+$var(y_0 - \hat{y}_0) = var(\epsilon_0) +
+var(\mathbf{x_0'\hat{\beta}}) = \sigma^2[1+
+\mathbf{x_0'(X'X)^{-1}x_0}]$, where 
+$\widehat{var(y - \hat{y}_0)} = s^22[1+ \mathbf{x_0'(X'X)^{-1}x_0}]$. Because of the independence of /s^2/
+and /y_0/ and $\hat{y}_0$, we have the following t statistic:
+
+$$t = \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \sim t(n-\mathrm{rank}(X))$$
+
+
+
+Therefore,
+
+$$P = \left[ -t_{\alpha/2,n-rank(X)} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-rank(X)}\right] = 1 -
+\alpha$$
+
+Re-arranging in terms of $\mathbf{x_0'\hat{\beta}} = \hat{y}_0$ gives:
+
+$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-rank(X)}s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}.$$
+
+
+* General Linear Hypothesis Test
+/The general linear hypothesis test/ is the following F test for
+/H_0/ : *C\beta* = *0* verus /H_1/ : *C\beta* \neq *0*, given *y*
+\sim N_n(*X\beta*,\sigma^2 *I*), *C* /q/ x (/k/+1), rank(*C*) = q, with SSH = the sum of squares due to
+the hypothesis or due to *C\beta*. Note that 
+
+\(\frac{SSH}{\sigma^2} = \frac{(\mathbf{C\hat{\beta}})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\hat{\beta}}}{\sigma^2}
+\sim
+\chi^2(q,\frac{(\mathbf{C\beta})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\beta}}{2\sigma^2})\)
+
+\noindent and
+
+\(\frac{SSE}{\sigma^2} = \frac{\mathbf{y}'[\mathbf{I} -
+\mathbf{X(X'X)^{-1}X}']\mathbf{y}}{\sigma^2} \sim \chi^2(n-rank(X)).\)
+
+Taking the ratio gives us our test statistic:
+$$F = \frac{SSH/q}{SSE/(n-rank(X))}$$
+
++ If /H_0/ : *C\beta* = *0* is false, F \sim F(q,n-rank(X),\lambda), where
+  $\lambda =
+  \frac{(\mathbf{C\beta})'[\mathbf{C(X'X)^{-1}C}']^{-1}\mathbf{C\beta}}{2\sigma^2})$.
+
++ Notice that if *C\beta* = *0* is true, \lambda defined above = 0, giving F
+  \sim F(q, n-rank(X)). 
+

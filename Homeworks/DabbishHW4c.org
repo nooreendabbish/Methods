@@ -8,138 +8,138 @@
 # Code to input variables, libraries, and commonly used functions:
 #+NAME: common
 #+BEGIN_SRC R :session *HW4* :exports none :tangle yes
-     library(MASS); library(xtable)
-       lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
-        x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
-        print(x, floating=FALSE, tabular.environment="pmatrix", 
-          hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
-        }
-     
-     #Variables from Problem 2 of HW3:
-       Y1 <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
-       X1 <- matrix(c(rep(1,6),
-                     1,1,0,0,0,0,
-                     0,0,1,0,0,0,
-                     0,0,0,1,0,0,
-                     0,0,0,0,1,1),nrow = 6,byrow=FALSE)
-     
-     #Variables from Problem 4 of HW3:
-     data(Boston)
-     YB = as.matrix(Boston$medv)
-     XB = as.matrix(Boston[,c('crim','nox','rm','age','dis')])
-     XB = cbind(rep(1,dim(Boston)[1]),XB)
-     bhatB <- ginv(t(XB)%*%XB) %*% t(XB) %*% YB
-     YhatB <- XB %*% bhatB
-     errB <- YB - YhatB
-     sigsqhatB <- t(errB) %*% errB / (dim(XB)[1] - qr(XB)$rank)
-  
-     #Another dataset tested:
-     X511 <- matrix(c(rep(1,9),rep(c(rep(0,7),1),3),1,1),7,5)
-     Y511 <- c(2,1,4,6,3,5,4)
-  
-     #functions for calculating estimates:
-     
-     sigmacalc <- function(Y, X, alpha){
-     Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
-     SSE <- t(Y-Yh) %*% (Y-Yh)
-     
-     lowerchi <- qchisq(alpha/2, df=(length(Y) - qr(X)$rank))
-     upperchi <- qchisq(1-alpha/2, df=(length(Y) - qr(X)$rank))
-     
-     return(c(sqrt(SSE/upperchi),sqrt(SSE/lowerchi)))
-     }
-     
-           
-     cbetacalc <- function(Y,X, alpha, ct){
-     Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
-     SSE <- t(Y-Yh) %*% (Y-Yh)
-     MSE <- SSE/(length(Y) - qr(X)$rank)
-     quad <- t(ct)%*%ginv(t(X)%*%X)%*%ct
-     
-     tstar <- qt(1-alpha/2, length(Y) - qr(X)$rank)
-     pm <- tstar  * sqrt(quad) * sqrt (MSE)
-     
-     ctbhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
-     
-     return(c(ctbhat-pm,ctbhat+pm))
-     }
-     
-     #F-test function:
+       library(MASS); library(xtable)
+         lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+          x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+          print(x, floating=FALSE, tabular.environment="pmatrix", 
+            hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+          }
+       
+       #Variables from Problem 2 of HW3:
+         Y1 <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+         X1 <- matrix(c(rep(1,6),
+                       1,1,0,0,0,0,
+                       0,0,1,0,0,0,
+                       0,0,0,1,0,0,
+                       0,0,0,0,1,1),nrow = 6,byrow=FALSE)
+       
+       #Variables from Problem 4 of HW3:
+       data(Boston)
+       YB = as.matrix(Boston$medv)
+       XB = as.matrix(Boston[,c('crim','nox','rm','age','dis')])
+       XB = cbind(rep(1,dim(Boston)[1]),XB)
+       bhatB <- ginv(t(XB)%*%XB) %*% t(XB) %*% YB
+       YhatB <- XB %*% bhatB
+       errB <- YB - YhatB
+       sigsqhatB <- t(errB) %*% errB / (dim(XB)[1] - qr(XB)$rank)
     
-     Cbetahatd <- function (Y,X, ct, d = 0){
-     
-     CGCinv <- ginv(t(ct)%*%ginv(t(X)%*%(X))%*%ct)
-     CBhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
-     Q <- t(CBhat - d)%*%CGCinv%*%(CBhat-d)
-     MSH <- Q/qr(ct)$rank
+       #Another dataset tested:
+       X511 <- matrix(c(rep(1,9),rep(c(rep(0,7),1),3),1,1),7,5)
+       Y511 <- c(2,1,4,6,3,5,4)
     
-     Yhat <- X %*% ginv(t(X)%*%X)%*%t(X)%*%Y
-     SSE <- t(Y-Yhat)%*%(Y-Yhat)
-     MSE <- SSE/(length(Y) - qr(X)$rank)
+       #functions for calculating estimates:
+       
+       sigmacalc <- function(Y, X, alpha){
+       Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
+       SSE <- t(Y-Yh) %*% (Y-Yh)
+       
+       lowerchi <- qchisq(alpha/2, df=(length(Y) - qr(X)$rank))
+       upperchi <- qchisq(1-alpha/2, df=(length(Y) - qr(X)$rank))
+       
+       return(c(sqrt(SSE/upperchi),sqrt(SSE/lowerchi)))
+       }
+       
+             
+       cbetacalc <- function(Y,X, alpha, ct){
+       Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
+       SSE <- t(Y-Yh) %*% (Y-Yh)
+       MSE <- SSE/(length(Y) - qr(X)$rank)
+       quad <- t(ct)%*%ginv(t(X)%*%X)%*%ct
+       
+       tstar <- qt(1-alpha/2, length(Y) - qr(X)$rank)
+       pm <- tstar  * sqrt(quad) * sqrt (MSE)
+       
+       ctbhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
+       
+       return(c(ctbhat-pm,ctbhat+pm))
+       }
+       
+       #F-test function:
+      
+       Cbetahatd <- function (Y,X, ct, d = 0){
+       
+       CGCinv <- ginv(t(ct)%*%ginv(t(X)%*%(X))%*%ct)
+       CBhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
+       Q <- t(CBhat - d)%*%CGCinv%*%(CBhat-d)
+       MSH <- Q/qr(ct)$rank
+      
+       Yhat <- X %*% ginv(t(X)%*%X)%*%t(X)%*%Y
+       SSE <- t(Y-Yhat)%*%(Y-Yhat)
+       MSE <- SSE/(length(Y) - qr(X)$rank)
+      
+       F <- MSH/MSE
+      
+       return(1-pf(F, qr(ct)$rank, length(Y)-qr(X)$rank))
+       
+       }
+      
+       # Prediction limits
     
-     F <- MSH/MSE
+       predict <- function (Y, X, alpha, ct, n=1){
+       Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
+       SSE <- t(Y-Yh) %*% (Y-Yh)
+       MSE <- SSE/(length(Y) - qr(X)$rank)
+       quad <- t(ct)%*%ginv(t(X)%*%X)%*%ct
+       gamma <- 1/n
+       tstar <- qt(1-alpha/2, length(Y) - qr(X)$rank)
+       pm <- tstar  * sqrt(gamma+quad) * sqrt (MSE)
+       
+       ctbhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
     
-     return(1-pf(F, qr(ct)$rank, length(Y)-qr(X)$rank))
-     
-     }
+       return(c(ctbhat-pm,ctbhat+pm))
+    }
     
-     # Prediction limits
-  
-     predict <- function (Y, X, alpha, ct, n=1){
-     Yh <- X %*% ginv(t(X) %*% X) %*% t(X) %*% Y
-     SSE <- t(Y-Yh) %*% (Y-Yh)
-     MSE <- SSE/(length(Y) - qr(X)$rank)
-     quad <- t(ct)%*%ginv(t(X)%*%X)%*%ct
-     gamma <- 1/n
-     tstar <- qt(1-alpha/2, length(Y) - qr(X)$rank)
-     pm <- tstar  * sqrt(gamma+quad) * sqrt (MSE)
-     
-     ctbhat <- t(ct)%*%ginv(t(X)%*%X)%*%t(X)%*%Y
-  
-     return(c(ctbhat-pm,ctbhat+pm))
-  }
-  
-    #1e
-    predict(Y1, X1, .1, c(1,0,1,0,0), 10)
-  
-    #1f
-    predict(Y1, X1, .1, (c(1,1,0,0,0) - c(1,0,1,0,0)), 2)
-  
-    #1g
-    G <- t(matrix(c(0,1,-1,0,0,
-                      0,1,0,-1,0,
-                      0,1,0,0,-1),nrow=3,ncol=5, byrow=TRUE))
-    Cbetahatd(Y1,X1,G,c(0,0,0))
-  
-    #1h
-    H <- t(matrix(c(0, 1, -1, 0, 0, 0, 0, 1, -1, 0), nrow=2, ncol=5, byrow=T))
-  
-    Cbetahatd(Y1,X1,H,c(10,0))
-  
-    #2a
-    sigmacalc(YB,XB, .1)
-  
-    #2b
-    cbetacalc(YB,XB, .1, XB[1,])
-  
-    #2c
-    cbetacalc(YB,XB, .1, (XB[1,]-XB[2,]))
-  
-    #2d
-    Cbetahatd(YB,XB, (XB[1,]-XB[2,]))
-  
-    #2e
-    predict(YB,XB, .1, c(0,0.005,0.45,7,45,6), 1)
-  
-    #2f
-    Cbetahatd(YB,XB, c(0,0,1,0,1,0))
-  
-    #3
+      #1e
+      predict(Y1, X1, .1, c(1,0,1,0,0), 10)
     
-  
+      #1f
+      predict(Y1, X1, .1, (c(1,1,0,0,0) - c(1,0,1,0,0)), 2)
     
-  
+      #1g
+      G <- t(matrix(c(0,1,-1,0,0,
+                        0,1,0,-1,0,
+                        0,1,0,0,-1),nrow=3,ncol=5, byrow=TRUE))
+      Cbetahatd(Y1,X1,G,c(0,0,0))
     
+      #1h
+      H <- t(matrix(c(0, 1, -1, 0, 0, 0, 0, 1, -1, 0), nrow=2, ncol=5, byrow=T))
+    
+      Cbetahatd(Y1,X1,H,c(10,0))
+    
+      #2a
+      sigmacalc(YB,XB, .1)
+    
+      #2b
+      cbetacalc(YB,XB, .1, XB[1,])
+    
+      #2c
+      cbetacalc(YB,XB, .1, (XB[1,]-XB[2,]))
+    
+      #2d
+      Cbetahatd(YB,XB, (XB[1,]-XB[2,]))
+    
+      #2e
+      predict(YB,XB, .1, c(0,0.005,0.45,7,45,6), 1)
+    
+      #2f
+      Cbetahatd(YB,XB, c(0,0,1,0,1,0))
+    
+      #3
+      
+    
+      
+    
+      
 #+END_SRC
 
 * Problem 1 In the context of Problem 2 of Homework Assignment 3, use R matrix calculations to do the following in the (non-full-rank) Gauss-Markov normal linear model
@@ -174,6 +174,21 @@ y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
 Because the problem statement says this is a Gauss-Markov normal
 linear model, we know that *Y* \sim N(*X\beta*,\sigma^2 *I*).
 
+*** SSE/\sigma^2
+
+Using theorem 1 in the Appendix, we can show:
+
+$$\frac{SSE}{\sigma^2} = \frac{(\mathbf{Y} -
+\hat{\mathbf{Y}})'(\mathbf{Y} - \hat{\mathbf{Y}})}{\sigma^2} \sim
+\chi^2_{n-\text{rank}(X)}$$
+
+Rearranging to find confidence limits for \sigma gives:
+
+$$P\left(\sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\,
+\chi^2_{n-\mathrm{rank}(X)}}}} < \sigma < \sqrt{\frac{SSE}{\mathrm{upper\, \alpha/2\, quantile\, of\, \chi^2_{n-\mathrm{rank}(X)}}}} \right)
+= 1 - \alpha$$
+
+*** Solution from R
 Using the hand-written function ~sigmacalc~, included in the
 appendix. The following two-sided 90% confidence limits for \sigma 
 were obtained: SRC_R[ :session *HW4*]{round(sigmacalc(Y1,X1, .1)[1],4)} <
@@ -190,6 +205,21 @@ SRC_R[ :session *HW4*]{round(cbetacalc(Y1,X1, .1, c(1,0,1,0,0))[1],4)}
 < \mu + \tau_2 <
 SRC_R[ :session *HW4*]{round(cbetacalc(Y1,X1, .1, c(1,0,1,0,0))[2],4)}
 
+*** Estimable functions *c'\beta* 
+
+For an estimable *c'\beta*, we have:
+
+$$\frac{\widehat{\mathbf{c'\beta}} -
+\mathbf{c'\beta}}{\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}}} \sim
+t_{n-\mathrm{rank}(X)}$$
+
+Note that $MSE = \frac{SSE}{n-\mathrm{rank}(X)}$. Rearranging to find 1 - \alpha confidence limits for *c'\beta*,
+denoting t^{\star} = the upper \alpha/2 quantile of t_{n-rank(X)}, we
+have:
+
+$$P\left( \widehat{\mathbf{c'\beta}} -
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} < \mathbf{c'\beta} <  \widehat{\mathbf{c'\beta}} +
+t^{\star}\sqrt{MSE}\sqrt{\mathbf{C'(X'X)^{-}C}} \right) = 1 - \alpha$$
 
 ** Find 90% two-sided confidence limits for \tau_1 - \tau_2.
 :PROPERTIES:
@@ -259,52 +289,54 @@ $\widehat{var(y - \hat{y}_0)} = s^22[1+ \mathbf{x_0'(X'X)^{-1}x_0}]$. Because of
 and /y_0/ and $\hat{y}_0$, we have the following t statistic:
 
 $$t = \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
-\mathbf{x_0'(X'X)^{-1}x_0}} \sim t(n-k-1)}$$
+\mathbf{x_0'(X'X)^{-1}x_0}}} \sim t(n-\mathrm{rank}(X))$$
 
 
 
 Therefore,
 
-$$P = \left[ -t_{\alpha/2,n-k-1} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
-\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-k-a}\right] = 1 -
+$$P = \left[ -t_{\alpha/2,n-rank(X)} \leq \frac{y_0 - \hat{y}_0 - 0}{s\sqrt{1+
+\mathbf{x_0'(X'X)^{-1}x_0}}} \leq t_{alpha/2,n-rank(X)}\right] = 1 -
 \alpha$$
 
 Re-arranging in terms of $\mathbf{x_0'\hat{\beta}} = \hat{y}_0$ gives:
 
-$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-k-1}s\sqrt{1+
+$$\mathbf{x_0'\hat{\beta}} \pm t_{\alpha/2,n-rank(X)}s\sqrt{1+
 \mathbf{x_0'(X'X)^{-1}x_0}}.$$
 
 *** Predicitions for /n/ observations from \mu + \tau_1
 
 Using the preceeding theory and the handwritten R function,
 ~predict~, which is included in the appendix. I ran a prediction fo
-/n/ =10 from the first condition  *x_0* = (1,0,1,0,0).
+/n/ =10 from the first condition  *x_0* = (1,1,0,0,0).
 
 The 90% confidence limits obtained for the mean were 
-SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,c(1,0,1,0,0),10)[1],4)} 
+SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,c(1,1,0,0,0),10)[1],4)} 
 to
-SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,c(1,0,1,0,0),10)[2],4)}.
+SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,c(1,1,0,0,0),10)[2],4)}.
 
 ** Find 90% two-sided prediction limits for the difference between a pair of future values, one from the first set of conditions (i.e. with mean \mu + \tau_1) and one from the second set of conditions (i.e. with mean \mu + \tau_2).
 
 Similar to part (e) above, here I used my ~predict~ function again,
-except an /n/ of 2 and a *x_0* vector of the difference of the first
-two conditions:
+except an /n/ of .5 in order to obtain a gamma of 2 and a *x_0* vector of the 
+difference of the first two conditions:
 
 (1,1,0,0,0) - (1,0,1,0,0) = (0,1,-1,0,0).
 
 This gave 90 % prediction limits for the difference as follows:
-SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,(c(1,1,0,0,0)-c(1,0,1,0,0)),2)[1],4)}
+SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,(c(1,1,0,0,0)-c(1,0,1,0,0)),.5)[1],4)}
 to
-SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,(c(1,1,0,0,0)-c(1,0,1,0,0)),2)[2],4)}.
+SRC_R[:session *HW4*]{round(predict(Y1,X1,.1,(c(1,1,0,0,0)-c(1,0,1,0,0)),.5)[2],4)}.
 
 
 ** Find a /p/-value for testing the following: What is the practical interpretation of this test?   
 \( H_0 : \begin{pmatrix} 0 & 1 & -1 & 0 & 0 \\ 0 & 1 & 0 & -1 & 0 \\ 0 & 1 & 0 & 0 & -1 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \end{pmatrix}. \) 
 
-The practical interpretation of this test is to ask if all of the
-parameters are equal. I performed the test using the General Linear
-Hypothesis Testing function described above, ~Cbetahatd~. 
+The null hypothesis asked by this test is whether \tau_1 = \tau_2 =
+tau_3 = tau_4, if all these parameters are equal there would be no
+difference among the treatments. I performed the test using the General Linear
+Hypothesis Testing function described above, ~Cbetahatd~, with the
+matrix above as C in C'\beta and the d-vector = (0,0,0).
 
 #+BEGIN_SRC R :session *HW4* :exports code 
 G <- t(matrix(c(0,1,-1,0,0,
@@ -323,7 +355,8 @@ unlikely that all of the parameters are equal.
 \end{pmatrix} \begin{pmatrix} \mu \\ \tau_1 \\ \tau_2 \\ \tau_3
 \\ \tau_4 \end{pmatrix} = \begin{pmatrix} 10 \\ 0  \end{pmatrix}.\)
 
-I tested this hypotheis as in question 1g), using the General Linear
+In this test, the null hypothesis asks whether \tau_1 - \tau_2 = 10
+and \tau_2 = \tau_3. I tested this hypotheis as in question 1g), using the General Linear
 Hypothesis and the F-test implemented in my function ~Cbetahatd~,
 note that the vector (10,0) was entered for the *d* vector.
 
@@ -347,20 +380,24 @@ SRC_R[ :session *HW4*]{round(sigmacalc(YB,XB,.1)[1],4)} < \sigma < SRC_R[ :sessi
 ** Find 90% two-sided confidence limits for the mean response under the conditions of data point #1.
 
 
-To find these 90% confidence limits, we will use the t-distribution
-of $\widehat{c'\beta}, where c' is the first row of our data set
+To find these 90% confidence limits, we will use the t_{n-rank(X)}-distribution
+of $\frac{\widehat{c'\beta} -
+c'\beta}{\sqrt{MSE}{\sqrt{c'(X'X)^{-}c}}$, 
+where c' is the first row of our data set
 (data point #1).
 
 Using the ~cbetacalc~ function to do this, as ~cbetacalc(YB,XB, .1,
-XB[1,])~ we find a 90% confidence interval of SRC_R[:session *HW4*]{round(cbetacalc(YB,XB, .1,XB[1,])[1],4)} 
-< mean response under the conditions of data point #1 <
+XB[1,])~ we find a 90% confidence interval for the mean response under the
+conditions of data point #1 of 
+SRC_R[:session *HW4*]{round(cbetacalc(YB,XB, .1,XB[1,])[1],4)} 
+to 
 SRC_R[:session *HW4*]{round(cbetacalc(YB,XB, .1, XB[1,])[2],4)}.
 
 ** Find 90% two-sided condifence limits for the difference in mean responses under the conditions of data points #1 and #2. .
 
 
 To find these 90% confidence limits, we will use the t-distribution
-of $\widehat{c'\beta}, where c' is the difference beteen the first row
+function of c'\beta again, where c' is the difference beteen the first row
 of our data set and the second row
 (data points #1 and #2).
 
@@ -381,18 +418,82 @@ my general linear hypothesis testing function: ~Cbetahatd(YB,XB,
 
 90 % prediction limits for an additional response from these
 conditions were obtained using the conditions as our c-vector in the
-~predict~ function: ~predict(YB,XB, .1, c(0,0.005,0.45,7,45,6), 1)~ .
+~predict~ function: ~predict(YB,XB, .1, c(1,0.005,0.45,7,45,6), 1)~ .
 The limits obtained were 
-SRC_R[:session *HW4*]{round(predict(YB,XB,.1, c(0,0.005,0.45,7,45,6),1)[1])} to
-SRC_R[:session *HW4*]{round(predict(YB,XB,.1, c(0,0.005,0.45,7,45,6), 1)[2],4)}.
-
+SRC_R[:session *HW4*]{round(predict(YB,XB,.1, c(1,0.005,0.45,7,45,6),1)[1],4)} to
+SRC_R[:session *HW4*]{round(predict(YB,XB,.1, c(1,0.005,0.45,7,45,6), 1)[2],4)}.
 
 ** Find a /p/-value for testing the hypothesis that a model including only /x_1/, /x_3/, and /x_5/ is adequare for "explaining" home price. 
 
- Using an F-test on the hypothesis that c'\beta = \beta_2 + \beta_4 =
- 0, we find a /p/-value of
- SRC_R[:session *HW4*]{Cbetahatd(YB,XB,c(0,0,1,0,-1,0))} for this model.
+ We use an F-test implementation of the General Linear Hypothesis
+ test using the ~Cbetahatd~ function described previously. We are
+ testing the hypothesis that \beta_2 = \beta_4 =
+ 0, with a $\mathbf{C} = \begin{pmatrix} 0 & 0 & 1 & 0 & 0 & 0\\ 0 & 0 & 0 & 0
+ & 1 & 0\end{pmatrix}$.
 
+
+To investigate this solution, we also 
+ #+BEGIN_SRC R :session *HW4* :exports code
+   
+   CB <- t(matrix(c(0,0,1,0,0,0,0,0,0,0,1,0),nrow=2,ncol=6,byrow=T))
+   
+   Cbetahatd(YB,XB,CB)   
+   
+ #+END_SRC
+
+
+ This gives a p-value of 3.1907809727727e-13, heavily supporting the
+ reduced model.
+
+*** Full--Reduced model approach
+We can create a /p/-value to test these models using an F statistic,
+constructed out of the ratio of the difference in regression sum of
+squares between the full (SSR_{full}) and reduced(SSR_{reduced}) models and the sum of squared
+error (SSE). These quantities are independent and follow a
+non-central \chi^2(/h/,\lambda) and central \chi^2(/n-k-1/)
+respectively where /n/ is the number of observations, /k/ is the
+number of parameters in the full model, and /h/ is the difference in the
+number of parameters between the full and reduced models. The
+non-centrality parameter \lambda can be written *\beta_2'[X_2'X_2 -
+X_2'X_1(X_1'X_1)^{-1}X_1'X_2]\beta_2/2\sigma^2* where *X_1* and *X_2*
+form a partition of *X* such that we can write: $$\mathbf{y} =
+\mathbf{X\beta} + \mathbf{\epsilon} =
+(\mathbf{X}_1,\mathbf{X}_2)\begin{pmatrix} \mathbf{\beta}_1
+\\ \mathbf{\beta}_2 \end{pmatrix} + \mathbf{\epsilon} =
+\mathbf{X}_1\mathbf{\beta}_1 + \mathbf{X}_2\mathbf{\beta}_2 +
+\mathbf{\epsilon} $$
+
+And the reduced model would be *y* = *X_1\beta_1^{\star}* + \epsilon^{\star}.
+
+
+#+BEGIN_SRC R :session *HW4* :exports code :tangle yes
+  #Find SSR in the full model.
+  bhat_B <- ginv(t(XB)%*%XB)%*%t(XB)%*%YB
+  SSR_Bf <- t(bhat_B) %*% t(XB) %*% YB - (length(YB)*(mean(YB))^2)
+   
+  #create reduced model design matric and X1_B and estimator bhat1_B
+  X1_B <- XB[,-c(3,5)]
+  bhat1_B <- ginv(t(X1_B)%*%X1_B) %*% t(X1_B) %*% YB
+  SSR_Br <- t(bhat1_B) %*% t(X1_B) %*% YB - (length(YB)*(mean(YB))^2)
+   
+  YhatB <- XB%*%bhat_B
+  SSE_B <- t(YB -YhatB)%*%(YB-YhatB)
+ 
+  F_2f <- ((SSR_Bf - SSR_Br)/2)/(SSE_B/(length(YB) - qr(XB)$rank))
+   
+  pf_2f <- pf(F_2f, 2, (length(YB)-(qr(XB)$rank)), lower.tail=FALSE)
+ 
+#+END_SRC
+
+This strategy arrives at a very similar /p/-value: 
+SRC_R[:session *HW4* :tangle yes]{pf_2f}.
+
+
+
+
+
+
+ 
 *  Problem 3
 ** In the context of Problem 1, part g), suppose that in fact \tau_1 = \tau_2, \tau_3 = \tau_4 = \tau_1 - d\sigma. What is the distribution of the F statistic?
 
@@ -402,13 +503,13 @@ The F statistic for Problem 1, part g is given by $F =
 
 Where $Q = (\widehat{C'\beta} -
 d)'(C'(X'X)^{-}C)^{-1}(\widehat{C'\beta} -d})$ and 
-$\lambda = \frac{1}{2\sigma^2}(C'\beta -
+$\lambda = \frac{1}{\sigma^2}(C'\beta -
 d)'(C'(X'X)^{-}C)^{-1}(C'\beta -d)$. 
 
 Therefore,
 if \tau_1 = \tau_2, and \tau_3=\tau_4=\tau_1 - d\sigma, our
 non-centrality parameter will equal 
-$$\lambda = \frac{1}{2\sigma^2}(0, d\sigma, d\sigma)
+$$\lambda = \frac{1}{\sigma^2}(0, d\sigma, d\sigma)
 (C'(X'X)^{-})C)^{-1} \begin{pmatrix} 0
 \\ d\sigma \\ d\sigma \end{pmatrix}.$$ 
 
@@ -427,31 +528,35 @@ $$
   \end{pmatrix}
 $$
 
-Giving $\lambda = \frac{3}{4} d^2$ so the final
+Giving $\lambda = \frac{3}{2} d^2$ so the final
 distribution of the F statistic is F({SRC_R[:session *HW4*]{qr(C1g)$rank},
-SRC_R[:session *HW4*]{(length(Y1) -qr(X1)$rank)}, $\frac{3}{4}d^2$).
+SRC_R[:session *HW4*]{(length(Y1) -qr(X1)$rank)}, $\frac{3}{2}d^2$).
 
 ** Use R to plot the power of the \alpha = 0.05 level test as a function of /d/ for /d/ \in [-5,5], that is plotting /P/ (F > the cut-off value) against /d/. The R function pf(q,df1,df2,ncp) will compute cumulative (non-central) F probabilities for you corresponding to the value q, for degrees of freedom df1 and df2 when the noncentrality parameter is ncp.
 
 #+BEGIN_SRC R :session *HW4* :exports code :results output graphics :file HW4_3b.pdf
   d <- seq(-5,5,by=.05)
-  Power <- 1-pf(qf(0.95,3,2),3,2,.75*d^2)
+  Power <- 1-pf(qf(0.95,3,2),3,2,1.5*d^2)
   plot(d, Power)
 #+END_SRC
-
+ 
 #+CAPTION: Power of an \alpha = 0.05 level test as a function of /d/.
 #+ATTR_LaTeX: :float wrap :width 0.38\textwidth :placement={r}{0.4\textwidth}
 [[file:HW4_3b.pdf]]
 
 \newpage
+
+* Appendix: Additional Notes
+#+INCLUDE: "DabbishHW4notes.org"
+
+
 * Appendix: Tangled R code
 :PROPERTIES:
 :UNNUMBERED: t
 :END:
 
-\lstinputlisting{DabbishHW4a.R}
+\lstinputlisting{DabbishHW4c.R}
 
 
 
-* Appendix: Additional Notes
-#+INCLUDE: "DabbishHW4notes.org"
+
