@@ -557,7 +557,7 @@ question 2a, using *V_1* as a source of weights.
 
 * By running 
 
-#+BEGIN_SRC R :session *HW2* :exports code
+#+BEGIN_SRC R :session *HW2* :exports code :tangle yes
 library(MASS)
 data(Boston)
 #+END_SRC
@@ -573,11 +573,11 @@ of these data.
 \rule{0.5\textwidth}{0.5pt}
 
 Information on the variables:
-#+BEGIN_SRC R :session *HW2* :exports both :results raw
+#+BEGIN_SRC R :session *HW2* :exports both :results raw :tangle yes
 ?Boston
 #+END_SRC
 
-#+BEGIN_SRC R :session *HW2* :exports code
+#+BEGIN_SRC R :session *HW2* :exports code :tangle yes
   Y=as.matrix(Boston$medv)
   X=as.matrix(Boston[,c('crim','nox','rm','age','dis')])
   X=cbind(rep(1,dim(Boston)[1]),X)

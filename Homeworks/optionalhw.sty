@@ -1,0 +1,42 @@
+\ProvidesPackage{optionalhw}
+%  optionalhw.sty Nooreen Dabbish 3/14/15
+%  To format the optional makeup midterm.
+
+\usepackage{amssymb, amsfonts, amsmath, latexsym, setspace}
+\usepackage{amsthm}
+\usepackage[cm]{fullpage}
+\usepackage{fancyhdr,hyperref,lastpage}
+\pagestyle{fancy}
+\setlength{\headheight}{15.2pt}
+\rhead[]{\thepage}
+\cfoot[]{\thepage 
+\renewcommand{\headrulewidth}{1pt}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \vspace*{-\topskip}      % remove the initial space
+   \let \footnote \thanks
+  \hrule height \z@        % to avoid the insertion of lineskip glue
+    {\LARGE \@title} \par
+   {\large \@author}
+\par\hfill{\large \@date}%
+  \par\endgroup            % instead of \end{center}
+  \vskip 1.5em             % <--- modify this to adjust the separation
+}
+\makeatother
+
+
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\normalfont\fontsize{12}{15}\selectfont}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\fontsize{12}{15}\selectfont}
+{\alph{subsection}}}
+\makeatother
+
+\usepackage{listings}

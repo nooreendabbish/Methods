@@ -109,9 +109,191 @@ $$E(\mathbf{Y})\,\mathrm{and}\,
 in the Aiken model with $\mathrm{var}(\epsilon) = \mathbf{V}$ for two
 cases where
  
-** $\mathbf{V} = \mathbf{V}_1 = \mathrm{diag}(1,9,9,1,1,9)$ and
+** $\mathbf{V} = \mathbf{V}_1 = \mathrm{diag}(1,9,9,1,1,9)$
+#+BEGIN_SRC R :session *HW2* :exports none
+library(xtable)
+  lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+   x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+   print(x, floating=FALSE, tabular.environment="pmatrix", 
+     hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+   }
+#+END_SRC
 
-** 
+#+RESULTS:
+
+The full model described in this question in 
+$\mathbf{Y}=\mathbf{X\beta}+\epsilon$ matrix form is:
+
+\[
+\begin{pmatrix}
+y_{11} \\ y_{12}\\ y_{21}\\ y_{31}\\ y_{41}\\ y_{42}
+\end{pmatrix} = 
+\begin{pmatrix} 
+2\\ 1\\ 4\\ 6\\ 3\\ 5
+\end{pmatrix} = 
+\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 
+\end{pmatrix}  
+\begin{pmatrix}
+\mu \\ \tau_1 \\ \tau_2 \\ \tau_3 \\ \tau_4 \\ \delta_{11}
+\\ \delta_{12} \\ \delta_{21} \\ \delta_{31} \\ \delta_{41} \\ \delta_{42}
+\end{pmatrix} + 
+\begin{pmatrix}
+\epsilon_{11} \\ \epsilon_{12}\\ \epsilon_{21}\\ \epsilon_{31}\\ \epsilon_{41}\\ \epsilon_{42}
+\end{pmatrix}
+\]
+
+We have $var(\epsilon) = \sigma^2 \mathbf{V}$, so we must re-write
+the model in terms of $\mathbf{U} = \mathbf{V}^{-1/2}\mathbf{Y}$ as
+follows:
+
+\begin{align*}
+\mathbf{V} &= \mathbf{V}^{1/2} \mathbf{V}^{1/2},\, \text{V is a
+diagonal matrix}\\
+\mathrm{Let }\, \mathbf{U}& =\mathbf{V}^{-1/2}Y\\
+E(\mathbf{U}) &= \mathbf{V}^{-1/2}E{Y} = \mathbf{V}^{-1/2}\mathbf{X\beta}\\
+&= \mathbf{W\beta}\\
+Var(\mathbf{U}) &= \mathbf{V}^{-1/2} Var(\mathbf{Y})\mathbf{V}^{-1/2}\\
+                &= \sigma^2 \mathbf{V}^{-1/2} \mathbf{V}\mathbf{V}^{-1/2}\\
+                &= \sigma^2 \mathbf{I}\\
+\epsilon^{\star} &= \mathbf{V}^{-1/2} \mathbf{\epsilon}
+\end{align*}
+
+This gives us $\mathbf{U} = \mathbf{W\beta} + \epsilon^{\star}$, where
+the Gauss-Markov assumptions hold for *U*.
+
+We first calculate *V^{-1/2}*:
+
+\begin{align*}
+\mathbf{V} &= \mathbf{V}_1 = \mathrm{diag}(1,9,9,1,1,9)\\
+\text{So,}\, \mathbf{V}^{1/2}_1 &= \mathrm{diag}(1,3,3,1,1,3)\\
+             \mathbf{V}^{-1/2}_1 &= \mathrm{diag}(1,1/3,1/3,1,1,1/3)\\
+\end{align*}
+
+We can check this in R,
+#+BEGIN_SRC R :session *HW2* :outputs code :results output raw
+  V <- diag(c(1,9,9,1,1,9))
+  Vhi <- solve(V^(1/2))
+  lvector(Vhi)
+#+END_SRC
+
+\[
+\mathbf{V}^{-1/2} = 
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Tue Feb 10 14:46:43 2015
+\begin{pmatrix}{}
+  1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.33 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.00 & 0.00 & 1.00 & 0.00 \\ 
+  0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.33 \\ 
+  \end{pmatrix}
+\]
+
+\begin{align*}
+\mathbf{U} &= \mathbf{V}^{-1/2} \mathbf{Y} = 
+\begin{pmatrix}
+y_{11} \\ \frac{1}{3} y_{12}\\ \frac{1}{3} y_{21}\\ y_{31}\\ y_{41}\\ \frac{1}{3}y_{42}
+\end{pmatrix} = 
+\begin{pmatrix} 
+2\\ \frac{1}{3}\\ \frac{4}{3}\\ 6\\ 3\\ \frac{5}{3}
+\end{pmatrix}
+\end{align*}
+
+Checking *U* in R gives:
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw
+  Y <- matrix(c(2, 1, 4, 6, 3, 5), nrow=6, ncol=1)
+  U <- Vhi %*% Y
+  lvector(U)
+#+END_SRC
+
+\[
+\mathbf{U} =
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Wed Feb 11 19:13:05 2015
+\begin{pmatrix}{}
+  2.00 \\ 
+  0.33 \\ 
+  1.33 \\ 
+  6.00 \\ 
+  3.00 \\ 
+  1.67 \\ 
+  \end{pmatrix}
+\]
+
+\begin{align*}
+\mathbf{W} &= \mathbf{V}^{-1/2}\mathbf{X} \\
+           &= \mathrm{diag}(1,1/3,1/3,1,1,1/3)\begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 
+\end{pmatrix}  \\
+ &= 
+\begin{pmatrix}{}
+  1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  \frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 \\ 
+  \frac{1}{3} & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 \\ 
+  1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  \frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & 0 & \frac{1}{3} \\ 
+  \end{pmatrix}
+\end{align*}
+
+Checking *W* in R gives:
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw
+  X <- matrix(c(rep(1,6),
+                1,1,0,0,0,0,
+                0,0,1,0,0,0,
+                0,0,0,1,0,0,
+                0,0,0,0,1,1,
+                rep(c(1,rep(0,6)),5),1
+                ),nrow = 6,byrow=FALSE)
+  W <- Vhi %*% X
+  lvector(W)
+  #+END_SRC
+
+\[
+\mathbf{W} =
+% latex table generated in R 3.0.2 by xtable 1.7-4 package
+% Tue Feb 10 15:19:08 2015
+\begin{pmatrix}{}
+  1.00 & 1.00 & 0.00 & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.33 & 0.33 & 0.00 & 0.00 & 0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 & 0.00 \\ 
+  0.33 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 0.00 & 0.00 & 0.00 & 1.00 & 0.00 & 0.00 & 0.00 & 0.00 & 1.00 & 0.00 \\ 
+  0.33 & 0.00 & 0.00 & 0.00 & 0.33 & 0.00 & 0.00 & 0.00 & 0.00 & 0.00 & 0.33 \\ 
+  \end{pmatrix}
+\]
+
+*** Solving $\mathbf{U} = \mathbf{W\beta} + \mathbf{\epsilon}$ for $\hat{\mathbf{U}}$  
+
+\begin{align*}
+\hat{\mathbf{U}} &=
+\mathbf{W}(\mathbf{W}'\mathbf{W})^{-}\mathbf{W}'\mathbf{Y}
+\end{align*}
+#+BEGIN_SRC R :session *HW2* :exports code :results output raw
+  Uhat <- W %*% ginv(t(W) %*% W) %*% t(W) %*% U
+  Uhat
+  W %*% ginv(t(W) %*% W) %*% t(W)
+  
+  
+  
+#+END_SRC
+
+#+RESULTS:
+
+*** 
+** V_2
 \[ 
 \mathbf{V} = \mathbf{V}_2 = 
 \begin{pmatrix}
@@ -125,15 +307,16 @@ cases where
 \]
 
 
-* The lm function in R allows one to do weighted least squares 
+
+* The lm function in R allows one to do weighted least squares :noexport:
  with the form $\sum w_i(y_i-\hat{y}_i)^2$ for positive weights $w_i$.
  For $\mathbf{V}_1$ in the last question, find the BLUEs of the 4 cell
  means using ~lm~ and an appropriate vector of weights.
 
 
-* By running
+* By running :noexport:
 
-#+BEGIN_SRC R :session *HW2* :outputs code
+#+BEGIN_SRC R :session *HW2* :exports code
 library(MASS)
 data(Boston)
 #+END_SRC
@@ -146,11 +329,11 @@ of these data.
 \rule{0.5\textwidth}{0.5pt}
 
 Information on the variables:
-#+BEGIN_SRC R :session *HW2* :outputs both :results raw
+#+BEGIN_SRC R :session *HW2* :exports both :results raw
 ?Boston
 #+END_SRC
 
-#+BEGIN_SRC R :session *HW2* :outputs code
+#+BEGIN_SRC R :session *HW2* :exports code
   Y=as.matrix(Boston$medv)
   X=as.matrix(Boston[,c('crim','nox','rm','age','dis')])
   X=cbind(rep(1,dim(Boston)[1]),X)
@@ -177,3 +360,30 @@ plot(myscatter)
 
 # \lstinputlisting{}
 
+
+* notes :noexport:
+\begin{align*}
+\mathbf{W}'\mathbf{W} &= 
+\begin{pmatrix}
+1 & \frac{1}{3} & \frac{1}{3} & 1 & \frac{1}{3}\\
+1 & \frac{1}{3} & 0           & 0 & 0           \\
+0 & 0           & \frac{1}{3} & 0 & 0           \\
+0 & 0           & 0           & 1 & 0           \\
+0 & 0           & 0           & 0 & \frac{1}{3} \\
+1 & 0           & 0           & 0 & 0           \\
+0 & \frac{1}{3} & 0           & 0 & 0           \\
+0 & 0           & \frac{1}{3} & 0 & 0           \\
+0 & 0           & 0           & 1 & 0           \\
+0 & 0           & 0           & 0 & 0           \\
+0 & 0           & 0           & 0 & \frac{1}{3}
+\end{pmatrix}
+\begin{pmatrix}
+  1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  \frac{1}{3} & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 \\ 
+  \frac{1}{3} & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 \\ 
+  1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  \frac{1}{3} & 0 & 0 & 0 & \frac{1}{3} & 0 & 0 & 0 & 0 & 0 & \frac{1}{3} \\ 
+  \end{pmatrix}\\
+&= 
+\end{align*}

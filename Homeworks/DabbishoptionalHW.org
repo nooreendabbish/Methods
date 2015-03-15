@@ -1,0 +1,29 @@
+#+TITLE:STAT 8004 Midterm Exam I Optional Makeup
+#+Author: Nooreen Dabbish
+#+Email: nerd@temple.edu
+#+LATEX_HEADER: \usepackage{optionalhw}
+#+OPTIONS: toc:nil 
+
+* Suppose that we have observable random variables /y_1/, /y_2/, /y_3/ and /y_4/ satisfying $E(y_1) = 2\beta_1 - \beta_2 + \beta_3 - \beta_4$, $E(y_2) = 2\beta_1 + \beta_3$, $E(y_3) = \beta_2$, and $E(y_4) = 2\beta_1 + \beta_2 + \beta_3$.Let *Y* = (/y_1,y_2,y_3,y_4/)^T, and *\beta* = (/\beta_1,\beta_2, \beta_3, \beta_4/)^T. Answer parts (a)-(e) in this scenario.
+** Find *X* and *\epsilon* such that a model for *Y* can be expressed in the form of *Y=X\beta+\epsilon*.
+** Is *X* in your model full rank? Why or Why not?
+** Clearly and precisely state the minimal conditions under which your model in part (a) is a Gauss-Markov model.
+** Is \beta_4 estimable? If yes, find a linear unbiased estimator for \beta_4. If no, why?
+
+#+BEGIN_SRC R :session *oHW* 
+  library(MASS)
+  X1 <- matrix(c(2,-1,1,-1,2,0,1,0,0,1,0,0,2,1,1,0), nrow=4, ncol=4, byrow=TRUE)
+  ct <- c(0,0,0,1)
+  ct %*% ginv(t(X1)%*%X1)%*%t(X1)
+  qr(ginv(t(X1)%*%X1))$rank
+  A <- (t(X1)%*%X1)[  , -1]
+  A <- cbind(A,(    (t(X1)%*%X1))[ ,1])
+  A
+  A <- A[c(1,2,4,3),]
+  A
+  qr(A[1:3,1:3])$rank
+  G <- cbind(rbind(solve(A[1:3,1:3]), c(0,0,0)), c(0,0,0,0))
+  t(X1)%*%X1%*%G%*%t(X1)%*%(X1)
+  t(X1)%*%X1
+  
+#+END_SRC
