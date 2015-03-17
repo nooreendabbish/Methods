@@ -1,0 +1,86 @@
+% Created 2015-03-16 Mon 13:42
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{methodshw, amsmath}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{8004 Homework 4}
+\author{Nooreen Dabbish}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.9.3f}}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\section{A meat scientist is studying the effect of storage temperature on meat quality.}
+\label{sec-1}
+
+The temperatures of interest are 34, 40, and 46 degrees Fahrenheit. Twelve coolers are available for the study. The three temperatures are randomly assigned to the twelve coolers using a balanced and completely randomized design. Two large cuts of fresh beef are stored in each cooler. After three days, each member of a team of experts independently assigns a quality score to each cut of beef. The experts are not told about the storage conditions of each cut. The scores assigned by the team to each cut of beef are averaged to produce an overall quality score for each cut.
+\subsection{Write down a model for the overall quality score data. Define your notation thoroughly.}
+\label{sec-1-1}
+
+
+Let y$_{\mathrm{ijk}}$ = the overall quality score for the kth cut from the jth
+cooler at the ith temperature, where k = 1,2, j = 1,2,3,4, and
+i=1,2,3.
+
+The three temperatures of interest are pre-determined, so we will
+consider them fixed effects, the fixed effect of the ith temperature
+is $\beta$$_i$. Whereas the effects of cooler at each temperature are
+random, given by u$_{\mathrm{ij}}$ for the jth cooler at the ith temperature.
+Also, we will add in an overall mean $\mu$ which is also fixed,
+giving the model: 
+
+$$y_{ijk} = \mu + \beta_i + u_{ij} + \epsilon_{ijk}$$
+
+We assume that 
+\begin{itemize}
+\item $u_{ij}\overset{iid}\sim N(0,\sigma^2_u)$
+\item the random error $\epsilon_{ijk}\overset{iid}\sim N(0,\sigma^2_\epsilon)$
+\end{itemize}
+\section{Let}
+\label{sec-2}
+
+$$\begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix} \sim N 
+\left(\begin{pmatrix} \mu_1 \\ \mu_1 \\ \mu_2 \end{pmatrix},
+\begin{pmatrix} \sigma^2 & \sigma^2/2 & 0 \\ \sigma^2/2
+& \sigma^2 & \sigma^2/2 \\ 0 & \sigma^2/2 & \sigma^2 \end{pmatrix}
+\right)$$ 
+
+Where $\mu$$_1$, $\mu$$_2$ and $\sigma$$^2$ are unknown parameters. 
+Find the REML of $\sigma$$^2$. Please start with writing it as \textbf{Y=X$\beta$+$\epsilon$}, and then try to find \textbf{M} for calculating the REML.
+ 
+We have \textbf{X} = $\begin{pmatrix} 1 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix}$, 
+\textbf{$\beta$} = $\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix}$, and 
+\textbf{$\epsilon$} $\sim N(0,\Sigma),\Sigma=\sigma^2
+\begin{pmatrix} 1 & 1/2 & 0 \\ 1/2 & 1 & 1/2 \\ 0 & 1/2 & 1 \end{pmatrix}$.
+
+\begin{align*}
+\begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix} &= 
+\begin{pmatrix} 1 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix} 
+\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix} + \sigma^2 
+\begin{pmatrix} 1 & 1/2 & 0 \\ 1/2 & 1 & 1/2 \\ 0 & 1/2 & 1 \end{pmatrix}
+\end{align*}
+
+\end{document}
