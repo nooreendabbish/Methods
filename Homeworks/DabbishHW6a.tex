@@ -1,4 +1,4 @@
-% Created 2015-03-16 Mon 13:42
+% Created 2015-03-19 Thu 14:27
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -57,8 +57,112 @@ $$y_{ijk} = \mu + \beta_i + u_{ij} + \epsilon_{ijk}$$
 We assume that 
 \begin{itemize}
 \item $u_{ij}\overset{iid}\sim N(0,\sigma^2_u)$
-\item the random error $\epsilon_{ijk}\overset{iid}\sim N(0,\sigma^2_\epsilon)$
+\item the random error $\epsilon_{ijk}\overset{iid}\sim
+   N(0,\sigma^2_\epsilon)$
 \end{itemize}
+
+In matrix notation we have \textbf{Y = X$\beta$ + Zu + $\epsilon$}:
+
+\begin{verbatim}
+X1 <- matrix(c(rep(1,24),rep(1,8),rep(0,24),rep(1,8),rep(0,24),rep(1,8)),nrow=24, ncol=4, byrow=FALSE);
+lvector(X1,0)
+#Z1 <- matrix(c(rep(c(1,1,rep(0,24)),11),1,1),nrow=24,ncol=12,byrow=FALSE)
+#lvector(Z1,0)
+\end{verbatim}
+
+
+\[
+\begin{pmatrix} y_{111} \\ y_{112} \\ y_{121} \\ y_{122} \\ y_{131} \\ y_{132} \\ y_{141} \\ y_{142} \\
+                y_{211} \\ y_{212} \\ y_{221} \\ y_{222} \\ y_{231} \\ y_{232} \\ y_{241} \\ y_{242} \\
+                y_{311} \\ y_{312} \\ y_{321} \\ y_{322} \\ y_{331} \\ y_{332} \\ y_{341} \\ y_{342} \\
+                y_{411} \\ y_{412} \\ y_{421} \\ y_{422} \\ y_{431} \\ y_{432} \\ y_{441} \\ y_{442} \end{pmatrix}
+=
+\begin{pmatrix}{}
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  \end{pmatrix} \begin{pmatrix} \mu \\ \beta_1 \\ \beta_2\\ \beta3 \end{pmatrix} +
+\begin{pmatrix}{}
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+  \end{pmatrix}
+\begin{pmatrix} u_{11}\\ u_{12} \\ u_{13} \\ u_{14}\\
+                u_{21}\\ u_{22} \\ u_{23} \\ u_{24}\\
+                u_{31}\\ u_{32} \\ u_{33} \\ u_{34}\\
+                u_{41}\\ u_{42} \\ u_{43} \\ u_{44}
+\end{pmatrix} + \begin{pmatrix} \epsilon_{111} \\ \epsilon_{112} \\ \epsilon_{121} \\ \epsilon_{122} \\ \epsilon_{131} \\ \epsilon_{132} \\ \epsilon_{141} \\ \epsilon_{142} \\
+                \epsilon_{211} \\ \epsilon_{212} \\ \epsilon_{221} \\ \epsilon_{222} \\ \epsilon_{231} \\ \epsilon_{232} \\ \epsilon_{241} \\ \epsilon_{242} \\
+                \epsilon_{311} \\ \epsilon_{312} \\ \epsilon_{321} \\ \epsilon_{322} \\ \epsilon_{331} \\ \epsilon_{332} \\ \epsilon_{341} \\ \epsilon_{342} \\
+                \epsilon_{411} \\ \epsilon_{412} \\ \epsilon_{421} \\ \epsilon_{422} \\ \epsilon_{431} \\ \epsilon_{432} \\ \epsilon_{441} \\ \epsilon_{442} \end{pmatrix}
+\]
+ 
+We note that E(\textbf{Y}) = \textbf{X$\beta$}, that is E(y$_{\mathrm{ijk}}$) = $\mu$ + $\beta$$_i$.
+
+Further var(\textbf{Y}) = \textbf{ZGZ$^T$} + \textbf{R}, where \textbf{R} = var(\textbf{$\epsilon$}) =
+$\sigma$$^2$_$\epsilon$ \textbf{I$_{\mathrm{24x24}}$} and \textbf{G} = var(\textbf{u}) = $\sigma$$^2$$_u$ \textbf{I$_{\mathrm{12 x 12}}$}.
+
+
+\begin{verbatim}
+varY1a = Z1%*%diag(12)%*%t(Z1)
+varY1a
+\end{verbatim}
+
+This gives us a $\Sigma$ made up of 2x2 block matrices $\begin{pmatrix} \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u\\ \sigma^2_u & \sigma^2+\sigma^2_\epsilon \end{pmatrix}$, reflecting the variance in a sample and covariance between the two cuts sampled from the same cooler at the same temperature:
+
+\[
+var(\mathbf{Y}) = \begin{pmatrix} 
+\sigma^2_u+\sigma^2_\epsilon & \sigma^2_u & 0 & 0 & \ldots &0 & 0\\
+\sigma^2_u & \sigma^2+\sigma^2_\epsilon   & 0 & 0 & \ldots &0 & 0 \\
+0 &                            0          & \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u &  & 0 & 0\\
+0 &                            0          & \sigma^2_u & \sigma^2+\sigma^2_\epsilon & & 0 & 0\\
+\vdots                     & \vdots       &  & & \ddots  &\vdots &\vdots\\
+0 &                            0          & 0    & 0 & \ldots & \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u\\
+0 &                            0          & 0    & 0 & \ldots & \sigma^2_u                   & \sigma^2_u + \sigma^2_\epsilon
+\end{pmatrix}
+\]
 \section{Let}
 \label{sec-2}
 
