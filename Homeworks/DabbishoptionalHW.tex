@@ -1,4 +1,4 @@
-% Created 2015-03-14 Sat 13:00
+% Created 2015-03-15 Sun 23:20
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -35,5 +35,224 @@
 \label{sec-1}
 \subsection{Find \textbf{X} and \textbf{$\epsilon$} such that a model for \textbf{Y} can be expressed in the form of \textbf{Y=X$\beta$+$\epsilon$}.}
 \label{sec-1-1}
+
+
+
+
+We write E($\epsilon$$_i$) = 0 and
+\textbf{X} = 
+\begin{pmatrix}
+  2 & -1 & 1 & -1 \\ 
+  2 & 0 & 1 & 0 \\ 
+  0 & 1 & 0 & 0 \\ 
+  2 & 1 & 1 & 0  
+  \end{pmatrix}.
+
+To give the model:
+
+$$\mathbf{Y} = \begin{pmatrix} y_1 \\ y_2 \\ y_3 \\ y_4 \end{pmatrix}= \begin{pmatrix} 2 & -1 & 1 & -1 \\ 2 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0\\ 2 & 1 & 1 & 0  \end{pmatrix}\begin{pmatrix} \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \end{pmatrix} +\begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \\ \epsilon_4 \end{pmatrix}$$
+\subsection{Is \textbf{X} in your model full rank? Why or Why not?}
+\label{sec-1-2}
+
+
+\textbf{X} is not full rank. We can easily tell because the fourth row is
+equal to the sum of the second row and the third row.  Another way to
+verify that \textbf{X} is not full rank is to show that it has a
+determinant of zero. This is verified in R with \verb~det(X1)~, as well as calculating
+the determinant by hand. Calculating along the third row we have $$det X =
+(-1)^{3+2} \begin{vmatrix} 2 & 1 & -1 \\ 2 & 1 & 0 \\ 2 & 1 & 0
+\end{vmatrix} = 0.$$ Where the determinant of the submatrix is
+obviously zero because column 1 = 2 x column 2.
+\subsection{Clearly and precisely state the minimal conditions under which your model in part (a) is a Gauss-Markov model.}
+\label{sec-1-3}
+
+
+\begin{enumerate}
+\item $E(\mathbf{\epsilon}) = \mathbf{0}$
+\item $Var(\mathbf{\epsilon}) = \sigma^2\mathbf{I}$
+\end{enumerate}
+
+\newpage
+\subsection{Is $\beta$$_4$ estimable? If yes, find a linear unbiased estimator for $\beta$$_4$. If no, why?}
+\label{sec-1-4}
+
+
+Yes. $\beta$$_4$ is estimable because there is a vector c in the rowspace
+of \textbf{X} such that $\beta$$_4$ = c$^t$$\beta$. Specifically c = Row 4 - Row 1 -
+2xRow 3:
+
+\begin{align*}
+\beta_4 &= c^T\beta\\
+        &= \begin{pmatrix} 0 & 0 & 0 & 1 \end{pmatrix}\begin{pmatrix} \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \end{pmatrix} \\
+        &= \begin{pmatrix} -1 & 0 & -2 & 1 \end{pmatrix}\begin{pmatrix}{}
+  2 & -1 & 1 & -1 \\ 
+  2 & 0 & 1 & 0 \\ 
+  0 & 1 & 0 & 0 \\ 
+  2 & 1 & 1 & 0 \\ 
+  \end{pmatrix}\begin{pmatrix} \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \end{pmatrix}
+\end{align*}
+
+
+Find a linear unbiased estimate for $\beta$$_4$:
+
+$$\hat{\beta_4} = \widehat{c^T\beta} = c^T(X^TX)^-X^TY$$
+
+Evaluating gives the following (see scanned scratchwork or
+verification in R code appendix for
+additional details).
+
+$$(X^TX)^- = \begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & 2/3 & -1/3 & -1 \\ 0
+& -1/3 & 2/3 & 1 \\ 0 & -1 & 1 & 3 \end{pmatrix},\,\,(X^TX)^-X^T=\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & -1/3 & 2/3 & 1/3 \\ 0
+& 2/3 & -1/3 & 1/3 \\ -1 & 1 & -1 & 0 \end{pmatrix}$$
+
+$$c^t(X^TX)^-X^T = (-1, 1, -1, 0)$$
+
+$$\widehat{c^t\beta}=c^t(X^TX)^-X^TY = -y_1 + y_2 - y_3$$
+
+R code for verification:
+
+\begin{verbatim}
+ct <- c(0,0,0,1)
+ct %*% ginv(t(X1)%*%X1)%*%t(X1)
+qr(ginv(t(X1)%*%X1))$rank
+qr((t(X1)%*%X1)[2:4,2:4])$rank
+A22inv <- solve((t(X1)%*%X1)[2:4,2:4])
+G <- rbind(c(0,0,0,0), (cbind(c(0,0,0), A22inv)))
+t(X1)%*%X1
+G%*%t(X1)
+c(0,0,0,1)%*%G%*%t(X1)
+\end{verbatim}
+ 
+\newpage
+\section{Consider an experiment with two factors: A (with levels A$_1$ and A$_2$) and B (with levels B$_1$ and B$_2$). Let \emph{y$_{\mathrm{ijk}}$} be the outcome of the kth unit at the level of A$_i$ factor and B$_j$ factor (\emph{i,j} = 1,2). Data are collected as in the following table . . .}
+\label{sec-2}
+\subsection{Is this data set a balanced one?}
+\label{sec-2-1}
+
+
+No. This data set is not balanced because there are two observations
+of A$_1$ B$_1$, A$_1$ B$_2$, and A$_2$ B$_2$, but only one observation of A$_2$ B$_1$.
+\subsection{Express the mean outcomes $\mu$$_{\mathrm{ij}}$ = E(y$_{\mathrm{ijk}}$) (\emph{i,j} = 1,2) corresponding to all possible combinations of the factors A nd B as functions of $\beta$$_1$, $\beta$$_2$, $\beta$$_3$, and $\beta$$_4$.}
+\label{sec-2-2}
+
+
+\begin{align*}
+\mu_{11} &= \beta_1 + \beta_2 + \beta_3 + \beta_4\\
+\mu_{12} &= \beta_1 + \beta_2 - \beta_3 - \beta_4\\
+\mu_{21} &= \beta_1 - \beta_2 + \beta_3 - \beta_4\\
+\mu_{22} &= \beta_1 - \beta_2 - \beta_3 + \beta_4
+\end{align*}
+\subsection{Express the overall mean of the outcomes as a funtion of $\beta$$_1$, $\beta$$_2$, $\beta$$_3$,$\beta$$_4$}
+\label{sec-2-3}
+
+
+$$\mu_{..}=1/4(\mu_{11}+\mu_{12}+\mu_{21}+\mu_{22}) = \beta_1$$
+\subsection{Find a 95\% confidence interval for $\mu$$_{\mathrm{21}}$- $\mu$$_{\mathrm{11}}$}
+\label{sec-2-4}
+\subsection{Find the F statistic for \emph{H$_0$}: $\mu$$_{\mathrm{12}}$ = $\mu$$_{\mathrm{22}}$ = 35 vs \emph{H$_a$}: not \emph{H$_0$}, and give its degrees of freedom.}
+\label{sec-2-5}
+
+
+F statistic is given by
+$$F = \frac{\frac{1}{\sigma^2}\frac{(\widehat{C\beta} -
+d)^T(C(X^TX)^-C^T)^{-1}(\widehat{C\beta}
+-d)}{l}}{\frac{1}{\sigma^2}\frac{SSE}{n-rank(X)}}$$
+where n = number of observations, here n = 7, rank X = 4 , so n-
+rank(X) = 3. The matrix \textbf{C} and vector \textbf{d} are given by the null hypothesis, here \textbf{C}
+= $\begin{pmatrix} 1 & 1 & -1 & -1 \\ 1 & -1 & -1 & 1 \end{pmatrix}$
+and \textbf{d} = \begin{pmatrix} 35 \\ 35 \end{pmatrix}. l is determined by
+the rank of the \textbf{C} matrix, here l=2.
+
+Evaluating gives F = 1/4 with 2, 3 degrees of freedom, please see
+included scratchwork and/or R code for verification.
+
+
+
+
+\begin{verbatim}
+C2 <- matrix(c(1,1,-1,-1,1,-1,-1,1),nrow=2,ncol=4,byrow=TRUE)
+d <- c(35,35)
+betahat <- c(36.25,-8.75,2.5,-7.5)
+C2%*%betahat
+
+
+XtXinv <- matrix((1/32)*c(5,-1,1,-1,-1,5,-1,1,1,-1,5,-1,-1,1,-1,5),nrow=4,ncol=4,byrow=TRUE)
+C2%*%XtXinv%*%t(C2)
+solve(C2%*%XtXinv%*%t(C2))
+((t(C2%*%betahat - d)%*%solve(C2%*%XtXinv%*%t(C2))%*%(C2%*%betahat - d))/2)/(75/3)
+\end{verbatim}
+\subsection{Suppose three new outcomes are observed at the condition with respectively level A$_1$ and B$_2$, find a 95\% prediction interval for the average of the three new observations.}
+\label{sec-2-6}
+\subsection{Suppose that the fifth row (outcome = 55) in the data table is now removed. Does it change the estimiability of any of the parameters $\beta$$_j$ (\emph{j} = 1, \ldots,4) in the model? Why or why not?}
+\label{sec-2-7}
+\subsection{Does the change in the previous part (g) have any impact on the least square estimation of $\mu$$_{\mathrm{11}}$and $\mu$$_{\mathrm{12}}$? Explain your answer.}
+\label{sec-2-8}
+
+
+If \emph{y$_{\mathrm{211}}$}, the fifth outcome, is removed, it will not have any
+impact on the least squares estimation of $\mu$$_{\mathrm{11}}$ or $\mu$$_{\mathrm{12}}$. To
+see this we can look at the least squares estimate of these
+quantities with the fifth outcome in place and removed and it becomes
+obvious that only the first two outcomes matter for the least squares
+estimate of $\mu$$_{\mathrm{11}}$ and only the third and fouth outcomes are part
+of the the least square estimate of $\mu$$_{\mathrm{12}}$. That is, only the
+observations from the conditions of the respective means. To show
+this explicitly note that:
+
+\begin{align*}
+\widehat{\mu_{11}} &=(1,1,1,1)(X^TX)^-X^TY\\
+             &=(  1/2,1/2,0,0,0,0,0)\begin{pmatrix} y_{111} \\ y_{112} \\ y_{121} \\ y_{122} \\ y_{211} \\ y_{221} \\ y_{222} \end{pmatrix} = \frac{1}{2} (y_{111} + y_{112}) \\
+\widehat{\mu^{\star}_{11}} &=(1,1,1,1)({X^{\star}}^TX^{\star})^-{X^{\star}}^TY^{\star}\\
+             &=(  1/2,1/2,0,0,0,0,0) \begin{pmatrix} y_{111} \\ y_{112} \\ y_{121} \\ y_{122} \\ y_{221} \\ y_{222} \end{pmatrix} = \frac{1}{2} (y_{111} + y_{112})\\
+\widehat{\mu_{12}} &=(1,1,-1,-1)(X^TX)^-X^TY\\
+             &=(0,0,  1/2,1/2,0,0,0)\bfmath{Y}  = \frac{1}{2} (y_{121} + y_{122})\\
+\widehat{\mu^{\star}_{12}} &=(1,1,-1,-1)({X^{\star}}^TX^{\star})^-{X^{\star}}^TY^{\star}\\
+             &=(0,0,  1/2,1/2,0,0)\mathbf{Y^{\star}}  = \frac{1}{2} (y_{121} + y_{122})
+\end{align*}
+
+R code to verify results above:
+
+\begin{verbatim}
+X2 <- matrix(c(rep(c(1,1,1,1),2),rep(c(1,1,-1,-1),2),1,-1,1,-1,rep(c(1,-1,-1,1),2)),nrow=7,ncol=4,byrow=TRUE)
+Ch <- c(1,1,-1,-1)
+Ch%*%ginv(t(X2)%*%X2)%*%t(X2)
+
+X2 <- X2[-5,]
+\end{verbatim}
+\section{Consider the model y$_i$ = $\beta$$_0$ +$\beta$$_1$ x$_i$ + $\beta$$_2$ x$^2$$_i$ + $\epsilon$$_i$ . . .}
+\label{sec-3}
+\subsection{Find the maximum likelihood estimator for x$_0$.}
+\label{sec-3-1}
+
+
+\begin{align*}
+E(y) &= \beta_0 + \beta_1 x + \beta_2 x^2\\
+\frac{\partial E(y)}{\partial x} &= \beta_1 + 2 \beta_2 x\\
+&\text{Set derivative to zero to find maxima/minima.}\\
+ \hat{x_0} &= \frac{-\hat{\beta_1}}{2\hat{\beta_2}}
+\end{align*}
+\subsection{Find a (1 - $\alpha$) level confidence interval for x$_0$. You may assume \emph{n} large here. If you solve this part without assuming \emph{n} large, there will be 3 extra points.}
+\label{sec-3-2}
+
+
+We write $\hat{x_0} =
+\frac{-\hat{\beta_1}}{2\hat{\beta_2}}$. We know the OLS estimator for 
+our parameter vector $\hat{\beta}$ is multivariate normally distributed with
+expectation $\beta$ and variance $\sigma^2(X^TX)^-$. Therefore
+$\hat{\beta_1}\sim N(\beta_1,\sigma^2 (X^TX)^-_{2,2})$ and
+$\hat{\beta_2}\sim N(\beta_2,\sigma^2 (X^TX)^-_{3,3})$. It should
+therefore be possible to use partial fraction decomoption to re-write
+x$_0$ interms of standardized normal distributions. The square-root of
+the square of the denominator will give a t-distribution with 1
+degree of freedom. 
+
+Our (1 - $\alpha$) confidence interval will be $\hat{x_0} \pm s
+t_{\alpha/2}/\sqrt{n}$ where \emph{s} is the standard deviation in our estimator
+$\hat{x_0} = \frac{-\hat{\beta_1}}{2\hat{\beta_2}}$.
+\section{Appendix: Tangled R code}
+\label{sec-4}
+
+
+\lstinputlisting{DabbishoptionalHW.R}
 
 \end{document}

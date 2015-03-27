@@ -1,0 +1,239 @@
+#+TITLE: 8004 Homework 6
+#+AUTHOR: Nooreen Dabbish
+#+Email: nerd@temple.edu
+#+LATEX_HEADER: \usepackage{methodshw, amsmath}
+#+OPTIONS: toc:nil
+
+# Code to input variables, libraries, and commonly used functions:
+#+NAME: common
+#+BEGIN_SRC R :session *HW6* :exports none :tangle yes
+       library(MASS); library(xtable)
+         lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+          x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+          print(x, floating=FALSE, tabular.environment="pmatrix", 
+            hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+          }
+#+END_SRC
+
+#+RESULTS: common
+
+* A meat scientist is studying the effect of storage temperature on meat quality. 
+The temperatures of interest are 34, 40, and 46 degrees Fahrenheit. Twelve coolers are available for the study. The three temperatures are randomly assigned to the twelve coolers using a balanced and completely randomized design. Two large cuts of fresh beef are stored in each cooler. After three days, each member of a team of experts independently assigns a quality score to each cut of beef. The experts are not told about the storage conditions of each cut. The scores assigned by the team to each cut of beef are averaged to produce an overall quality score for each cut.
+
+** Write down a model for the overall quality score data. Define your notation thoroughly.
+
+Let y_{ijk} = the overall quality score for the kth cut from the jth
+cooler at the ith temperature, where k = 1,2, j = 1,2,3,4, and
+i=1,2,3.
+
+The three temperatures of interest are pre-determined, so we will
+consider them fixed effects, the fixed effect of the ith temperature
+is \beta_i. Whereas the effects of cooler at each temperature are
+random, given by u_{ij} for the jth cooler at the ith temperature.
+Also, we will add in an overall mean \mu which is also fixed,
+giving the model: 
+
+$$y_{ijk} = \mu + \beta_i + u_{ij} + \epsilon_{ijk}$$
+
+We assume that 
+ + $u_{ij}\overset{iid}\sim N(0,\sigma^2_u)$
+ + the random error $\epsilon_{ijk}\overset{iid}\sim
+   N(0,\sigma^2_\epsilon)$ 
+
+In matrix notation we have *Y = X\beta + Zu + \epsilon*:
+#+BEGIN_SRC R :session *HW6* :results output raw :tangle yes
+  X1 <- matrix(c(rep(1,24),rep(1,8),rep(0,24),rep(1,8),rep(0,24),rep(1,8)),nrow=24, ncol=4, byrow=FALSE);
+  lvector(X1,0)
+  Z1 <- matrix(c(rep(c(1,1,rep(0,24)),11),1,1),nrow=24,ncol=12,byrow=FALSE)
+  lvector(Z1,0)
+#+END_SRC
+
+
+\[
+\begin{pmatrix} y_{111} \\ y_{112} \\ y_{121} \\ y_{122} \\ y_{131} \\ y_{132} \\ y_{141} \\ y_{142} \\
+                y_{211} \\ y_{212} \\ y_{221} \\ y_{222} \\ y_{231} \\ y_{232} \\ y_{241} \\ y_{242} \\
+                y_{311} \\ y_{312} \\ y_{321} \\ y_{322} \\ y_{331} \\ y_{332} \\ y_{341} \\ y_{342} \\
+                y_{411} \\ y_{412} \\ y_{421} \\ y_{422} \\ y_{431} \\ y_{432} \\ y_{441} \\ y_{442} \end{pmatrix}
+=
+\begin{pmatrix}{}
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 1.00 & 0.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 1.00 & 0.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  1.00 & 0.00 & 0.00 & 1.00 \\ 
+  \end{pmatrix} \begin{pmatrix} \mu \\ \beta_1 \\ \beta_2\\ \beta3 \end{pmatrix} +
+\begin{pmatrix}{}
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+  \end{pmatrix}
+\begin{pmatrix} u_{11}\\ u_{12} \\ u_{13} \\ u_{14}\\
+                u_{21}\\ u_{22} \\ u_{23} \\ u_{24}\\
+                u_{31}\\ u_{32} \\ u_{33} \\ u_{34}\\
+                u_{41}\\ u_{42} \\ u_{43} \\ u_{44}
+\end{pmatrix} + \begin{pmatrix} \epsilon_{111} \\ \epsilon_{112} \\ \epsilon_{121} \\ \epsilon_{122} \\ \epsilon_{131} \\ \epsilon_{132} \\ \epsilon_{141} \\ \epsilon_{142} \\
+                \epsilon_{211} \\ \epsilon_{212} \\ \epsilon_{221} \\ \epsilon_{222} \\ \epsilon_{231} \\ \epsilon_{232} \\ \epsilon_{241} \\ \epsilon_{242} \\
+                \epsilon_{311} \\ \epsilon_{312} \\ \epsilon_{321} \\ \epsilon_{322} \\ \epsilon_{331} \\ \epsilon_{332} \\ \epsilon_{341} \\ \epsilon_{342} \\
+                \epsilon_{411} \\ \epsilon_{412} \\ \epsilon_{421} \\ \epsilon_{422} \\ \epsilon_{431} \\ \epsilon_{432} \\ \epsilon_{441} \\ \epsilon_{442} \end{pmatrix}
+\]
+ 
+We note that E(*Y*) = *X\beta*, that is E(y_{ijk}) = \mu + \beta_i.
+
+Further var(*Y*) = *ZGZ^T* + *R*, where $\mathbf{R} = var(\epsilon) =
+\sigma^2_\epsilon I_{24x24}$ and $\mathbf{G} = var(\mathbf{u}) = \sigma^2_u I_{12x12}$.
+
+#+BEGIN_SRC R :session *HW6* :tangle yes :results output raw
+  varY1a = Z1%*%diag(12)%*%t(Z1)
+  varY1a
+#+END_SRC
+
+This gives us a \Sigma made up of 2x2 block matrices $\begin{pmatrix} \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u\\ \sigma^2_u & \sigma^2+\sigma^2_\epsilon \end{pmatrix}$, reflecting the variance in a sample and covariance between the two cuts sampled from the same cooler at the same temperature:
+
+\[
+var(\mathbf{Y}) = \begin{pmatrix} 
+\sigma^2_u+\sigma^2_\epsilon & \sigma^2_u & 0 & 0 & \ldots &0 & 0\\
+\sigma^2_u & \sigma^2+\sigma^2_\epsilon   & 0 & 0 & \ldots &0 & 0 \\
+0 &                            0          & \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u &  & 0 & 0\\
+0 &                            0          & \sigma^2_u & \sigma^2+\sigma^2_\epsilon & & 0 & 0\\
+\vdots                     & \vdots       &  & & \ddots  &\vdots &\vdots\\
+0 &                            0          & 0    & 0 & \ldots & \sigma^2_u+\sigma^2_\epsilon & \sigma^2_u\\
+0 &                            0          & 0    & 0 & \ldots & \sigma^2_u                   & \sigma^2_u + \sigma^2_\epsilon
+\end{pmatrix}
+\]
+
+
+\newpage
+* Let 
+$$\begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix} \sim N 
+\left(\begin{pmatrix} \mu_1 \\ \mu_1 \\ \mu_2 \end{pmatrix},
+\begin{pmatrix} \sigma^2 & \sigma^2/2 & 0 \\ \sigma^2/2
+& \sigma^2 & \sigma^2/2 \\ 0 & \sigma^2/2 & \sigma^2 \end{pmatrix}
+\right)$$ 
+
+Where \mu_1, \mu_2 and \sigma^2 are unknown parameters. 
+Find the REML of \sigma^2. Please start with writing it as *Y=X\beta+\epsilon*, and then try to find *M* for calculating the REML.
+ 
+We have *X* = $\begin{pmatrix} 1 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix}$, 
+*\beta* = $\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix}$, and 
+*\epsilon* $\sim N(0,\Sigma),\Sigma=\sigma^2
+\begin{pmatrix} 1 & 1/2 & 0 \\ 1/2 & 1 & 1/2 \\ 0 & 1/2 & 1 \end{pmatrix}$.
+
+\begin{align*}
+\begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix} &= 
+\begin{pmatrix} 1 & 0 \\ 1 & 0 \\ 0 & 1 \end{pmatrix} 
+\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix} +
+\begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \epsilon_3 \end{pmatrix}
+\end{align*}
+
+Here n = 3,
+and the
+rank of *X*
+is 2. So we
+need to
+choose
+an *M* of
+rank 1. 
+
+
+Try: *M* =
+(1 0 0).
+With *P_X*
+= $\begin{pmatrix} 1/2 & 1/2 & 0 \\ 1/2 & 1/2 & 0 \\ 0 & 0 & 1 \end{pmatrix}$ 
+and *I-P_X* = $\begin{pmatrix} 1/2 & -1/2 & 0 \\ -1/2 & 1/2 & 0 \\ 0 &0 & 0 \end{pmatrix}$.
+
+*M(I-P_X)* = *B* = (1/2, -1/2, 0) and *M(I-P_X)Y* = *BY* =
+$\frac{y_1 - y_2}{2}$.
+
+The restricted likelihood for *BY* will be 
+$$L_R(v) =
+(2\pi)^{-m/2}(det(\mathbf{B\Sigma (v)B^T})^{-1/2}exp\left(-\frac{1}{2} \mathbf{(BY)}^T(\mathbf{B\Sigma}(v)\mathbf{B}^T)^{-1}\mathbf{BY}\right)$$
+
+Here solving for $\mathbf{B\Sigma B^T}$ gives $\frac{\sigma^2}{4}$. Evaluating
+and taking the log gives.
+
+$$l_R(v) = -\frac{1}{2} log (2\pi) + log 2 - log \sigma -
+\frac{(y_1 - y_2)^2}{2\sigma^2}$$
+
+Taking the partial derivative with respect to sigma gives:
+ 
+$$\frac {\partial l}{\partial \sigma} = -\frac{1}{\sigma} +
+\frac{(y_1 - y_2)^2}{\sigma^3}$$
+
+We obtain the REML estimator $\widehat{\sigma^2_R} = (y_1 - y_2)^2$.
+
+Checking the second derivative gives:
+$$\frac {\partial^2 l}{\partial \sigma^2} = \frac{1}{\sigma^2} -
+\frac{3(y_1 - y_2)^2}{\sigma^4}$$
+
+Evaluating the second derivative at $\widehat{\sigma^2_R}$ gives:
+$$\frac {\partial^2 l}{\partial \sigma^2} \big|_{\widehat{\sigma_R}} = \frac{1}{(y_1-y_2)^4} -
+\frac{3}{(y_1 - y_2)^6} = \frac{(y_1 - y_2)^2 - 3}{(y_1 - y_2)^6}$$.
+This quantity is negative when $(y_1 - y_2) < \sqrt{3}$, and
+$\widehat{\sigma_R} = (y_1 - y_2)^2$ defines a maxima there.
+
+R code to check hand calculations done in this problem:
+#+BEGIN_SRC R :session *HW6* :tangle yes :results output raw
+   M <- c(1,0,0)
+   X2 <- matrix(c(1,0,1,0,0,1),nrow=3,ncol=2,byrow=TRUE)
+   PX2 <- X2%*%solve(t(X2)%*%X2)%*%t(X2)
+   PX2
+   diag(3) - PX2
+   M%*%(diag(3) - PX2)
+  
+   Sigma <- matrix(c(1,.5,0,.5,1,.5,0,.5,1),3,3,byrow=TRUE)
+  library(MASS)
+  fractions(chol(Sigma))
+#+END_SRC
+
+
+\newpage
+* Appendix: Tangled R Code
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+
+\lstinputlisting{DabbHW6.R} 
+
+
+
+
