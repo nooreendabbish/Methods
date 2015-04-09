@@ -67,7 +67,7 @@ We assume that
   
   
   eggs.lme <- lme(eggs ~ 0+treat, 
-              random = ~1|block, data=eggprod, method=c("REML"))
+              random = ~1|block, data=eggprod, method=c("ML"))
   
   
   library(lme4)
@@ -81,7 +81,7 @@ We assume that
 
 
 An overview of the dataset was performed and plots and descriptions are included in the
-appendix. The ~summary()~ of our ~lme(eggs ~ 0+treat, random = ~1|block, data=eggprod, method=c("REML"))~ model of a means model terms gives
+appendix. The ~summary()~ of our ~lme(eggs ~ 0+treat, random = ~1|block, data=eggprod, method=c("ML"))~ model of a means model terms gives
 estimates for the means of treatments:
 
 | Treatment | Estimated Mean Eggs | Comparison | Difference |
@@ -150,7 +150,6 @@ would given by a model with only an intercept term.
   LL2 <- logLik(eggs.lme2)
   LL3 <- logLik(eggs.lme3)
   W2 <- as.numeric(-2*(LL3-LL2))
-  W2
   test <- qchisq(.95, 2)
 #+END_SRC
 
@@ -160,6 +159,9 @@ compares to a .95 upper quantile of SRC_R[:session *HW7*]{round(test,4)} for
 the \chi^2 dsitribution with df=2. Since our test value is more extreme, it
 suggests the null hypothesis should be rejected, that the treatment 
 effects are significant.
+
+For an exact p-value, we find 
+SRC_R[:session *HW7*]{round(pchisq(W2,2,lower=FALSE),6)}.
 
 * This is Problem 4 of Faraway (2006), Chapter 8.
 

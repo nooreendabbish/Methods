@@ -1,0 +1,90 @@
+#+TITLE: 8004 Homework 9
+#+AUTHOR: Nooreen Dabbish
+#+Email: nerd@temple.edu
+#+LATEX_HEADER: \usepackage{methodshw, amsmath}
+#+OPTIONS: toc:nil
+
+# Code to input variables, libraries, and commonly used functions:
+#+NAME: common
+#+BEGIN_SRC R :session *HW9* :exports none :tangle yes
+       library(MASS); library(xtable);library(nlme)
+         lvector <- function(x, dig = 2, dsply=rep("f",ncol(x)+1)) {
+          x <- xtable(x, align=rep("",ncol(x)+1),display=dsply,digits=dig) # We repeat empty string 6 times
+          print(x, floating=FALSE, tabular.environment="pmatrix", 
+            hline.after=NULL, include.rownames=FALSE, include.colnames=FALSE)
+          }
+#+END_SRC
+
+#+RESULTS: common
+
+* Data is generated from the exponetial distribution with density
+$$f(y) = \lambda \exp (-\lambda y),\, \text{where}\,\,\lambda,y>0.$$
+
+** Show that it belongs to the exponential family distributions be indentifyting \theta, b(\theta), \phi, a(\phi) and c(y;\phi).
+
+An exponential family distribution can be written in the form
+$$\exp\left\{ \frac{y\theta - b(\theta)}{a(\phi)} + c(y;\phi) \bigg\}.$$
+
+We write: $$f(y|\lambda) = \exp(-\lambda y + \log \lambda)$$ and
+equate \theta = -\lambda, b(\theta) = -\log \lambda =-\log(-\theta),
+(note that \lambda >0, so \theta < 0), 
+\phi = 1, a(\phi) = 1, c(y;\phi) = 1.
+
+** What is the canonical link and variance functions for a GLM with the response following the exponential distribution?
+
+The link function connects the linear predictor \mu to the parameter
+\theta in the exponential family distribution definition above. To
+find the canonical link, we want \mu = E(Y) = b'(\theta). we find the first moment of y:
+
+$$EY = \int_0^\infty \lambda y e^{-\lamda y} dy = \frac{1}{\lambda}$$
+
+$$\text{Note}\,\, b'(\theta) = \frac{-1}{\theta} = \frac{1}{\lambda} =
+\mu\,\,\,\text{and}\,\,\,b''(\theta) = \frac{1}{\theta^2} =
+\frac{1}{\lambda^2} = \mu^2$$
+
+We write \theta as a funcion of \mu $$\theta(\mu) = -\frac{1}{\mu}$$
+$$b'^{-1}(\cdot) = \text{negative inverse function.}$$
+
+Since var(Y) = b''(\theta)a(\phi), and a(\phi) = 1, var(Y) =
+b''(\theta)  = \mu^2.
+
+** Is there any practical difficulty for using the canonical link in practice?
+
+Especially in small samples, canoncial links have desirable
+properties. However, they may not be the best fit for a model
+(McCullagh and Nelder pg 32).
+
+Note in this case that the exponential mean is restricted to
+positive values. However our \mu is a linear combination of
+predictors. This does not guarantee a positive restriction on our
+estimates of the mean. 
+
+** Express the deviance as a function of y_i and fitted mean \mu_i (i = 1, \ldots, n).
+
+We have scaled deviance given by 
+$$\frac{D(y;\hat{\mu})}{\phi} = 2 \sum \frac{w_i}{\phi}
+\{y_i(\widetilde{\theta_i} - \hat{\theta_i} )-
+b(\widetilde{\theta_i}) + b(\hat{\theta_i})\}$$
+
+with a(\phi) = \phi/w, \( \tilde{\theta}=\theta(y) \) denoting the full
+model (n parameter) estimate of \theta, and \( \hat{\theta} =
+\theta(\hat{\mu}) \)
+denoting the null model (one parameter) estimate of \theta.
+
+Evaluating for b(\theta) = - \log (-\theta) and \phi = 1, w_i = 1
+gives 
+$$D(y;\hat{\mu}) = 2 \sum yi(\widetilde{\theta_i} -
+\hat{\theta_i} ) + \log \left(\frac{\widetilde{\theta_i}}{\hat{\theta_i}\right)\}$$
+
+
+* Appendix: Tangled R Code
+:PROPERTIES:
+:UNNUMBERED: t
+:END:
+
+\lstinputlisting{DabbishHW9.R} 
+
+
+
+
+
